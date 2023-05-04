@@ -1,5 +1,6 @@
 """Slicing."""
 
+# a[start:stop:step] start through not past stop, by step
 
 def es_palindromo(palabra: str) -> bool:
     """Toma un string y devuelve un booleano en base a si se lee igual al
@@ -8,8 +9,9 @@ def es_palindromo(palabra: str) -> bool:
     Restricción: No utilizar bucles - Usar Slices de listas.
     Referencia: https://docs.python.org/3/tutorial/introduction.html#lists
     """
-    pass # Completar
-
+    
+    return palabra == palabra[::-1]
+    # con ::-1 estoy pidiendo que me devuelva la palabra al revés, y asé compararla con la palabra original
 
 # NO MODIFICAR - INICIO
 assert not es_palindromo("amor")
@@ -28,8 +30,12 @@ def mitad(palabra: str) -> str:
     Restricción: No utilizar bucles - Usar Slices de listas.
     Referencia: https://docs.python.org/3/tutorial/introduction.html#lists
     """
-    pass # Completar
-
+    if len(palabra) % 2 == 0:
+        return palabra[:len(palabra)//2]
+    else:
+        return palabra[:len(palabra)//2 + 1]
+    
+    #Hay que usar doble barra para las divisiones enteras y una sola para las decimales
 
 # NO MODIFICAR - INICIO
 assert mitad("hello") == "hel"

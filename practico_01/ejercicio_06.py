@@ -7,7 +7,16 @@ def numeros_al_final_basico(lista: List[Union[float, str]]) -> List[Union[float,
     """Toma una lista de enteros y strings y devuelve una lista con todos los
     elementos numéricos al final.
     """
-    pass # Completar
+    letras = []
+    nros = []
+    for i in lista:
+        if isinstance(i, str):
+            letras.append(i)
+        elif isinstance(i, int) or isinstance(i, float):
+            nros.append(i)
+    return letras + nros
+
+
 
 
 # NO MODIFICAR - INICIO
@@ -15,12 +24,14 @@ assert numeros_al_final_basico([3, "a", 1, "b", 10, "j"]) == ["a", "b", "j", 3, 
 # NO MODIFICAR - FIN
 
 
-###############################################################################
+##############################################################################
 
 
 def numeros_al_final_comprension(lista: List[Union[float, str]]) -> List[Union[float, str]]:
     """Re-escribir utilizando comprensión de listas."""
-    pass # Completar
+    letras = [ i for i in lista if isinstance(i, str)]
+    nros = [ i for i in lista if isinstance(i, int) or isinstance(i, float)]
+    return letras + nros
 
 
 # NO MODIFICAR - INICIO
@@ -28,16 +39,18 @@ assert numeros_al_final_comprension([3, "a", 1, "b", 10, "j"]) == ["a", "b", "j"
 # NO MODIFICAR - FIN
 
 
-###############################################################################
+##############################################################################
 
 
 def numeros_al_final_sorted(lista: List[Union[float, str]]) -> List[Union[float, str]]:
     """Re-escribir utilizando la función sorted con una custom key.
     Referencia: https://docs.python.org/3/library/functions.html#sorted
     """
-    pass # Completar
-
-
+    letras = sorted([ i for i in lista if isinstance(i, str)], key=lambda x: isinstance(x, str))
+    nros = sorted([ i for i in lista if isinstance(i, int) or isinstance(i, float)], key=lambda x: isinstance(x, str))
+    return letras + nros
+# Usé una función lambda para la key porque si ponia isinstance me daba error, porque necesitaba comparar el objeto de la lista con el tipo de dato, 
+# que me devuelva un booleano, y asi poder comparar el objeto con el booleano, y asi poder ordenar la lista.
 # NO MODIFICAR - INICIO
 assert numeros_al_final_sorted([3, "a", 1, "b", 10, "j"]) == ["a", "b", "j", 3, 1, 10]
 # NO MODIFICAR - FIN
@@ -50,8 +63,12 @@ def numeros_al_final_filter(lista: List[Union[float, str]]) -> List[Union[float,
     """CHALLENGE OPCIONAL - Re-escribir utilizando la función filter.
     Referencia: https://docs.python.org/3/library/functions.html#filter
     """
-    pass # Completar
-
+    letras = list(filter(lambda x: isinstance(x, str), lista))
+    nros = list(filter(lambda x: isinstance(x, int) or isinstance(x, float), lista))
+    return letras + nros
+    # Primero filtra la lista, y me devuelve una lista con los elementos que cumplen la condición, 
+    # que son los strings en el primer caso y los nros en el segundo.
+    # Luego, con list, casteo la lista que me devuelve.
 
 # NO MODIFICAR - INICIO
 if __name__ == "__main__":
@@ -64,7 +81,6 @@ if __name__ == "__main__":
 
 def numeros_al_final_recursivo(lista: List[Union[float, str]]) -> List[Union[float, str]]:
     """CHALLENGE OPCIONAL - Re-escribir de forma recursiva."""
-    pass # Completar
 
 
 # NO MODIFICAR - INICIO

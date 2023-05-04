@@ -5,8 +5,12 @@ def maximo_basico(a: float, b: float) -> float:
     """Toma dos números y devuelve el mayor.
 
     Restricción: No utilizar la función max"""
-    pass # Completar
-
+    if a > b:
+        return a
+    elif b > a:
+        return b
+    elif a == b:
+        return print("Los números son iguales")
 
 # NO MODIFICAR - INICIO
 assert maximo_basico(10, 5) == 10
@@ -21,7 +25,8 @@ def maximo_libreria(a: float, b: float) -> float:
     """Re-escribir utilizando el built-in max.
     Referencia: https://docs.python.org/3/library/functions.html#max
     """
-    pass # Completar
+    return max(a, b)
+
 
 
 # NO MODIFICAR - INICIO
@@ -30,14 +35,14 @@ assert maximo_libreria(9, 18) == 18
 # NO MODIFICAR - FIN
 
 
-###############################################################################
+# ###############################################################################
 
 
 def maximo_ternario(a: float, b: float) -> float:
     """Re-escribir utilizando el operador ternario.
     Referencia: https://docs.python.org/3/reference/expressions.html#conditional-expressions
     """
-    pass # Completar
+    return a if a > b else b
 
 
 # NO MODIFICAR - INICIO
