@@ -16,13 +16,18 @@ def generar_pares_clousure(initial: int = 0) -> Callable[[], int]:
     """Toma un número inicial y devuelve una función que cada vez que es
     invocada devuelve el número par siguiente al devuelto la última vez que
     fue invocada.
-
+    
     Restricciones:
         - Usar closures
         - Usar el modificador nonlocal
     """
-    pass # Completar
-
+    
+    def siguiente_par():
+        nonlocal initial
+        initial += 2
+        return initial - 2
+    return siguiente_par
+      
 
 # NO MODIFICAR - INICIO
 generador_pares = generar_pares_clousure(0)
@@ -45,7 +50,9 @@ def generar_pares_generator(initial: int = 0) -> Iterator[int]:
     """Re-Escribir utilizando Generadores
     Referencia: https://docs.python.org/3/howto/functional.html?highlight=generator#generators
     """
-    pass # Completar
+    while True:
+      initial += 2
+      yield initial - 2
 
 
 # NO MODIFICAR - INICIO
@@ -61,7 +68,12 @@ assert next(generador_pares) == 4
 
 def generar_pares_generator_send(initial: int = 0) -> Iterator[int]:
     """CHALLENGE OPCIONAL: Re-Escribir utilizando send para saltear numeros"""
-    pass # Completar
+    while True:
+      sig = yield initial
+      if sig is not None:
+        initial = sig
+      else:
+        initial += 2
 
 
 # NO MODIFICAR - INICIO
@@ -82,7 +94,8 @@ if __name__ == "__main__":
 
 def generar_pares_delegados(initial: int = 0) -> Iterator[int]:
     """CHALLENGE OPCIONAL: Re-Escribir utilizando Generadores delegados (yield from)"""
-    pass # Completar
+    yield initial
+    yield from generar_pares_delegados(initial + 2)
 
 
 # NO MODIFICAR - INICIO

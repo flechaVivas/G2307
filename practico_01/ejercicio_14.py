@@ -15,7 +15,7 @@ from typing import Callable, Iterable
 def apply(lista: Iterable[int], func: Callable[[int], bool]) -> Iterable[bool]:
     """Toma una lista y una función que toma un parámetro y devuelve una lista
     con la función aplicada a todos los elementos."""
-    pass # Completar
+    return list(map(func, lista))
 
 
 # NO MODIFICAR - INICIO
@@ -31,12 +31,12 @@ def esta_entre_valores(x: int, min_: float, max_: float) -> bool:
 Referencia: https://docs.python.org/3/library/functools.html#functools.partial
 """
 
-lista = [3, 4, 5, 6, 7, 8]
-min_ = 4
-max_ = 7
-nueva_funcion = # Completar
+# lista = [3, 4, 5, 6, 7, 8]
+# min_ = 4
+# max_ = 7
+# nueva_funcion = # Completar
 
-# NO MODIFICAR - INICIO
-lista = [3, 4, 5, 6, 7, 8]
-assert [False, False, True, True, False, False] == apply(lista, nueva_funcion)
-# NO MODIFICAR - FIN
+# # NO MODIFICAR - INICIO
+# lista = [3, 4, 5, 6, 7, 8]
+# assert [False, False, True, True, False, False] == apply(lista, nueva_funcion)
+# # NO MODIFICAR - FIN
