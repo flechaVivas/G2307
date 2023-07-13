@@ -137,6 +137,9 @@ ScreenManager:
             font_size: 30
             font_color: "Black"
             pos_hint: {"center_x": 0.5}
+            required: True
+            helper_text_mode: "on_error"
+            helper_text: "Ingresar algo"
         MDTextFieldRound:
             id: profesor_teoria
             hint_text: "Profesor teoría"
@@ -299,6 +302,7 @@ ScreenManager:
             font_size: 30
             font_color: "Black"
             pos_hint: {"center_x": 0.5}
+            readonly: True
         MDTextFieldRound:
             id: profesor_teoria
             hint_text: "Profesor teoría"
@@ -309,6 +313,7 @@ ScreenManager:
             font_size: 30
             font_color: "Black"
             pos_hint: {"center_x": 0.5}
+            readonly: True
         MDTextFieldRound:
             id: profesor_practica
             hint_text: "Profesor práctica"
@@ -319,6 +324,7 @@ ScreenManager:
             font_size: 30
             font_color: "Black"
             pos_hint: {"center_x": 0.5}
+            readonly: True
         MDTextFieldRound:
             id: horas_semanales
             hint_text: "Horas semanales"
@@ -329,6 +335,7 @@ ScreenManager:
             font_size: 30
             font_color: "Black"
             pos_hint: {"center_x": 0.5}
+            readonly: True
         MDRectangleFlatButton:
             text: 'Cancelar'
             pos_hint: {'center_x':0.5,'center_y':0.1}

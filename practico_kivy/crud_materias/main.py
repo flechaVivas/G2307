@@ -33,13 +33,6 @@ class ModificarScreen(Screen):
 class EliminarScreen(Screen):
     pass
 
-# sm = ScreenManager()
-# sm.add_widget(MenuScreen(name='login'))
-# sm.add_widget(MenuScreen(name='menu'))
-# sm.add_widget(MostrarScreen(name='mostrar'))
-# sm.add_widget(AgregarScreen(name='agregar'))
-# sm.add_widget(ModificarScreen(name='modificar'))
-# sm.add_widget(EliminarScreen(name='eliminar'))
 
 class SysacadApp(MDApp):
     dialog = None
@@ -139,6 +132,7 @@ class SysacadApp(MDApp):
 
     def dialog_close(self, *args):
         self.dialog.dismiss(force=True)
+        self.root.current = 'menu'
     
     def mostrar(self):
         conexion: sqlite3.Connection = sqlite3.connect("materias.db")
@@ -182,23 +176,48 @@ class SysacadApp(MDApp):
                 cambios = conexion.total_changes
                 conexion.commit()
                 if bool(cambios):
-                    self.root.get_screen('agregar').ids.nombre.text = "Agregado"
+                    self.root.get_screen('agregar').ids.nombre.text = ""
                     self.root.get_screen('agregar').ids.profesor_teoria.text = ""
                     self.root.get_screen('agregar').ids.profesor_practica.text = ""
                     self.root.get_screen('agregar').ids.horas_semanales.text = ""
+                    
+                    self.dialog = MDDialog(
+                        title = 'Agregar materias',
+                        text = f"Materia {Nombre.capitalize()} ingresada correctamente!",
+                        buttons = [
+                            MDFlatButton(
+                                text = "Aceptar",
+                                text_color = self.theme_cls.accent_color,
+                                on_release=self.dialog_close
+                            ),
+                        ],
+                    )
+                    self.dialog.open()
+                    
                 else:
-                    self.root.get_screen('agregar').ids.nombre.text = "Error al agregar"
+                    self.root.get_screen('agregar').ids.nombre.text = ""
                     self.root.get_screen('agregar').ids.profesor_teoria.text = ""
                     self.root.get_screen('agregar').ids.profesor_practica.text = ""
                     self.root.get_screen('agregar').ids.horas_semanales.text = ""
+
+                    self.dialog = MDDialog(
+                        title = 'Agregar materias',
+                        text = f"Error al agregar materia {Nombre.capitalize()}.",
+                        buttons = [
+                            MDFlatButton(
+                                text = "Aceptar",
+                                text_color = self.theme_cls.accent_color,
+                                on_release=self.dialog_close
+                            ),
+                        ],
+                    )
+                    self.dialog.open()
+
             except:
                 conexion.rollback()
                 raise
             finally:
                 conexion.close()
-        
-
-
 
 
     def buscar_materia(self, nombre_ingresado):
@@ -226,17 +245,32 @@ class SysacadApp(MDApp):
                     self.root.get_screen('eliminar').ids.horas_semanales.text = str(materia[4])
             else:
                 if self.root.current == "modificar": 
-                    self.root.get_screen('modificar').ids.nombre_a_buscar.text = "No Encontrado"
+                    self.root.get_screen('modificar').ids.nombre_a_buscar.text = ""
                     self.root.get_screen('modificar').ids.nombre.text = ""
                     self.root.get_screen('modificar').ids.profesor_teoria.text = ""
                     self.root.get_screen('modificar').ids.profesor_practica.text = ""
                     self.root.get_screen('modificar').ids.horas_semanales.text = ""
+
+                    
                 else:
-                    self.root.get_screen('eliminar').ids.nombre_a_buscar.text = "No Encontrado"
+                    self.root.get_screen('eliminar').ids.nombre_a_buscar.text = ""
                     self.root.get_screen('eliminar').ids.nombre.text = ""
                     self.root.get_screen('eliminar').ids.profesor_teoria.text = ""
                     self.root.get_screen('eliminar').ids.profesor_practica.text = ""
                     self.root.get_screen('eliminar').ids.horas_semanales.text = ""
+                
+                self.dialog = MDDialog(
+                        title = 'Buscar materia',
+                        text = f"Materia {nombre_ingresado.capitalize()} no encontrada.",
+                        buttons = [
+                            MDFlatButton(
+                                text = "Aceptar",
+                                text_color = self.theme_cls.accent_color,
+                                on_release=self.dialog_close
+                            ),
+                        ],
+                    )
+                self.dialog.open()
 
         except:
             conexion.rollback()
@@ -265,13 +299,38 @@ class SysacadApp(MDApp):
                 cambios = conexion.total_changes
                 conexion.commit()
                 if bool(cambios):
-                    self.root.get_screen('modificar').ids.nombre_a_buscar.text = "Modificado"
+                    self.root.get_screen('modificar').ids.nombre_a_buscar.text = ""
                     self.root.get_screen('modificar').ids.nombre.text = ""
                     self.root.get_screen('modificar').ids.profesor_teoria.text = ""
                     self.root.get_screen('modificar').ids.profesor_practica.text = ""
                     self.root.get_screen('modificar').ids.horas_semanales.text = ""
+
+                    self.dialog = MDDialog(
+                        title = 'Modificar materias',
+                        text = f"Materia {NombreNuevo.capitalize()} modificada correctamente!",
+                        buttons = [
+                            MDFlatButton(
+                                text = "Aceptar",
+                                text_color = self.theme_cls.accent_color,
+                                on_release=self.dialog_close
+                            ),
+                        ],
+                    )
+                    self.dialog.open()
+
                 else:
-                    self.root.get_screen('modificar').ids.nombre_a_buscar.text = "Error al modificar"
+                    self.dialog = MDDialog(
+                        title = 'Modificar materias',
+                        text = f"Error al modificar materia {Nombre.capitalize()}.",
+                        buttons = [
+                            MDFlatButton(
+                                text = "Aceptar",
+                                text_color = self.theme_cls.accent_color,
+                                on_release=self.dialog_close
+                            ),
+                        ],
+                    )
+                    self.dialog.open()
             except:
                 conexion.rollback()
                 raise
@@ -296,13 +355,38 @@ class SysacadApp(MDApp):
             cambios = conexion.total_changes
             conexion.commit()
             if bool(cambios):
-                self.root.get_screen('eliminar').ids.nombre_a_buscar.text = "Eliminado"
+                self.root.get_screen('eliminar').ids.nombre_a_buscar.text = ""
                 self.root.get_screen('eliminar').ids.nombre.text = ""
                 self.root.get_screen('eliminar').ids.profesor_teoria.text = ""
                 self.root.get_screen('eliminar').ids.profesor_practica.text = ""
                 self.root.get_screen('eliminar').ids.horas_semanales.text = ""
+
+                self.dialog = MDDialog(
+                        title = 'Eliminar materias',
+                        text = f"Materia {Nombre.capitalize()} eliminada correctamente!",
+                        buttons = [
+                            MDFlatButton(
+                                text = "Aceptar",
+                                text_color = self.theme_cls.accent_color,
+                                on_release=self.dialog_close
+                            ),
+                        ],
+                    )
+                self.dialog.open()
+
             else:
-                self.root.get_screen('eliminar').ids.nombre_a_buscar.text = "Error al eliminar"
+                self.dialog = MDDialog(
+                        title = 'Eliminar materias',
+                        text = f"Error al eliminar materia {Nombre.capitalize()}.",
+                        buttons = [
+                            MDFlatButton(
+                                text = "Aceptar",
+                                text_color = self.theme_cls.accent_color,
+                                on_release=self.dialog_close
+                            ),
+                        ],
+                    )
+                self.dialog.open()
         except:
             conexion.rollback()
             raise
