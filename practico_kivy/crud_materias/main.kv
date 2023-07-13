@@ -1,0 +1,344 @@
+ScreenManager:
+    LoginScreen:
+    MenuScreen:
+    MostrarScreen:
+    AgregarScreen:
+    ModificarScreen:
+    EliminarScreen:
+
+<LoginScreen>:
+    name: "login"
+    MDCard:
+        size_hint: None, None
+        size: '850','850'
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        elevation: 10
+        padding: 65
+        spacing: 35
+        orientation: 'vertical'
+        Image:
+            source: 'static/logo-utn.png'
+            lsize: self.texture_size
+        MDTextFieldRound:
+            id: user
+            icon_left: "account-check"
+            hint_text: "Usuario"
+            foreground_color: 0, 0, 1, 1
+            color_mode: 'accent'
+            size_hint_x: None
+            width: 400
+            font_size: 30
+            font_color: "Black"
+            pos_hint: {"center_x": 0.5}
+        MDTextFieldRound:
+            id: password
+            icon_left: "key-variant"
+            hint_text: "Contraseña"
+            foreground_color: 0, 0, 1, 1
+            color_mode: 'accent'
+            size_hint_x: None
+            width: 400
+            font_size: 30
+            pos_hint: {"center_x": 0.5}
+            password: True
+        MDFillRoundFlatButton:
+            text: 'Entrar'
+            font_size: 30
+            pos_hint: {"center_x": 0.5}
+            on_release: 
+                app.login()
+                root.manager.transition.direction = "left"
+
+<MenuScreen>:
+    name: "menu"
+    MDCard:
+        size_hint: None, None
+        size: '850','850'
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        elevation: 10
+        padding: 65
+        spacing: 35
+        orientation: 'vertical'
+        Image:
+            source: 'static/logo-utn.png'
+            lsize: self.texture_size
+        MDFillRoundFlatButton:
+            text: 'Mostrar materias'
+            font_size: 30
+            pos_hint: {"center_x": 0.5}
+            on_press: 
+                root.manager.current = 'mostrar'
+                app.mostrar()
+                root.manager.transition.direction = "left"
+        MDFillRoundFlatButton:
+            text: 'Agregar una materia'
+            font_size: 30
+            pos_hint: {"center_x": 0.5}
+            on_press: 
+                root.manager.current = 'agregar'
+                root.manager.transition.direction = "left"
+        MDFillRoundFlatButton:
+            text: 'Modificar una materia'
+            font_size: 30
+            pos_hint: {"center_x": 0.5}
+            on_press: 
+                root.manager.current = 'modificar'
+                root.manager.transition.direction = "left"
+        MDFillRoundFlatButton:
+            text: 'Eliminar una materia'
+            font_size: 30
+            pos_hint: {"center_x": 0.5}
+            on_press: 
+                root.manager.current = 'eliminar'
+                root.manager.transition.direction = "left"
+
+<MostrarScreen>:
+    name: 'mostrar'
+    MDCard:
+        size_hint: None, None
+        size: '850','850'
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        elevation: 10
+        padding: 65
+        spacing: 35
+        orientation: 'vertical'
+        MDLabel:
+            id: nombre_label
+            text: 'Materias: '
+            halign: 'center'
+            vallign: "middle"
+            font_size: 32
+            font_color: "Black"
+        MDRectangleFlatButton:
+            text: 'Volver'
+            pos_hint: {'center_x':0.5,'center_y':0.1}
+            on_release: 
+                root.manager.current = 'menu'
+                root.manager.transition.direction = "right"
+
+
+<AgregarScreen>:
+    name: 'agregar'
+    MDCard:
+        size_hint: None, None
+        size: '850','850'
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        elevation: 10
+        padding: 65
+        spacing: 35
+        orientation: 'vertical'
+        MDTextFieldRound:
+            id: nombre
+            hint_text: "Nombre"
+            foreground_color: 0, 0, 1, 1
+            color_mode: 'accent'
+            size_hint_x: None
+            width: 400
+            font_size: 30
+            font_color: "Black"
+            pos_hint: {"center_x": 0.5}
+        MDTextFieldRound:
+            id: profesor_teoria
+            hint_text: "Profesor teoría"
+            foreground_color: 0, 0, 1, 1
+            color_mode: 'accent'
+            size_hint_x: None
+            width: 400
+            font_size: 30
+            font_color: "Black"
+            pos_hint: {"center_x": 0.5}
+        MDTextFieldRound:
+            id: profesor_practica
+            hint_text: "Profesor práctica"
+            foreground_color: 0, 0, 1, 1
+            color_mode: 'accent'
+            size_hint_x: None
+            width: 400
+            font_size: 30
+            font_color: "Black"
+            pos_hint: {"center_x": 0.5}
+        MDTextFieldRound:
+            id: horas_semanales
+            hint_text: "Horas semanales"
+            foreground_color: 0, 0, 1, 1
+            color_mode: 'accent'
+            size_hint_x: None
+            width: 400
+            font_size: 30
+            font_color: "Black"
+            pos_hint: {"center_x": 0.5}
+        MDRectangleFlatButton:
+            text: 'Cancelar'
+            pos_hint: {'center_x':0.5,'center_y':0.1}
+            on_release: 
+                root.manager.current = 'menu'
+                root.manager.transition.direction = "right"
+        MDFillRoundFlatButton:
+            text: 'Aceptar'
+            font_size: 30
+            pos_hint: {"center_x": 0.5}
+            on_release: 
+                app.agregar()
+                root.manager.transition.direction = "right"
+
+<ModificarScreen>:
+    name: "modificar"
+    MDCard:
+        size_hint: None, None
+        size: '850','850'
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        elevation: 10
+        padding: 65
+        spacing: 35
+        orientation: 'vertical'
+        MDTextFieldRound:
+            id: nombre_a_buscar
+            hint_text: "Nombre a buscar"
+            foreground_color: 0, 0, 1, 1
+            color_mode: 'accent'
+            size_hint_x: None
+            width: 400
+            font_size: 30
+            font_color: "Black"
+            pos_hint: {"center_x": 0.5}
+        MDFillRoundFlatButton:
+            text: 'Buscar materia'
+            font_size: 30
+            pos_hint: {"center_x": 0.5}
+            on_release: 
+                app.buscar_materia(nombre_a_buscar.text)
+                root.manager.transition.direction = "right"
+        MDTextFieldRound:
+            id: nombre
+            hint_text: "Nombre"
+            foreground_color: 0, 0, 1, 1
+            color_mode: 'accent'
+            size_hint_x: None
+            width: 400
+            font_size: 30
+            font_color: "Black"
+            pos_hint: {"center_x": 0.5}
+        MDTextFieldRound:
+            id: profesor_teoria
+            hint_text: "Profesor teoría"
+            foreground_color: 0, 0, 1, 1
+            color_mode: 'accent'
+            size_hint_x: None
+            width: 400
+            font_size: 30
+            font_color: "Black"
+            pos_hint: {"center_x": 0.5}
+        MDTextFieldRound:
+            id: profesor_practica
+            hint_text: "Profesor práctica"
+            foreground_color: 0, 0, 1, 1
+            color_mode: 'accent'
+            size_hint_x: None
+            width: 400
+            font_size: 30
+            font_color: "Black"
+            pos_hint: {"center_x": 0.5}
+        MDTextFieldRound:
+            id: horas_semanales
+            hint_text: "Horas semanales"
+            foreground_color: 0, 0, 1, 1
+            color_mode: 'accent'
+            size_hint_x: None
+            width: 400
+            font_size: 30
+            font_color: "Black"
+            pos_hint: {"center_x": 0.5}
+        MDRectangleFlatButton:
+            text: 'Cancelar'
+            pos_hint: {'center_x':0.5,'center_y':0.1}
+            on_release: 
+                root.manager.current = 'menu'
+                root.manager.transition.direction = "right"
+        MDFillRoundFlatButton:
+            text: 'Aceptar'
+            font_size: 30
+            pos_hint: {"center_x": 0.5}
+            on_release: 
+                app.modificar()
+                root.manager.transition.direction = "right"
+
+<EliminarScreen>:
+    name: "eliminar"
+    MDCard:
+        size_hint: None, None
+        size: '850','850'
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        elevation: 10
+        padding: 65
+        spacing: 35
+        orientation: 'vertical'
+        MDTextFieldRound:
+            id: nombre_a_buscar
+            hint_text: "Nombre a buscar"
+            foreground_color: 0, 0, 1, 1
+            color_mode: 'accent'
+            size_hint_x: None
+            width: 400
+            font_size: 30
+            font_color: "Black"
+            pos_hint: {"center_x": 0.5}
+        MDFillRoundFlatButton:
+            text: 'Buscar materia'
+            font_size: 30
+            pos_hint: {"center_x": 0.5}
+            on_release: 
+                app.buscar_materia(nombre_a_buscar.text)
+                root.manager.transition.direction = "right"
+        MDTextFieldRound:
+            id: nombre
+            hint_text: "Nombre"
+            foreground_color: 0, 0, 1, 1
+            color_mode: 'accent'
+            size_hint_x: None
+            width: 400
+            font_size: 30
+            font_color: "Black"
+            pos_hint: {"center_x": 0.5}
+        MDTextFieldRound:
+            id: profesor_teoria
+            hint_text: "Profesor teoría"
+            foreground_color: 0, 0, 1, 1
+            color_mode: 'accent'
+            size_hint_x: None
+            width: 400
+            font_size: 30
+            font_color: "Black"
+            pos_hint: {"center_x": 0.5}
+        MDTextFieldRound:
+            id: profesor_practica
+            hint_text: "Profesor práctica"
+            foreground_color: 0, 0, 1, 1
+            color_mode: 'accent'
+            size_hint_x: None
+            width: 400
+            font_size: 30
+            font_color: "Black"
+            pos_hint: {"center_x": 0.5}
+        MDTextFieldRound:
+            id: horas_semanales
+            hint_text: "Horas semanales"
+            foreground_color: 0, 0, 1, 1
+            color_mode: 'accent'
+            size_hint_x: None
+            width: 400
+            font_size: 30
+            font_color: "Black"
+            pos_hint: {"center_x": 0.5}
+        MDRectangleFlatButton:
+            text: 'Cancelar'
+            pos_hint: {'center_x':0.5,'center_y':0.1}
+            on_release: 
+                root.manager.current = 'menu'
+                root.manager.transition.direction = "right"
+        MDFillRoundFlatButton:
+            text: 'Aceptar'
+            font_size: 30
+            pos_hint: {"center_x": 0.5}
+            on_release: 
+                app.eliminar()
+                root.manager.transition.direction = "right"
