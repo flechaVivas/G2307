@@ -1,16 +1,54 @@
-# NOMBRE_DEL_PROYECTO
+# NOSPEAK - App de streaming de música
 
-Este es un archivo que debe completarse con los datos utilizados en el TPI. Este archivo puede modificarse en el tiempo, no obstante siempre debe mantenerse en un estado consistente con el desarrollo.
+## Integrantes
 
-**Importante:** Este archivo debe mantenerse en formato Markdown (.md) y sólo se tendrá en cuenta la versión disponible en GIT.
+* 47999 - Paolini, Alessandro
+* 47844 - Vivas, Facundo Ignacio
+* 47800 - Guerra, Bautista
+* 47774 - Darder, Fernando
 
 ## Descripción del proyecto
 
-Definir cúal es el alcance de este proyecto y los principales objetivos que debe cumplir.
+El negocio de esta aplicación de streaming de música se centra en ofrecer a los usuarios una plataforma para descubrir, reproducir y gestionar música de forma conveniente y personalizada. La aplicación permite a los usuarios registrarse y acceder a una amplia biblioteca de canciones de diversos géneros y artistas. Los usuarios pueden crear y administrar listas de reproducción personalizadas, así como explorar recomendaciones basadas en su historial de escucha.
 
 ## Modelo de Dominio
 
-Insertar el modelo de dominio aquí.
+```mermaid
+classDiagram
+Usuario "1" -- "*" Playlist: 
+Playlist *-- Cancion
+Cancion "0..*" -- "1..*" Artista
+Artista "1" --  "0..*" Album
+Album *-- Cancion 
+Usuario "1" -- "0..*" Suscripcion
+Usuario "1" -- "0..*" Recomendacion
+Recomendacion "0..*" -- "1..*" Cancion 
+Recomendacion "0..*" -- "1" Playlist 
+Usuario "1" -- "0..*" Historial
+Historial "0..*" -- "1" Cancion
+Usuario : str nombre
+Usuario : str email
+Usuario : str password
+Usuario : str telefono
+Playlist: str titulo
+Playlist: str descripcion
+Playlist: date fecha_creacion
+Cancion: str titulo
+Cancion: int anio_lanzamiento
+Cancion: str genero
+Cancion: float duracion
+Cancion: link audio
+Artista: str nombre
+Artista: str nacionalidad
+Artista: int nro_seguidores
+Album: str titulo
+Album: link portada
+Suscripcion: str tipo
+Suscripcion: float precio
+Suscripcion: date fecha_expiracion
+Recomendacion: date fecha_recomendacion
+Historial: date fecha_reproduccion
+```  
 
 ## Bosquejo de Arquitectura
 
