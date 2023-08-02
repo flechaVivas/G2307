@@ -9,7 +9,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { lime, green } from '@mui/material/colors';
 
-const theme = createTheme({
+export const theme = createTheme({
   palette: {
     primary: green,
   },
