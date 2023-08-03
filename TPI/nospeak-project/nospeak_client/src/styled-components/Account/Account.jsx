@@ -11,8 +11,10 @@ import FormControl from '@mui/material/FormControl';
 import { Radio } from '@mui/material';
 import { AccountDateInput, AccountStyledSelect, AccountInput, AccountButton} from './styles';
 import { Avatar } from '@mui/material';
+import {UseState} from 'react';
 
 const Account = () => {
+
     return (
         <>
             <SpotifyBody>
@@ -74,8 +76,7 @@ const Account = () => {
                     </AccountContainer>
                 </BodyContainer>
             </SpotifyBody>
-            <Footer/>
-        </>  )
+            </>)
 }
 
 export default Account;
