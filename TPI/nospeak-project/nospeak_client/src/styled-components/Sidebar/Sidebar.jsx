@@ -21,6 +21,8 @@ export default function Sidebar() {
             <SidebarChoice title="Home" Icon={HomeIcon}/>
             <SidebarChoice title="Search" Icon={SearchIcon}/>
             <SidebarChoice title="Your Library" Icon={LibraryMusicIcon}/>
+            <br/>
+            <br/>
             <Playlists>PLAYLISTS</Playlists>
             <hr />
             <SidebarChoice title="Roadtrip"/>

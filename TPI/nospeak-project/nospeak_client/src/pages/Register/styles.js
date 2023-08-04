@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import Radio from '@mui/material/Radio';
 import Select from '@mui/material/Select';
-import { LoginInput } from "../Login/styles";
+
 
 const StyledRadio = styled(Radio)`
 &:hover, :checked:after{
-    color: #1db954;
+    color: #FFA130;
 }
 `
 

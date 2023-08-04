@@ -53,7 +53,7 @@ const FooterRight = styled.div`
     // Ahora accedo a la clase del slider para cambiarle el color
     // Tuve que fijarme inspeccionando cual era pq era color azul y no pegaba con el resto
     & .MuiSlider-root{
-        color:#00ff00;
+        color:#FFA130;
     }
 `;
 

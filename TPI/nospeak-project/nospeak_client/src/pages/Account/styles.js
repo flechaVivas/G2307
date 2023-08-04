@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import {LoginInput} from '../Login/styles';
+import {LoginInput, LoginButton} from '../Login/styles';
 import { DateInput, StyledSelect} from '../Register/styles';
-import { LoginButton } from "../Login/styles";
+
 
 
 const AccountContainer = styled.div`
@@ -16,12 +16,14 @@ padding: 10px;
 `
 
 const AccountContainerLeft = styled.div`
+display: flex;
 flex-direction: column;
 background-color: #101010;
 border-radius: 10px;
 height: 100%;
 width: 60%;
 align-items: center;
+justify-content: top;
 color: white;
 padding: 0px 0px 0px 30px;
 margin-right: 10px;
@@ -48,7 +50,7 @@ margin: 0px;
 
 const AccountInput = styled(LoginInput)`
 display: block;
-margin-block: 10px;
+margin-block: 0px;
 width: 60%;
 `
 

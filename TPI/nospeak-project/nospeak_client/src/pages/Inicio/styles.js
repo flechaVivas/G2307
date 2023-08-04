@@ -12,9 +12,9 @@ background-color:#000;
 
 const InicioButton = styled.button`
 padding:20px;
-background-color:#1db954;
+background-color:#FFA130;
 border-radius:90px;
-color:#fff;
+color:#000;
 font-weight:bold;
 text-decoration:none;
 text-transform:uppercase;

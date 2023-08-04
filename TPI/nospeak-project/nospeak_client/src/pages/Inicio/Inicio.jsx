@@ -13,9 +13,9 @@ export function Inicio() {
 
     return (
         <InicioContainer>
-            <img src="https://1000logos.net/wp-content/uploads/2017/08/Spotify-symbol.jpg" alt="Logo de spotify" />
+            <img src="https://1000logos.net/wp-content/uploads/2017/08/Spotify-symbol.jpg" alt="Logo de nospeak" />
             <InicioButton onClick={() => {setGoToLogin(true);}}>
-                    Login with Spotify
+                    Login with NoSpeak
             </InicioButton>
         </InicioContainer>
     );

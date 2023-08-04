@@ -1,9 +1,11 @@
 import styled from "styled-components";
 
 const SidebarContainer = styled.div`
-flex: 0.2;
+display: flex; 
+flex-direction: column;
+width: 20%;
 height: 101vh;
-background-color: #000000;
+background-color: #000;
 min-width: 240px;
 color: #fff;
 & img{
@@ -23,8 +25,6 @@ color: #fff;
 const Playlists = styled.div`
 margin:5px 10px;
 
-
-
 `;
 
 
@@ -41,7 +41,6 @@ margin:5px 10px;
 }
 & h5{
     margin : 10px 0 0 20px;
-
 }
 `
 

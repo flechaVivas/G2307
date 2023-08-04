@@ -1,19 +1,22 @@
 import styled from "styled-components";
 
 const BodyContainer = styled.div`
-    flex: 0.8;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
     background-color: #232323;
     padding: 10px;
     `
 const HeaderContainer = styled.div`
     display: flex;
+    flex-direction: row;
+    align-items: center;
     justify-content: space-between;
     margin-bottom: 35px;
+    padding: 10px;
     `;
 
 const HeaderLeft = styled.div`
-appearance: none;
-background-image: none;
 border: 0px;
 display: block;
 font-size: 1rem;
@@ -23,7 +26,6 @@ transition: box-shadow 0.1s ease-in-out 0s, color 0.1s ease-in-out 0s;
 inline-size: 100%;
 box-sizing: border-box;
 -webkit-tap-highlight-color: transparent;
-margin: 5px 20px 30px 20px;
 border-radius: var(--border-radius-md,8px);
 padding-inline: 14px;
 padding-block-start: var(--spacer--2,8px);
