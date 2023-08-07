@@ -4,7 +4,7 @@ import Login from './pages/Login/Login';
 import Home from './pages/Home/Home';
 import Register from './pages/Register/Register';
 import Account from './pages/Account/Account';
-import Playlist from './styled-components/Playlist/Playlist';
+import Playlist from './pages/Playlist/Playlist';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 

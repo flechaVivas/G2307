@@ -9,7 +9,7 @@ export default function Register() {
   const [goToPlayer, setGoToPlayer] = React.useState(false);
 
   if (goToPlayer) {
-    return <Navigate to="/player" />;
+    return <Navigate to="/home" />;
   }
 
   return (
