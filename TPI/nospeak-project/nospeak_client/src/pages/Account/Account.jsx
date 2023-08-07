@@ -10,8 +10,27 @@ import FormControl from '@mui/material/FormControl';
 import { Radio } from '@mui/material';
 import { AccountDateInput, AccountStyledSelect, AccountInput, AccountButton} from './styles';
 import { Avatar } from '@mui/material';
+import {Navigate} from "react-router-dom";
 
-const Account = () => {
+export default function Account({client, setCurrentUser, email, setEmail, password, setPassword, username, setUsername}){
+
+    const [goToInicio, setGoToInicio] = React.useState(false);
+
+    if (goToInicio) {
+        return <Navigate to="/" />;
+    }
+    
+    function submitLogout(e) {
+        e.preventDefault();
+        client.post(
+          "/nospeak-app/logout",
+          {withCredentials: true}
+        ).then(function(res) {
+          setCurrentUser(false);
+          setGoToInicio(true);
+        });
+    }
+
     return (
         <>
             <SpotifyBody>
@@ -21,13 +40,11 @@ const Account = () => {
                         <AccountContainerLeft>
                             <StyledH1>Account details</StyledH1>
                             <h3>Email address</h3>
-                            <AccountInput id="login-username" type="text" placeholder="Email address"/>
+                            <AccountInput type="email" placeholder="Email address" />
                             <h3>Username</h3>
-                            <AccountInput id="login-username" type="text" placeholder="Username"/>
+                            <AccountInput type="text" placeholder="Username" />
                             <h3>Password</h3>
-                            <AccountInput id="login-password" type="password" placeholder="Password"  />
-                            <h3>Phone number</h3>
-                            <AccountInput id="login-password" type="text" placeholder="Phone number"  />
+                            <AccountInput type="password" placeholder="Password" />
                             <br/>
                             <br/>
                             <AccountButton>Save</AccountButton>
@@ -36,7 +53,7 @@ const Account = () => {
                             <Avatar style={{width: '250px', height: '250px', margin: '20px'}} />
                             <h1>Username</h1>
                             <h3 style={{paddingTop: '20px'}}>Do you want to log out?</h3>
-                            <AccountButton style={{backgroundColor: 'grey'}}>Log out</AccountButton>
+                            <AccountButton style={{backgroundColor: 'grey'}} onClick={(e) => submitLogout(e)}>Log out</AccountButton>
 
                             <h3 style={{paddingTop: '20px'}}>Do you want to delete your account?</h3>
                             <AccountButton style={{backgroundColor: 'grey'}}>Delete account</AccountButton>
@@ -48,4 +65,3 @@ const Account = () => {
         </>  )
 }
 
-export default Account;

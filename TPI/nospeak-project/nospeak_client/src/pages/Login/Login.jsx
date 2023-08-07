@@ -5,12 +5,27 @@ import {StyledLink, StyledSpan} from './styles.js';
 import {Navigate} from "react-router-dom";
 
 
-export default function Login() {
+export default function Login({client, setCurrentUser, email, setEmail, password, setPassword}) {
 
   const [goToPlayer, setGoToPlayer] = React.useState(false);
 
     if (goToPlayer) {
         return <Navigate to="/home" />;
+    }
+  
+  function submitLogin(e) {
+      e.preventDefault();
+      client.post(
+        "/nospeak-app/login",
+        {
+          email: email,
+          password: password
+        }
+      ).then(function(res) {
+        setCurrentUser(true);
+        setGoToPlayer(true);
+        console.log("entre");
+      });
     }
 
   return (
@@ -20,11 +35,11 @@ export default function Login() {
       </NavLogin>
       <FormLogin>
         <StyledH1>Log in to NoSpeak</StyledH1>
-        <span>Email or username</span>
-        <LoginInput id="login-username" type="text" placeholder="Email or username"/>
+        <span>Email</span>
+        <LoginInput value={email} onChange={e => setEmail(e.target.value)} type="email" placeholder="Email"/>
         <span>Password</span>
-        <LoginInput id="login-password" type="password" placeholder="Password"  />
-        <LoginButton onClick={() => {setGoToPlayer(true);}}>
+        <LoginInput value={password} onChange={e => setPassword(e.target.value)} type="password" placeholder="Password"  />
+        <LoginButton onClick={(e) => submitLogin(e)}>
           Log in
         </LoginButton>
         <br/>

@@ -4,12 +4,35 @@ import { Navigate } from "react-router-dom";
 
 
 
-export default function Register() {
+export default function Register({client, setCurrentUser, email, setEmail, password, setPassword, username, setUsername}) {
 
   const [goToPlayer, setGoToPlayer] = React.useState(false);
 
   if (goToPlayer) {
     return <Navigate to="/home" />;
+  }
+
+  function submitRegistration(e) {
+    e.preventDefault();
+    client.post(
+      "/nospeak-app/register",
+      {
+        email: email,
+        username: username,
+        password: password
+      }
+    ).then(function(res) {
+      client.post(
+        "/nospeak-app/login",
+        {
+          email: email,
+          password: password
+        }
+      ).then(function(res) {
+        setCurrentUser(true);
+        setGoToPlayer(true);
+      });
+    });
   }
 
   return (
@@ -20,16 +43,14 @@ export default function Register() {
       <FormLogin>
         <StyledH1>Sign up for NoSpeak</StyledH1>
         <span>What’s your email address?</span>
-        <LoginInput id="login-username" type="text" placeholder="Email address"/>
+        <LoginInput value={email} onChange={e => setEmail(e.target.value)} type="email" placeholder="Email"/>
         <span>What should we call you?</span>
-        <LoginInput id="login-username" type="text" placeholder="Username"/>
+        <LoginInput value={username} onChange={e => setUsername(e.target.value)} type="text" placeholder="Username"/>
         <span>Create a password</span>
-        <LoginInput id="login-password" type="password" placeholder="Password"  />
+        <LoginInput value={password} onChange={e => setPassword(e.target.value)} type="password" placeholder="Password"  />
         <span>Repeat password</span>
-        <LoginInput id="login-password" type="password" placeholder="Repeat password"  />
-        <span>What’s your phone number?</span>
-        <LoginInput id="login-password" type="text" placeholder="Phone number"  />
-        <LoginButton onClick={() => {setGoToPlayer(true);}}>
+        <LoginInput value={password} onChange={e => setPassword(e.target.value)} type="password" placeholder="Password"  />
+        <LoginButton onClick={(e) => {submitRegistration(e);}}>
           Sign up
         </LoginButton>
       </FormLogin>
