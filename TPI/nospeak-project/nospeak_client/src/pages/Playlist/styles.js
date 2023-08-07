@@ -13,10 +13,10 @@ background-image: linear-gradient(to bottom, #FFA130, #000)
 
 const CardContainer = styled.div`
 display: flex;
+flex-direction: row;
 height: 30%;
 width: 100%;
 background-color: transparent;
-padding: 10px;
 `
 
 const TableContainer = styled.div`
@@ -27,6 +27,38 @@ background-color: #000;
 opacity: 0.3;
 `
 
+const CardLeftContainer = styled.div`
+display: flex;
+background-color: transparent;
+width: 20%;
+align-items: center;
+justify-content: center;
+`
 
+const CardRightContainer = styled.div`
+display: flex;
+flex-direction: column;
+background-color: transparent;
+width: 78%;
+color: #fff;
+`
 
-export {PlaylistContainer, CardContainer, TableContainer}
+const ImagePlaylist = styled.img`
+block-size: 80%;
+inline-size: 80%;
+margin: auto;
+object-fit: cover;
+width: fit-content;
+box-shadow: 0px 0px 10px 1px;
+`
+
+const StyledH1 = styled.h1` 
+font-size:35px;
+
+@media (max-width: 500px){
+    font-size:29px;
+}
+`
+
+export {PlaylistContainer, CardContainer, TableContainer, CardLeftContainer, 
+CardRightContainer, ImagePlaylist, StyledH1}

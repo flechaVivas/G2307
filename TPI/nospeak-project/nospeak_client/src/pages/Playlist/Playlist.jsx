@@ -3,8 +3,10 @@ import Sidebar from '../../styled-components/Sidebar/Sidebar'
 import { BodyContainer } from '../../styled-components/Body/styles';
 import { SpotifyBody } from '../../pages/Home/styles.js'
 import Footer from '../../styled-components/Footer/Footer'
-import { PlaylistContainer, CardContainer, TableContainer } from './styles';
+import { PlaylistContainer, CardContainer, TableContainer,
+CardLeftContainer, CardRightContainer, ImagePlaylist} from './styles';
 import BigCard from '../../styled-components/Body/BigCard.jsx'
+import {StyledH1} from './styles';
 
 const Playlist = () => {
 
@@ -21,7 +23,14 @@ const Playlist = () => {
                 <BodyContainer css={`align-items: center;`}>
                     <PlaylistContainer>
                         <CardContainer>
-                            <BigCard sx={{backgroundColor: "transparent"}}></BigCard>
+                            <CardLeftContainer>
+                                <ImagePlaylist src={playlistData.image}></ImagePlaylist>
+                            </CardLeftContainer>
+                            
+                            <CardRightContainer>
+                                <StyledH1>{playlistData.title}</StyledH1>
+                                <p>{playlistData.description}</p>
+                            </CardRightContainer>
                         </CardContainer>
                         <TableContainer>
 
