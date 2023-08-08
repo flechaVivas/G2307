@@ -3,22 +3,23 @@ import { SidebarContainer, Playlists } from './styles.js';
 import SidebarChoice from './SidebarChoice.jsx';
 import HomeIcon from '@mui/icons-material/Home';
 import SearchIcon from '@mui/icons-material/Search';
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import LibraryMusicIcon from '@mui/icons-material/LibraryMusic';
 
 export default function Sidebar() {
 
     const [goToPlaylist, setGoToPlaylist] = React.useState(false);
     const [goToSearch, setGoToSearch] = React.useState(false);
-    const [goToPlayer, setGoToPlayer] = React.useState(false);
+    const [goToHome, setGoToHome] = React.useState(false);
+    const location = useLocation();
 
-    if (goToPlaylist) {
+    if (goToPlaylist && location.pathname !== "/playlist") {
         return <Navigate to="/playlist" />;
     }
-    if (goToSearch) {
+    if (goToSearch && location.pathname !== "/search") {
         return <Navigate to="/search" />;
     }
-    if (goToPlayer) {
+    if (goToHome && location.pathname !== "/home"){
         return <Navigate to="/home" />;
     }
 
@@ -26,7 +27,7 @@ export default function Sidebar() {
     return (
         <SidebarContainer>
             <img src="https://1000logos.net/wp-content/uploads/2017/08/Spotify-symbol.jpg" alt="Logo de Spotify" />
-            <SidebarChoice title="Home" Icon={HomeIcon} onClick={() => {setGoToPlayer(true);}}/>
+            <SidebarChoice title="Home" Icon={HomeIcon} onClick={() => {setGoToHome(true);}}/>
             <SidebarChoice title="Search" Icon={SearchIcon} onClick={() => {setGoToSearch(true);}}/>
             <SidebarChoice title="Your Library" Icon={LibraryMusicIcon}/>
             <br/>

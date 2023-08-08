@@ -5,7 +5,7 @@ import Home from './pages/Home/Home';
 import Register from './pages/Register/Register';
 import Account from './pages/Account/Account';
 import Playlist from './pages/Playlist/Playlist';
-import Search from './styled-components/Search/Search';
+import Search from './pages/Search/Search';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState, useEffect } from 'react';
@@ -29,6 +29,16 @@ function App() {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    client.get("/nospeak-app/user")
+    .then(function(res) {
+      setCurrentUser(true);
+    })
+    .catch(function(error) {
+      setCurrentUser(false);
+    });
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>

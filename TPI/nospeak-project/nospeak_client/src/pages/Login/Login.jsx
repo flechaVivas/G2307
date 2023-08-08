@@ -7,9 +7,9 @@ import {Navigate} from "react-router-dom";
 
 export default function Login({client, setCurrentUser, email, setEmail, password, setPassword}) {
 
-  const [goToPlayer, setGoToPlayer] = React.useState(false);
+  const [goToHome, setGoToHome] = React.useState(false);
 
-    if (goToPlayer) {
+    if (goToHome) {
         return <Navigate to="/home" />;
     }
   
@@ -23,7 +23,7 @@ export default function Login({client, setCurrentUser, email, setEmail, password
         }
       ).then(function(res) {
         setCurrentUser(true);
-        setGoToPlayer(true);
+        setGoToHome(true);
         console.log("entre");
       });
     }

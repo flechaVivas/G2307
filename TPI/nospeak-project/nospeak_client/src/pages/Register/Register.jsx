@@ -6,9 +6,9 @@ import { Navigate } from "react-router-dom";
 
 export default function Register({client, setCurrentUser, email, setEmail, password, setPassword, username, setUsername}) {
 
-  const [goToPlayer, setGoToPlayer] = React.useState(false);
+  const [goToHome, setGoToHome] = React.useState(false);
 
-  if (goToPlayer) {
+  if (goToHome) {
     return <Navigate to="/home" />;
   }
 
@@ -30,7 +30,7 @@ export default function Register({client, setCurrentUser, email, setEmail, passw
         }
       ).then(function(res) {
         setCurrentUser(true);
-        setGoToPlayer(true);
+        setGoToHome(true);
       });
     });
   }
