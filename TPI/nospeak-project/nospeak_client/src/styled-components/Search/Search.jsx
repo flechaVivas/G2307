@@ -1,7 +1,7 @@
 import React from 'react'
 import Sidebar from '../Sidebar/Sidebar'
 import { BodyContainer } from '../Body/styles';
-import { SpotifyBody } from '../Player/styles.js'
+import { SpotifyBody } from '../../pages/Home/styles'
 import Footer from '../Footer/Footer'
 import Header from '../Body/Header';
 import { CategoryContainer, CategoryBox, CategoryImage, CategoryName } from './Category.jsx';

@@ -19,7 +19,7 @@ export default function Sidebar() {
         return <Navigate to="/search" />;
     }
     if (goToPlayer) {
-        return <Navigate to="/player" />;
+        return <Navigate to="/home" />;
     }
 
 
