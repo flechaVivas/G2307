@@ -1,27 +1,27 @@
 import './App.css';
-import Inicio from './pages/Inicio/Inicio';
-import Login from './pages/Login/Login';
-import Home from './pages/Home/Home';
-import Register from './pages/Register/Register';
-import Account from './pages/Account/Account';
-import Playlist from './pages/Playlist/Playlist';
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Inicio from './styled-components/Inicio/Inicio';
+import Login from './styled-components/Login/Login';
+import Player from './styled-components/Player/Player';
+import Register from './styled-components/Register/Register';
+import Account from './styled-components/Account/Account';
+import Playlist from './styled-components/Playlist/Playlist';
+import Search from './styled-components/Search/Search';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const client = axios.create({
-  baseURL: "http://127.0.0.1:8000"
+  baseURL: 'http://127.0.0.1:8000',
 });
 
 export const theme = createTheme({
   palette: {
     primary: {
-      main: '#FFA130'
+      main: '#FFA130',
     },
   },
 });
-
 
 function App() {
   const [currentUser, setCurrentUser] = useState();
@@ -36,14 +36,52 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Inicio />} />
-            <Route path="/login" element={<Login client={client}  setCurrentUser={setCurrentUser} 
-            email={email} setEmail={setEmail} password={password} setPassword={setPassword}/>} />
+            <Route
+              path="/login"
+              element={
+                <Login
+                  client={client}
+                  setCurrentUser={setCurrentUser}
+                  email={email}
+                  setEmail={setEmail}
+                  password={password}
+                  setPassword={setPassword}
+                />
+              }
+            />
             <Route path="/home" element={<Home />} />
-            <Route path="/register" element={<Register client={client} setCurrentUser={setCurrentUser} 
-            email={email} setEmail={setEmail} password={password} setPassword={setPassword} username={username} setUsername={setUsername} />} />
-            <Route path="/account" element={<Account client={client} setCurrentUser={setCurrentUser} 
-            email={email} setEmail={setEmail} password={password} setPassword={setPassword} username={username} setUsername={setUsername}/>} />
+            <Route
+              path="/register"
+              element={
+                <Register
+                  client={client}
+                  setCurrentUser={setCurrentUser}
+                  email={email}
+                  setEmail={setEmail}
+                  password={password}
+                  setPassword={setPassword}
+                  username={username}
+                  setUsername={setUsername}
+                />
+              }
+            />
+            <Route
+              path="/account"
+              element={
+                <Account
+                  client={client}
+                  setCurrentUser={setCurrentUser}
+                  email={email}
+                  setEmail={setEmail}
+                  password={password}
+                  setPassword={setPassword}
+                  username={username}
+                  setUsername={setUsername}
+                />
+              }
+            />
             <Route path="/playlist" element={<Playlist />} />
+            <Route path="/search" element={<Search />} />
           </Routes>
         </Router>
       </div>
