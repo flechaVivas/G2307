@@ -1,10 +1,10 @@
 import './App.css';
-import Inicio from './styled-components/Inicio/Inicio';
-import Login from './styled-components/Login/Login';
-import Player from './styled-components/Player/Player';
-import Register from './styled-components/Register/Register';
-import Account from './styled-components/Account/Account';
-import Playlist from './styled-components/Playlist/Playlist';
+import Inicio from './pages/Inicio/Inicio';
+import Login from './pages/Login/Login';
+import Home from './pages/Home/Home';
+import Register from './pages/Register/Register';
+import Account from './pages/Account/Account';
+import Playlist from './pages/Playlist/Playlist';
 import Search from './styled-components/Search/Search';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
