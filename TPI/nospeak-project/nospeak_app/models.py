@@ -1,6 +1,8 @@
+
 from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+
 
 class AppUserManager(BaseUserManager):
 	def create_user(self, email, password=None):
@@ -44,28 +46,39 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
 #     def __str__(self) -> str:
 #         return self.nombre
 
-class Suscripcion(models.Model):
-    usuario = models.ForeignKey(AppUser, related_name='suscripciones', on_delete=models.RESTRICT)
-    tipo = models.CharField(max_length=20)
-    precio = models.FloatField()
-    fecha_expiracion = models.DateField()
+# class Suscripcion(models.Model):
+#     usuario = models.ForeignKey(AppUser, related_name='suscripciones', on_delete=models.RESTRICT)
+#     tipo = models.CharField(max_length=20)
+#     precio = models.FloatField()
+#     fecha_expiracion = models.DateField()
 
 class Artista(models.Model):
-    nombre = models.CharField(max_length=255)
-    nacionalidad = models.CharField(max_length=50)
-    nro_seguidores = models.IntegerField(default=0)
+    nombre = models.CharField(max_length=255, null=False, blank=False)
+    nacionalidad = models.CharField(max_length=50, null=False, blank=False)
+    nro_seguidores = models.IntegerField(default=0, null=False, blank=True)
+
+    def __str__(self):
+        return self.nombre
+
+    @property
+    def canciones(self):
+        return self.cancion_set.all()
 
 class Album(models.Model):
     titulo = models.CharField(max_length=255)
     portada = models.CharField(max_length=255)
 
 class Cancion(models.Model):
-    album = models.ForeignKey(Album, related_name="canciones_album", on_delete=models.RESTRICT)
-    titulo = models.CharField(max_length=255)
+    # album = models.ForeignKey(Album, related_name="canciones_album", on_delete=models.RESTRICT)
+    artista = models.ForeignKey('nospeak_app.Artista', on_delete=models.CASCADE, null=True)
+    titulo = models.CharField(max_length=255, null=True, blank=True)
     anio_lanzamiento = models.CharField(max_length=4)
     genero = models.CharField(max_length=50)
     duracion = models.FloatField()
     audio = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.titulo
 
 class Historial(models.Model):
     cancion = models.ForeignKey(Cancion, related_name="canciones_historial", on_delete=models.RESTRICT)

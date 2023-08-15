@@ -8,7 +8,8 @@ height: 100%;
 width: 100%;
 border-radius: 5px;
 overflow: hidden;
-background-image: linear-gradient(to bottom, #FFA130, #000)
+background-image: linear-gradient(to bottom, #FFA130, #000);
+font-family: var(--font-family,CircularSp,CircularSp-Arab,CircularSp-Hebr,CircularSp-Cyrl,CircularSp-Grek,CircularSp-Deva,var(--fallback-fonts,sans-serif));
 `
 
 const CardContainer = styled.div`
@@ -19,12 +20,12 @@ width: 100%;
 background-color: transparent;
 `
 
-const TableContainer = styled.div`
+const TableContainerStyled = styled.div`
 display: flex;
 height: 70%;
 width: 100%;
-background-color: #000;
-opacity: 0.3;
+background-color: rgba(0, 0, 0, .3);
+padding: 10px;
 `
 
 const CardLeftContainer = styled.div`
@@ -60,5 +61,16 @@ font-size:35px;
 }
 `
 
-export {PlaylistContainer, CardContainer, TableContainer, CardLeftContainer, 
-CardRightContainer, ImagePlaylist, StyledH1}
+const TableSongs = styled.ol`
+    display: flex;
+    background-color: transparent;
+    flex-direction: column;
+    gap: 20px;
+    opacity: 1;
+    width: 100%;
+    margin: 0 auto;
+    color: #fff;
+`
+
+export {PlaylistContainer, CardContainer, TableContainerStyled, CardLeftContainer, 
+CardRightContainer, ImagePlaylist, StyledH1, TableSongs}
