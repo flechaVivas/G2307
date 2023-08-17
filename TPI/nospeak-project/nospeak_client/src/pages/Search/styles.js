@@ -16,13 +16,13 @@ const CategoryBox = styled.div`
   align-items: center;
   position: relative;
   border: 1px solid #ddd;
-  box-shadow: 0px 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease-in-out;
-  background-color: ${props => props.backgroundColor};
+  background-color: ${(props) => props.backgroundColor};
   border-radius: 25px;
 
   &:hover {
-    box-shadow: 0px 2px 6px rgba(0,0,0,0.2);
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
     transform: translateY(-2px);
   }
 `;
