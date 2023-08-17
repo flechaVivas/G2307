@@ -39,7 +39,7 @@ display:flex;
 justify-content: start;
 align-items: center;
 flex-direction: column;
-gap: 15px;
+gap: 12.5px;
 background-color: black;
 padding: 10px;
 margin-top: 20px;
@@ -87,7 +87,7 @@ const LoginButton = styled.button`
 padding:10px;
 background-color:#FFA130;
 border-radius:90px;
-margin-block: 10px;
+margin-block: 2px;
 color:#000;
 font-weight:bold;
 font-size: 20px;
@@ -117,7 +117,7 @@ color: white;
 `
 
 const StyledH1 = styled.h1`
-margin: 35px; 
+margin: 25px; 
 font-size:35px;
 
 @media (max-width: 500px){
