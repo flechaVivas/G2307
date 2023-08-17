@@ -62,16 +62,21 @@ const Library = () => {
                         ))}
                     </NavContainer>
                     
-                    <PlaylistGrid>
-                        {playlistData.map((playlist, index) => (
-                            <PlaylistBox key={index}>
-                                <PlaylistImage src={playlist.image}></PlaylistImage>
-                                <PlaylistName>{playlist.title}</PlaylistName>
-                                <PlaylistDescription>{playlist.author}</PlaylistDescription>
-                            </PlaylistBox>
-                        ))}
-                        
-                    </PlaylistGrid>
+                    {activeCategory === 'Playlists' ? (
+
+                        <PlaylistGrid>
+                            {playlistData.map((playlist, index) => (
+                                <PlaylistBox key={index}>
+                                    <PlaylistImage src={playlist.image}></PlaylistImage>
+                                    <PlaylistName>{playlist.title}</PlaylistName>
+                                    <PlaylistDescription>{playlist.author}</PlaylistDescription>
+                                </PlaylistBox>
+                            ))}
+                            
+                        </PlaylistGrid>
+                    ) : (
+                        <h1 style={{color: '#fff'}}>No hay nada</h1>
+                    )}
 
                 </BodyContainer>
             </SpotifyBody>
