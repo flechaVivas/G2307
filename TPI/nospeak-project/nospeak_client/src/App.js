@@ -10,6 +10,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Library from './pages/MyLibrary/Library';
 
 const client = axios.create({
   baseURL: 'http://127.0.0.1:8000',
@@ -31,13 +32,14 @@ function App() {
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    client.get("/nospeak-app/user")
-    .then(function(res) {
-      setCurrentUser(true);
-    })
-    .catch(function(error) {
-      setCurrentUser(false);
-    });
+    client
+      .get('/nospeak-app/user')
+      .then(function (res) {
+        setCurrentUser(true);
+      })
+      .catch(function (error) {
+        setCurrentUser(false);
+      });
   }, []);
 
   return (
@@ -92,6 +94,7 @@ function App() {
             />
             <Route path="/playlist" element={<Playlist />} />
             <Route path="/search" element={<Search />} />
+            <Route path="/library" element={<Library />} />
           </Routes>
         </Router>
       </div>
