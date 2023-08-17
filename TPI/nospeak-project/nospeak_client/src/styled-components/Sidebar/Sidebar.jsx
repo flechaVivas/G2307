@@ -11,6 +11,7 @@ export default function Sidebar() {
     const [goToPlaylist, setGoToPlaylist] = React.useState(false);
     const [goToSearch, setGoToSearch] = React.useState(false);
     const [goToHome, setGoToHome] = React.useState(false);
+    const [goToLibrary, setGoToLibrary] = React.useState(false);
     const location = useLocation();
 
     if (goToPlaylist && location.pathname !== "/playlist") {
@@ -22,6 +23,9 @@ export default function Sidebar() {
     if (goToHome && location.pathname !== "/home"){
         return <Navigate to="/home" />;
     }
+    if (goToLibrary && location.pathname !== "/library"){
+        return <Navigate to="/library" />;
+    }
 
 
     return (
@@ -29,7 +33,7 @@ export default function Sidebar() {
             <img src="https://1000logos.net/wp-content/uploads/2017/08/Spotify-symbol.jpg" alt="Logo de Spotify" />
             <SidebarChoice title="Home" Icon={HomeIcon} onClick={() => {setGoToHome(true);}}/>
             <SidebarChoice title="Search" Icon={SearchIcon} onClick={() => {setGoToSearch(true);}}/>
-            <SidebarChoice title="Your Library" Icon={LibraryMusicIcon}/>
+            <SidebarChoice title="Your Library" onClick={() => {setGoToLibrary(true);}} Icon={LibraryMusicIcon}/>
             <br/>
             <br/>
             <Playlists>PLAYLISTS</Playlists>
