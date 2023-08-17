@@ -1,16 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Sidebar from '../../styled-components/Sidebar/Sidebar'
 import { BodyContainer} from '../../styled-components/Body/styles';
 import { SpotifyBody } from '../Home/styles';
 import Footer from '../../styled-components/Footer/Footer';
 import Header from '../../styled-components/Body/Header';
-import { PlaylistBox, PlaylistDescription, PlaylistGrid, PlaylistImage, PlaylistName } from './styles';
-import { Navigate, useLocation } from "react-router-dom";
+import { NavContainer, NavItem, PlaylistBox, PlaylistDescription, PlaylistGrid, PlaylistImage, PlaylistName } from './styles';
+import { useHistory } from "react-router"; // Import useHistory from 'react-router'
+
+
 
 const Library = () => {
-
-    
-    
 
     const playlistData = [
         {
@@ -35,6 +34,14 @@ const Library = () => {
         },
     ];
 
+    const categories = ['Playlists', 'Made for You', 'Liked Songs', 'Artists', 'Podcats'];
+
+    const [activeCategory, setActiveCategory] = useState(categories[0]); // Initialize with the first category
+
+    const handleCategoryChange = (category) => {
+        setActiveCategory(category);
+    };
+
     return (
         <>
             <SpotifyBody>
@@ -42,6 +49,18 @@ const Library = () => {
                 <BodyContainer css={`align-items: center;`}>
                     <Header/>
                     <h1 style={{color: '#fff', marginLeft: '10px'}}>Library</h1>
+
+                    <NavContainer>
+                        {categories.map(category => (
+                            <NavItem
+                                key={category}
+                                onClick={() => handleCategoryChange(category)} // Change category on click
+                                active={category === activeCategory}
+                            >
+                            {category}
+                            </NavItem>
+                        ))}
+                    </NavContainer>
                     
                     <PlaylistGrid>
                         {playlistData.map((playlist, index) => (

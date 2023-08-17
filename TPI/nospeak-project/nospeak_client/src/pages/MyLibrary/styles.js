@@ -38,3 +38,36 @@ export const PlaylistGrid = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
 `;
+
+export const NavContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 20px;
+  margin-bottom: 20px;
+`;
+
+export const NavItem = styled.div`
+  padding: 8px 15px;
+  margin-right: 10px;
+  cursor: pointer;
+  background-color: transparent;
+  color: #fff; /* White text color */
+  border-radius: 4px;
+  position: relative;
+  transition: transform 0.3s ease; /* Add smooth transition */
+
+  &:hover {
+    transform: translateY(-3px) scale(1.05); /* Move up and slightly grow on hover */
+  }
+
+  &::after {
+    content: '';
+    display: ${({ active }) => (active ? 'block' : 'none')};
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #1db954; /* Spotify green */
+  }
+`;
