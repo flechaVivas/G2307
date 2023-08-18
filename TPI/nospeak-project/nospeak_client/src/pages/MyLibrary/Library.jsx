@@ -62,21 +62,30 @@ const Library = () => {
                         ))}
                     </NavContainer>
                     
-                    {activeCategory === 'Playlists' ? (
-
-                        <PlaylistGrid>
-                            {playlistData.map((playlist, index) => (
-                                <PlaylistBox key={index}>
-                                    <PlaylistImage src={playlist.image}></PlaylistImage>
-                                    <PlaylistName>{playlist.title}</PlaylistName>
-                                    <PlaylistDescription>{playlist.author}</PlaylistDescription>
-                                </PlaylistBox>
-                            ))}
-                            
-                        </PlaylistGrid>
-                    ) : (
-                        <h1 style={{color: '#fff'}}>No hay nada</h1>
-                    )}
+                    <PlaylistGrid>
+                        {activeCategory === 'Playlists' && (
+                            playlistData.map((playlist, index) => (
+                            <PlaylistBox key={index}>
+                                <PlaylistImage src={playlist.image}></PlaylistImage>
+                                <PlaylistName>{playlist.title}</PlaylistName>
+                                <PlaylistDescription>{playlist.author}</PlaylistDescription>
+                            </PlaylistBox>
+                        ))
+                        )}
+                        {activeCategory === 'Made for You' && (
+                            <h1> Made for You </h1>
+                        )}
+                        {activeCategory === 'Liked Songs' && (
+                            <h1> Liked Songs </h1>
+                        )}
+                        {activeCategory === 'Artists' && (
+                            <h1> Artists </h1>
+                        )}
+                        {activeCategory === 'Podcats' && (
+                            <h1> Podcasts </h1>
+                        )}
+                        
+                    </PlaylistGrid>
 
                 </BodyContainer>
             </SpotifyBody>
