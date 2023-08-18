@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'nospeak_app',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -94,7 +95,8 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = 'nospeak_app.AppUser'
+# AUTH_USER_MODEL = 'nospeak_app.Usuario'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -137,4 +139,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
 
