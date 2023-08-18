@@ -2,31 +2,55 @@ import * as React from 'react';
 import {FormLoginContainer, FormLogin, NavLogin, LoginButton, LoginInput, StyledH1,
 RegisterContainer} from './styles.js';
 import {StyledLink, StyledSpan} from './styles.js';
-import {Navigate} from "react-router-dom";
-
+// import {Navigate} from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../redux/userSlice.js';
 
 export default function Login({client, setCurrentUser, email, setEmail, password, setPassword}) {
 
-  const [goToHome, setGoToHome] = React.useState(false);
+    const dispatch = useDispatch();
 
-    if (goToHome) {
-        return <Navigate to="/home" />;
-    }
+    const handleLogin = async (email, password) => {
+      try {
+          const response = await fetch('/nospeak-app/login', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ email, password })
+          });
   
-  function submitLogin(e) {
-      e.preventDefault();
-      client.post(
-        "/nospeak-app/login",
-        {
-          email: email,
-          password: password
-        }
-      ).then(function(res) {
-        setCurrentUser(true);
-        setGoToHome(true);
-        console.log("entre");
-      });
-    }
+          if (response.ok) {
+              const user = await response.json();
+              dispatch(setUser(user));
+          } else {
+              console.error('Login failed');
+          }
+      } catch (error) {
+          console.error('An error occurred during login:', error);
+      }
+  };
+
+  // const [goToHome, setGoToHome] = React.useState(false);
+
+  //   if (goToHome) {
+  //       return <Navigate to="/home" />;
+  //   }
+  
+  // function submitLogin(e) {
+  //     e.preventDefault();
+  //     client.post(
+  //       "/nospeak-app/login",
+  //       {
+  //         email: email,
+  //         password: password
+  //       }
+  //     ).then(function(res) {
+  //       setCurrentUser(true);
+  //       setGoToHome(true);
+  //       console.log("entre");
+  //     });
+  //   }
 
   return (
     <FormLoginContainer>
@@ -39,7 +63,7 @@ export default function Login({client, setCurrentUser, email, setEmail, password
         <LoginInput value={email} onChange={e => setEmail(e.target.value)} type="email" placeholder="Email"/>
         <span>Password</span>
         <LoginInput value={password} onChange={e => setPassword(e.target.value)} type="password" placeholder="Password"  />
-        <LoginButton onClick={(e) => submitLogin(e)}>
+        <LoginButton onClick={(e) => handleLogin(e)}>
           Log in
         </LoginButton>
         <br/>
