@@ -7,9 +7,45 @@ import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import RepeatIcon from '@mui/icons-material/Repeat';
 import PlaylistPlayIcon from '@mui/icons-material/PlaylistPlay';
 import VolumeDownIcon from '@mui/icons-material/VolumeDown';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
+import IconButton from '@mui/material/IconButton';
 import { Grid,Slider } from '@mui/material';
 
 const Footer = () => {
+
+    const [volume, setVolume] = React.useState(100);
+
+    const handleVolumeChange = (event, newValue) => {
+        setVolume(newValue);
+    };
+
+    const muteVolume = () => {
+        setVolume(0);
+    };
+
+    let volumeIcon;
+    if (volume === 0) {
+        volumeIcon = (
+        <IconButton color="inherit" centerRipple onClick={muteVolume}>
+            <VolumeOffIcon />
+        </IconButton>
+        );
+    } else if (volume <= 50) {
+        volumeIcon = (
+        <IconButton color="inherit" centerRipple onClick={muteVolume}>
+            <VolumeDownIcon />
+        </IconButton>
+        );
+    } else {
+        volumeIcon = (
+        <IconButton color="inherit" centerRipple onClick={muteVolume}>
+            <VolumeUpIcon />
+        </IconButton>
+        );
+    }
+
+
     return (
         <FooterContainer>
             <FooterLeft>
@@ -28,15 +64,15 @@ const Footer = () => {
 
             </FooterCenter>
             <FooterRight>
-                <Grid container spacing={2}>
+                <Grid container spacing={2} alignItems="center">
                     <Grid item>
                         <PlaylistPlayIcon/>
                     </Grid>
                     <Grid item>
-                        <VolumeDownIcon/>
+                        {volumeIcon}
                     </Grid>
-                    <Grid item xs>
-                        <Slider aria-label="Volume" />
+                    <Grid item style={{ flexGrow: 1 }}>
+                        <Slider value={volume} onChange={handleVolumeChange} aria-label="Volume"/>
                     </Grid>
                 </Grid>
             </FooterRight>
