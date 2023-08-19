@@ -46,7 +46,21 @@ export default function Account({client}){
       };
     
         
-
+      const handleDeleteAccount = async () => {
+        try {
+          const token = localStorage.getItem('token');
+      
+          if (token) {
+            client.defaults.headers.common['Authorization'] = `Token ${token}`;
+            await client.delete(`/nospeak-app/api/usuarios/${user.id}/`);
+          }
+      
+          dispatch(logout());
+          setGoToInicio(true);
+        } catch (error) {
+          console.error('Error al eliminar la cuenta:', error);
+        }
+      };
 
     return (
         <>
@@ -73,7 +87,7 @@ export default function Account({client}){
                             <AccountButton style={{backgroundColor: 'grey'}} onClick={(e) => handleLogout(e)}>Log out</AccountButton>
 
                             <h3 style={{paddingTop: '20px'}}>Do you want to delete your account?</h3>
-                            <AccountButton style={{backgroundColor: 'grey'}}>Delete account</AccountButton>
+                            <AccountButton style={{backgroundColor: 'grey'}} onClick={handleDeleteAccount}>Delete account</AccountButton>
                         </AccountContainerRight>
                     </AccountContainer>
                 </BodyContainer>
