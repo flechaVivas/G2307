@@ -8,13 +8,9 @@ import Typography from '@mui/material/Typography';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { gradientStyle } from './styles';
 
-export default function BigCard() {
+export default function BigCard({songs}) {
 
-    const playlistData = {
-        title: 'Nombre de la Playlist que quieran prom.',
-        description: 'Breve descripción de la Playlist',
-        image: 'https://static.posters.cz/image/750/buque-costero/coldplay-parachutes-album-cover-i56853.jpg',
-    };
+    const song = songs[0];
 
     return (
         <React.Fragment>
@@ -23,15 +19,15 @@ export default function BigCard() {
             <CardMedia
             component="img"
             sx={{ width: 200, height: 200}}
-            image={playlistData.image}
-            alt={playlistData.title}
+            image={song.album.portada}
+            alt={song.titulo}
             />
             <CardContent sx={{ flex: '1 0 auto'}}>
             <Typography component="div" variant="h4" gutterBottom color={'white'}>
-                {playlistData.title}
+                {song.titulo}
             </Typography>
             <Typography variant="body1" color={'white'} component="div">
-                {playlistData.description}
+                {song.anio_lanzamiento}
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', mt: 2}}>
                 <IconButton aria-label="play" >

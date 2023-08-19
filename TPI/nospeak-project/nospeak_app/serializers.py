@@ -166,6 +166,7 @@ class CancionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cancion
         fields = '__all__'
+        depth=1
 
 class ArtistaSerializer(serializers.ModelSerializer):
     albums = AlbumSerializer(many=True, read_only=True)  # Relación inversa desde Artista a Album

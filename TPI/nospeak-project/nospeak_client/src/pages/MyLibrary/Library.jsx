@@ -61,7 +61,6 @@ const Library = () => {
                             </NavItem>
                         ))}
                     </NavContainer>
-                    
                     <PlaylistGrid>
                         {activeCategory === 'Playlists' && (
                             playlistData.map((playlist, index) => (

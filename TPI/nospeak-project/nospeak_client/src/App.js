@@ -52,7 +52,7 @@ function App() {
                 />
               }
             />
-            <Route path="/home" element={<Home />} />
+            <Route path="/home" element={<Home client={client}/>} />
             <Route
               path="/register"
               element={
