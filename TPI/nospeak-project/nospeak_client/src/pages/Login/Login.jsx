@@ -1,56 +1,44 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import {FormLoginContainer, FormLogin, NavLogin, LoginButton, LoginInput, StyledH1,
 RegisterContainer} from './styles.js';
 import {StyledLink, StyledSpan} from './styles.js';
-// import {Navigate} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { setUser } from '../../redux/userSlice.js';
+import { loginSuccess } from '../../redux/slices/userSlice.js';
 
-export default function Login({client, setCurrentUser, email, setEmail, password, setPassword}) {
 
-    const dispatch = useDispatch();
+export default function Login({client}) {
 
-    const handleLogin = async (email, password) => {
-      try {
-          const response = await fetch('/nospeak-app/login', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ email, password })
-          });
-  
-          if (response.ok) {
-              const user = await response.json();
-              dispatch(setUser(user));
-          } else {
-              console.error('Login failed');
-          }
-      } catch (error) {
-          console.error('An error occurred during login:', error);
-      }
+  const dispatch = useDispatch();
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [goToHome, setGoToHome] = useState(false);
+
+  if (goToHome) {
+    return <Navigate to="/home" />;
+  }
+
+  const handleLogin = async () => {
+    try {
+      const response = await client.post('/nospeak-app/api/login/', {
+        username: name,
+        password,
+      });
+      
+      const { token, user_id, username } = response.data;
+      localStorage.setItem('token', token);
+      
+      dispatch(loginSuccess({ 
+        isAuthenticated: true,
+        user: { id: user_id, username },
+      }));
+      
+      setGoToHome(true);
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
+    }
   };
-
-  // const [goToHome, setGoToHome] = React.useState(false);
-
-  //   if (goToHome) {
-  //       return <Navigate to="/home" />;
-  //   }
-  
-  // function submitLogin(e) {
-  //     e.preventDefault();
-  //     client.post(
-  //       "/nospeak-app/login",
-  //       {
-  //         email: email,
-  //         password: password
-  //       }
-  //     ).then(function(res) {
-  //       setCurrentUser(true);
-  //       setGoToHome(true);
-  //       console.log("entre");
-  //     });
-  //   }
 
   return (
     <FormLoginContainer>
@@ -59,11 +47,11 @@ export default function Login({client, setCurrentUser, email, setEmail, password
       </NavLogin>
       <FormLogin>
         <StyledH1>Log in to NoSpeak</StyledH1>
-        <span>Email</span>
-        <LoginInput value={email} onChange={e => setEmail(e.target.value)} type="email" placeholder="Email"/>
+        <span>Username</span>
+        <LoginInput value={name} onChange={(e) => setName(e.target.value)} type="text" placeholder="Username"/>
         <span>Password</span>
-        <LoginInput value={password} onChange={e => setPassword(e.target.value)} type="password" placeholder="Password"  />
-        <LoginButton onClick={(e) => handleLogin(e)}>
+        <LoginInput value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password"  />
+        <LoginButton onClick={handleLogin}>
           Log in
         </LoginButton>
         <br/>

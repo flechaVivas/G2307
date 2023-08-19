@@ -26,6 +26,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('nospeak_app.urls')),  # Aquí incluyes las URLs de tu aplicación
+    path('nospeak-app/api/', include('nospeak_app.urls')),  
 ]
 

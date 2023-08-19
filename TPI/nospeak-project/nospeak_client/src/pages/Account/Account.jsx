@@ -8,51 +8,45 @@ import { Avatar } from '@mui/material';
 import {Navigate} from "react-router-dom";
 import {useSelector} from 'react-redux';
 import {useDispatch} from 'react-redux';
-import {clearUser} from '../../redux/userSlice.js';
-export default function Account({client, setCurrentUser, email, setEmail, password, setPassword, username, setUsername}){
+import { logout } from '../../redux/slices/userSlice';
 
-    const user = useSelector(state => state.user);
+export default function Account({client}){
+
+    const user = useSelector(state => state.user.user);
 
     const dispatch = useDispatch();
 
+    const [goToInicio, setGoToInicio] = React.useState(false);
+
+    const isAuthenticated = useSelector(state => state.user.isAuthenticated);
+
+    if (!isAuthenticated) {
+        return <Navigate to="/login" />;
+    }
+
+    if (goToInicio) {
+        return <Navigate to="/" />;
+    }
+
     const handleLogout = async () => {
         try {
-            const response = await fetch('/nospeak-app/logout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        });
-    
-        if (response.ok) {
-            dispatch(clearUser());
-            return <Navigate to="/Login" />;
-        } else {
-            console.error('Logout failed');
-            }
-        } catch (error) {
-            console.error('An error occurred during logout:', error);
+          const token = localStorage.getItem('token');
+          
+          if (token) {
+            client.defaults.headers.common['Authorization'] = `Token ${token}`;
+            await client.post('/nospeak-app/api/logout/');
         }
-        };;
+        
+        dispatch(logout());
+        setGoToInicio(true);
+        
+        } catch (error) {
+          console.error('Error al realizar logout:', error);
+        }
+      };
+    
         
 
-    
-    // const [goToInicio, setGoToInicio] = React.useState(false);
-
-    // if (goToInicio) {
-    //     return <Navigate to="/" />;
-    // }
-    
-    // function submitLogout(e) {
-    //     e.preventDefault();
-    //     client.post(
-    //       "/nospeak-app/logout",
-    //       {withCredentials: true}
-    //     ).then(function(res) {
-    //       setCurrentUser(false);
-    //       setGoToInicio(true);
-    //     });
-    // }
 
     return (
         <>
@@ -62,11 +56,11 @@ export default function Account({client, setCurrentUser, email, setEmail, passwo
                     <AccountContainer>
                         <AccountContainerLeft>
                             <StyledH1>Account details</StyledH1>
-                            <h3>{user.email}</h3>
-                            <AccountInput type="email" placeholder="Email address" />
-                            <h3>{user.name}</h3>
-                            <AccountInput type="text" placeholder="Username" />
-                            <h3>{user.password}</h3>
+                            <h3>Email</h3>
+                            <AccountInput type="email" placeholder="Email address"/>
+                            <h3>Username</h3>
+                            <AccountInput type="text" placeholder="Username" value={user.username}/>
+                            <h3>Password</h3>
                             <AccountInput type="password" placeholder="Password" />
                             <br/>
                             <br/>
@@ -74,7 +68,7 @@ export default function Account({client, setCurrentUser, email, setEmail, passwo
                         </AccountContainerLeft>
                         <AccountContainerRight>
                             <Avatar style={{width: '250px', height: '250px', margin: '20px'}} />
-                            <h1>{user.name}</h1>
+                            <h1>{user.username}</h1>
                             <h3 style={{paddingTop: '20px'}}>Do you want to log out?</h3>
                             <AccountButton style={{backgroundColor: 'grey'}} onClick={(e) => handleLogout(e)}>Log out</AccountButton>
 

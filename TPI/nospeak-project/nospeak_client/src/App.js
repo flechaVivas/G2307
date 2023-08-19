@@ -6,15 +6,15 @@ import Register from './pages/Register/Register';
 import Account from './pages/Account/Account';
 import Playlist from './pages/Playlist/Playlist';
 import Search from './pages/Search/Search';
+import PrivateRoute from './components/PrivateRoute';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Library from './pages/MyLibrary/Library';
+import { useSelector } from 'react-redux';
 
-const client = axios.create({
-  baseURL: 'http://127.0.0.1:8000',
-});
+
 
 export const theme = createTheme({
   palette: {
@@ -24,6 +24,10 @@ export const theme = createTheme({
   },
 });
 
+const client = axios.create({
+  baseURL: 'http://localhost:8000',
+});
+
 function App() {
   const [currentUser, setCurrentUser] = useState();
   const [registrationToggle, setRegistrationToggle] = useState(false);
@@ -31,16 +35,8 @@ function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  useEffect(() => {
-    client
-      .get('/nospeak-app/user')
-      .then(function (res) {
-        setCurrentUser(true);
-      })
-      .catch(function (error) {
-        setCurrentUser(false);
-      });
-  }, []);
+  const isAuthenticated = useSelector(state => state.user.isAuthenticated);
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -53,11 +49,6 @@ function App() {
               element={
                 <Login
                   client={client}
-                  setCurrentUser={setCurrentUser}
-                  email={email}
-                  setEmail={setEmail}
-                  password={password}
-                  setPassword={setPassword}
                 />
               }
             />
@@ -67,31 +58,10 @@ function App() {
               element={
                 <Register
                   client={client}
-                  setCurrentUser={setCurrentUser}
-                  email={email}
-                  setEmail={setEmail}
-                  password={password}
-                  setPassword={setPassword}
-                  username={username}
-                  setUsername={setUsername}
                 />
               }
             />
-            <Route
-              path="/account"
-              element={
-                <Account
-                  client={client}
-                  setCurrentUser={setCurrentUser}
-                  email={email}
-                  setEmail={setEmail}
-                  password={password}
-                  setPassword={setPassword}
-                  username={username}
-                  setUsername={setUsername}
-                />
-              }
-            />
+            <Route path="/account" element={<Account client={client}/>} />
             <Route path="/playlist" element={<Playlist />} />
             <Route path="/search" element={<Search />} />
             <Route path="/library" element={<Library />} />

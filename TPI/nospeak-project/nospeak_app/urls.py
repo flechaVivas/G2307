@@ -38,9 +38,9 @@ from .views import ArtistaList, ArtistaDetail, AlbumList, AlbumDetail, CancionLi
 from .views import LogoutView, RegistroUsuario, CustomAuthToken
 
 urlpatterns = [
-    path('registro/', RegistroUsuario.as_view(), name='registro-usuario'),
-    path('api-token-auth/', CustomAuthToken.as_view(), name='api-token-auth'),
-    path('api-token-logout/', LogoutView.as_view(), name='api-token-logout'),
+    path('register/', RegistroUsuario.as_view(), name='registro-usuario'),
+    path('login/', CustomAuthToken.as_view(), name='api-token-auth'),
+    path('logout/', LogoutView.as_view(), name='api-token-logout'),
 
     path('artistas/', ArtistaList.as_view(), name='artista-list'),
     path('artistas/<int:pk>/', ArtistaDetail.as_view(), name='artista-detail'),

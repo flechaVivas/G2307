@@ -129,7 +129,7 @@ class AlbumDetail(generics.RetrieveUpdateDestroyAPIView):
 class CancionList(generics.ListCreateAPIView):
     queryset = Cancion.objects.all()
     serializer_class = CancionSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
 class CancionDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Cancion.objects.all()
@@ -199,7 +199,9 @@ class LogoutView(APIView):
     def post(self, request):
         try:
             token = request.auth
-            token.delete()
+            if token:
+                token.delete()
             return Response(status=status.HTTP_200_OK)
         except:
+            raise
             return Response(status=status.HTTP_400_BAD_REQUEST)

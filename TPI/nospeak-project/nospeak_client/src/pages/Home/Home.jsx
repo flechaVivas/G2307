@@ -3,8 +3,12 @@ import Sidebar from '../../styled-components/Sidebar/Sidebar';
 import Body from '../../styled-components/Body/Body';
 import { SpotifyBody, HomeContainer } from './styles.js';
 import Footer from '../../styled-components/Footer/Footer';
+import {useSelector} from 'react-redux';
 
 const Home = () => {
+    
+    const user = useSelector(state => state.user.user);
+
     return (
         <HomeContainer>
             <SpotifyBody>

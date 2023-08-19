@@ -1,39 +1,52 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import {FormLogin, FormLoginContainer, NavLogin, LoginButton, LoginInput, StyledH1} from '../Login/styles';
 import { Navigate } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { loginSuccess } from '../../redux/slices/userSlice.js';
 
 
 
-export default function Register({client, setCurrentUser, email, setEmail, password, setPassword, username, setUsername}) {
+export default function Register({client}) {
+  const dispatch = useDispatch();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const [goToHome, setGoToHome] = React.useState(false);
-
+  const [goToHome, setGoToHome] = useState(false);
   if (goToHome) {
     return <Navigate to="/home" />;
   }
 
-  function submitRegistration(e) {
-    e.preventDefault();
-    client.post(
-      "/nospeak-app/register",
-      {
-        email: email,
-        username: username,
-        password: password
-      }
-    ).then(function(res) {
-      client.post(
-        "/nospeak-app/login",
-        {
-          email: email,
-          password: password
-        }
-      ).then(function(res) {
-        setCurrentUser(true);
-        setGoToHome(true);
+  const handleRegister = async () => {
+    try {
+      const response_register = await client.post('/nospeak-app/api/register/', {
+        username: name,
+        password,
       });
-    });
-  }
+    }
+    catch (error) {
+      console.error('Error al registrarse:', error);
+    }
+    try{
+      const response_login = await client.post('/nospeak-app/api/login/', {
+        username: name,
+        password,
+      });
+      
+      const { token, user_id, username } = response_login.data;
+      localStorage.setItem('token', token);
+      
+      dispatch(loginSuccess({ 
+        isAuthenticated: true,
+        user: { id: user_id, username },
+      }));
+      
+      setGoToHome(true);
+    }
+    catch (error) {
+        console.error('Error al iniciar sesión:', error);
+    }
+  };
 
   return (
     <FormLoginContainer>
@@ -45,12 +58,12 @@ export default function Register({client, setCurrentUser, email, setEmail, passw
         <span>What’s your email address?</span>
         <LoginInput value={email} onChange={e => setEmail(e.target.value)} type="email" placeholder="Email"/>
         <span>What should we call you?</span>
-        <LoginInput value={username} onChange={e => setUsername(e.target.value)} type="text" placeholder="Username"/>
+        <LoginInput value={name} onChange={(e) => setName(e.target.value)} type="text" placeholder="Username"/>
         <span>Create a password</span>
         <LoginInput value={password} onChange={e => setPassword(e.target.value)} type="password" placeholder="Password"  />
         <span>Repeat password</span>
         <LoginInput value={password} onChange={e => setPassword(e.target.value)} type="password" placeholder="Password"  />
-        <LoginButton onClick={(e) => {submitRegistration(e);}}>
+        <LoginButton onClick={(e) => {handleRegister(e);}}>
           Sign up
         </LoginButton>
       </FormLogin>
