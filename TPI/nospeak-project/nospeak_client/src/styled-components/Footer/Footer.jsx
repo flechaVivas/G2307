@@ -51,17 +51,26 @@ const Footer = () => {
             <FooterLeft>
                 <img src="https://static.posters.cz/image/750/buque-costero/coldplay-parachutes-album-cover-i56853.jpg" alt="Album cover" />
                 <div>
-                    <h4>Trouble</h4>
-                    <p>Coldplay</p>
+                    <h4 style={{ margin: '0 0 4px' }}>Trouble</h4>
+                    <p style={{ margin: 0 }}>Coldplay</p>
                 </div>
             </FooterLeft>
             <FooterCenter>
-                <ShuffleIcon/>
-                <SkipPreviousIcon/>
-                <PlayCircleOutlineIcon/>
-                <SkipNextIcon/>
-                <RepeatIcon/>
-
+                <IconButton color="inherit" centerRipple>
+                    <ShuffleIcon />
+                </IconButton>
+                <IconButton color="inherit" centerRipple>
+                    <SkipPreviousIcon />
+                </IconButton>
+                <IconButton color="inherit" centerRipple>
+                    <PlayCircleOutlineIcon style={{ fontSize: 32 }} />
+                </IconButton>
+                <IconButton color="inherit" centerRipple>
+                    <SkipNextIcon />
+                </IconButton>
+                <IconButton color="inherit" centerRipple>
+                    <RepeatIcon />
+                </IconButton>
             </FooterCenter>
             <FooterRight>
                 <Grid container spacing={2} alignItems="center">
