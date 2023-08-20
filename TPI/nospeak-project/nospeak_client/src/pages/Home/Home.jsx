@@ -12,7 +12,7 @@ export default function Home({client}) {
     const [songs, setSongs] = React.useState([]);
 
     React.useEffect(() => {
-        client.get('/nospeak-app/api/canciones/')
+        client.get('/nospeak-app/api/canciones-info/')
         .then(response => {
             setSongs(response.data);
         })

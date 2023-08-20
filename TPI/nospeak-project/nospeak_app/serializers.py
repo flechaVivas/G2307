@@ -162,17 +162,43 @@ class AlbumSerializer(serializers.ModelSerializer):
         model = Album
         fields = '__all__'
 
-class CancionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Cancion
-        fields = '__all__'
-        depth=1
-
 class ArtistaSerializer(serializers.ModelSerializer):
     albums = AlbumSerializer(many=True, read_only=True)  # Relación inversa desde Artista a Album
 
     class Meta:
         model = Artista
+        fields = '__all__'
+
+class CancionSerializer(serializers.ModelSerializer):
+    artista = serializers.PrimaryKeyRelatedField(
+        queryset=Artista.objects.all(),
+    )
+    
+    album = serializers.PrimaryKeyRelatedField(
+        queryset=Album.objects.all(),
+    )
+
+    class Meta:
+        model = Cancion
+        fields = '__all__'
+
+    def create(self, validated_data):
+        artista = validated_data.pop('artista')
+        album = validated_data.pop('album')
+        
+        cancion = Cancion.objects.create(
+            artista=artista,
+            album=album,
+            **validated_data
+        )
+        return cancion
+
+                
+class CancionWithArtistaAlbumSerializer(serializers.ModelSerializer):
+    artista = ArtistaSerializer()
+    album = AlbumSerializer()
+    class Meta:
+        model = Cancion
         fields = '__all__'
 
 class UsuarioSerializer(serializers.ModelSerializer):

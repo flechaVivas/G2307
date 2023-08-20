@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import {FormLoginContainer, FormLogin, NavLogin, LoginButton, LoginInput, StyledH1,
 RegisterContainer} from './styles.js';
-import {StyledLink, StyledSpan} from './styles.js';
+import {StyledLink, StyledSpan, ButtonContainer} from './styles.js';
 import {Navigate} from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../../redux/slices/userSlice.js';
+import { StyledButton } from '../../styled-components/styles.js';
 
 
 export default function Login({client}) {
@@ -51,9 +52,11 @@ export default function Login({client}) {
         <LoginInput value={name} onChange={(e) => setName(e.target.value)} type="text" placeholder="Username"/>
         <span>Password</span>
         <LoginInput value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password"  />
-        <LoginButton onClick={handleLogin}>
-          Log in
-        </LoginButton>
+        <ButtonContainer>
+          <StyledButton onClick={handleLogin}>
+            Log in
+          </StyledButton>
+        </ButtonContainer>
         <br/>
         <RegisterContainer>
           <StyledSpan>Don't have an account?</StyledSpan>
