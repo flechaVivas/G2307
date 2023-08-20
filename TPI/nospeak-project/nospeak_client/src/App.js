@@ -6,6 +6,7 @@ import Register from './pages/Register/Register';
 import Account from './pages/Account/Account';
 import Playlist from './pages/Playlist/Playlist';
 import Search from './pages/Search/Search';
+import Song from './pages/Song/Song';
 import PrivateRoute from './components/PrivateRoute';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -65,6 +66,7 @@ function App() {
             <Route path="/playlist" element={<Playlist />} />
             <Route path="/search" element={<Search />} />
             <Route path="/library" element={<Library />} />
+            <Route path="/song/:songId" element={<Song client={client}/>} />
           </Routes>
         </Router>
       </div>

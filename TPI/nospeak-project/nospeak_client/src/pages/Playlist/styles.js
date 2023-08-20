@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import BigCard from '../../styled-components/Body/BigCard.jsx'
 
 const PlaylistContainer = styled.div`
 display: flex;

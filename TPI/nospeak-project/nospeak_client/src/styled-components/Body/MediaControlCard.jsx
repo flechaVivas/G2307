@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -12,9 +12,18 @@ import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import { cardStyle } from './styles';
+import {Navigate} from "react-router-dom";
+import { Link } from 'react-router-dom';
+
 
 export default function MediaControlCard({client, songs, setSongs}) {
     const theme = useTheme();
+
+    const [goToSong, setGoToSong] = useState(false);
+
+    // if (goToSong) {
+    //     return <Navigate to="/song"/>;
+    //   }
     
     const handleDelete = async (songId, index) => {
         try {
@@ -30,6 +39,9 @@ export default function MediaControlCard({client, songs, setSongs}) {
         }
     };
 
+    const handleEdit = (song) => {
+        // setGoToSong(true);
+    };
     return (
         <React.Fragment>
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap:5 }}>
@@ -51,8 +63,10 @@ export default function MediaControlCard({client, songs, setSongs}) {
                     <IconButton aria-label="play/pause">
                         <PlayArrowIcon sx={{ height: 38, width: 38, color:'white' }} />
                     </IconButton>
-                    <IconButton aria-label="play/pause">
-                        <EditIcon sx={{color: 'white'}}></EditIcon>
+                    <IconButton aria-label="play/pause" onClick={handleEdit(song)}>
+                        <Link to={{ pathname: `/song/${song.id}` }}>
+                            <EditIcon sx={{ color: 'white' }} />
+                        </Link>
                     </IconButton>
                     </Box>
                 </Box>
