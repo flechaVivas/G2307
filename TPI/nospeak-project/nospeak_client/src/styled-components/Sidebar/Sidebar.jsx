@@ -33,7 +33,7 @@ export default function Sidebar() {
             <img src="https://1000logos.net/wp-content/uploads/2017/08/Spotify-symbol.jpg" alt="Logo de Spotify" />
             <SidebarChoice title="Home" Icon={HomeIcon} onClick={() => {setGoToHome(true);}}/>
             <SidebarChoice title="Search" Icon={SearchIcon} onClick={() => {setGoToSearch(true);}}/>
-            <SidebarChoice title="Your Library" onClick={() => {setGoToLibrary(true);}} Icon={LibraryMusicIcon}/>
+            <SidebarChoice title="Library" onClick={() => {setGoToLibrary(true);}} Icon={LibraryMusicIcon}/>
             <br/>
             <br/>
             <Playlists>PLAYLISTS</Playlists>

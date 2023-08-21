@@ -11,7 +11,7 @@ import {
     CardRightContainer,
     ImagePlaylist,
     StyledH1
-} from '../Playlist/styles';
+} from '../Song/styles';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
