@@ -5,11 +5,27 @@ import { SpotifyBody } from '../Home/styles';
 import Footer from '../../styled-components/Footer/Footer';
 import Header from '../../styled-components/Body/Header';
 import { NavContainer, NavItem, PlaylistBox, PlaylistDescription, PlaylistGrid, PlaylistImage, PlaylistName } from './styles';
-import { useHistory } from "react-router"; // Import useHistory from 'react-router'
+import { ArtistBox, ArtistImage, ArtistName, ArtistGrid } from './styles';
+import { Navigate, useLocation } from 'react-router-dom';
 
 
 
 const Library = () => {
+
+    const categories = ['Playlists', 'Artists', 'Made for You'];
+
+    const location = useLocation();
+
+    const [goToPlaylist, setGoToPlaylist] = React.useState(false);
+    const [activeCategory, setActiveCategory] = useState(categories[0]); // Initialize with the first category
+
+    if (goToPlaylist && location.pathname !== "/playlist") {
+        return <Navigate to="/playlist" />;
+    }
+
+    const handleCategoryChange = (category) => {
+        setActiveCategory(category);
+    };
 
     const playlistData = [
         {
@@ -18,11 +34,6 @@ const Library = () => {
             image: 'https://i.scdn.co/image/ab67706c0000da84e4c3b621c226f0a097097aeb',
         }, 
         {
-            title: 'Cumbia',
-            author: 'PolaDJ',
-            image: 'https://i.scdn.co/image/ab67706c0000da84e4c3b621c226f0a097097aeb',
-        },
-        {
             title: 'HipHop',
             author: 'Flecha Vivas',
             image: 'https://i.scdn.co/image/ab67706c0000d72c8b058b2ebbed37e23ca56fd3',
@@ -30,17 +41,41 @@ const Library = () => {
         {
             title: 'To the lobby blowjob',
             author: 'Luquitas Mancini',
-            image: 'https://i.scdn.co/image/ab67706c0000d72c8b058b2ebbed37e23ca56fd3',
+            image: 'https://i.scdn.co/image/ab67616d00001e029ba87744ebd8eba525286e97',
         },
     ];
 
-    const categories = ['Playlists', 'Made for You', 'Liked Songs', 'Artists', 'Podcats'];
+    const madeForYou = [
+        {
+            title: 'Previa',
+            author: 'PolaDJ',
+            image: 'https://i.scdn.co/image/ab67706c0000da84e4c3b621c226f0a097097aeb',
+        }
+    ]
 
-    const [activeCategory, setActiveCategory] = useState(categories[0]); // Initialize with the first category
-
-    const handleCategoryChange = (category) => {
-        setActiveCategory(category);
-    };
+    const artists = [
+        {
+            name: 'Coldplay',
+            image: 'https://i.scdn.co/image/ab6761610000101f989ed05e1f0570cc4726c2d3'
+        },
+        {
+            name: 'Red Hot Chili Peppers',
+            image: 'https://i.scdn.co/image/ab6761610000101fc33cc15260b767ddec982ce8'
+        },
+        {
+            name: 'Biggie Smalls',
+            image: 'https://i.scdn.co/image/ab67616d00001e02373970875cab6dc30b36f10c'
+        },
+        {
+            name: 'Eminem',
+            image: 'https://i.scdn.co/image/ab67706c0000da8454b133282efaec2a07cc05fc'
+        },
+        {
+            name: 'Canserbero',
+            image: 'https://i.scdn.co/image/ab6761610000101fa91405d63c939682e4efdcbc'
+        },
+        
+    ]
 
     return (
         <>
@@ -64,7 +99,7 @@ const Library = () => {
                     <PlaylistGrid>
                         {activeCategory === 'Playlists' && (
                             playlistData.map((playlist, index) => (
-                            <PlaylistBox key={index}>
+                            <PlaylistBox key={index} onClick={() => {setGoToPlaylist(true);}}>
                                 <PlaylistImage src={playlist.image}></PlaylistImage>
                                 <PlaylistName>{playlist.title}</PlaylistName>
                                 <PlaylistDescription>{playlist.author}</PlaylistDescription>
@@ -72,15 +107,23 @@ const Library = () => {
                         ))
                         )}
                         {activeCategory === 'Made for You' && (
-                            <h1> Made for You </h1>
-                        )}
-                        {activeCategory === 'Liked Songs' && (
-                            <h1> Liked Songs </h1>
-                        )}
+                            madeForYou.map((playlist, index) => (
+                                <PlaylistBox key={index}>
+                                    <PlaylistImage src={playlist.image}></PlaylistImage>
+                                    <PlaylistName>{playlist.title}</PlaylistName>
+                                    <PlaylistDescription>{playlist.author}</PlaylistDescription>
+                                </PlaylistBox>
+                            )
+                        ))}
                         {activeCategory === 'Artists' && (
-                            <h1> Artists </h1>
+                            artists.map((artist, index) => (
+                                <ArtistBox key={index}>
+                                    <ArtistImage src={artist.image} alt={artist.name} onClick={() => {setGoToPlaylist(true);}} />
+                                    <ArtistName>{artist.name}</ArtistName>
+                                </ArtistBox>
+                            ))
                         )}
-                        {activeCategory === 'Podcats' && (
+                        {activeCategory === 'Podcasts' && (
                             <h1> Podcasts </h1>
                         )}
                         
