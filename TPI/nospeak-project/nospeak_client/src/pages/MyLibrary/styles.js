@@ -8,6 +8,7 @@ export const PlaylistBox = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
   display: inline-block;
+  cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
     
     &:hover {
@@ -68,6 +69,37 @@ export const NavItem = styled.div`
     left: 0;
     width: 100%;
     height: 2px;
-    background-color: #1db954; /* Spotify green */
+    background-color: #ffa130;
   }
+`;
+
+export const ArtistGrid = styled(PlaylistGrid)`
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(150px, 1fr)
+  ); // Adjust column width as needed
+  gap: 30px;
+`;
+
+export const ArtistBox = styled.div`
+  display: inline-block;
+  text-align: center;
+`;
+
+export const ArtistImage = styled.img`
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+  }
+`;
+
+export const ArtistName = styled.p`
+  color: #fff;
+  margin-top: 5px;
 `;
