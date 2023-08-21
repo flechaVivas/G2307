@@ -2,15 +2,18 @@ import React, { useState } from 'react';
 import { HeaderContainer, HeaderLeft, HeaderRight, SearchInput } from './styles.js';
 import SearchIcon from '@mui/icons-material/Search';
 import { Avatar } from '@mui/material';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 
 const Header = ({ songs, setFilteredSongs }) => {
     const [goToAccount, setGoToAccount] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const location = useLocation();
 
     React.useEffect(() => {
         // Actualizar las canciones filtradas al cargar las canciones
-        setFilteredSongs(songs);
+        if (location.pathname !== "/library") {
+            setFilteredSongs(songs);
+        }
     }, [songs]);
 
     if (goToAccount) {
@@ -18,16 +21,18 @@ const Header = ({ songs, setFilteredSongs }) => {
     }
 
     const handleSearch = (e) => {
-        const searchText = e.target.value;
-        setSearchTerm(searchText);
+        if (location.pathname !== "/library") {
+            const searchText = e.target.value;
+            setSearchTerm(searchText);
 
-        const filteredSongs = songs.filter((song) =>
-            song.titulo.toLowerCase().includes(searchText.toLowerCase()) ||
-            song.artista.nombre.toLowerCase().includes(searchText.toLowerCase()) ||
-            song.album.titulo.toLowerCase().includes(searchText.toLowerCase())
-        );
+            const filteredSongs = songs.filter((song) =>
+                song.titulo.toLowerCase().includes(searchText.toLowerCase()) ||
+                song.artista.nombre.toLowerCase().includes(searchText.toLowerCase()) ||
+                song.album.titulo.toLowerCase().includes(searchText.toLowerCase())
+            );
 
-        setFilteredSongs(filteredSongs);
+            setFilteredSongs(filteredSongs);
+        } 
     };
 
     return (

@@ -205,7 +205,7 @@ export default function Song({client}) {
                 <Sidebar/>
                 <BodyContainer css={`align-items: center;`}>
                     <PlaylistContainer>
-                        <CardContainer>
+                        <CardContainer song={song}>
                             {song && (
                                 <>
                                     <CardLeftContainer>
@@ -219,12 +219,12 @@ export default function Song({client}) {
                             )}
                             {!song && (
                                 <>
-                                    <StyledH1 style={{color: 'white', marginLeft: '30px'}}>Crear canción</StyledH1>
+                                    <StyledH1 style={{color: 'white', marginLeft: '30px', fontSize: '3em'}}>Crear canción</StyledH1>
                                     
                                 </>
                             )}
                         </CardContainer>
-                        <TableContainerStyled>
+                        <TableContainerStyled song={song}>
                             <FormContainer>
                                 <ColumnContainer>
                                     <ColumnForm>

@@ -14,14 +14,14 @@ font-family: var(--font-family,CircularSp,CircularSp-Arab,CircularSp-Hebr,Circul
 const CardContainer = styled.div`
 display: flex;
 flex-direction: row;
-height: 30%;
+height: ${props => (props.song ? '30%' : '15%')};
 width: 100%;
 background-color: transparent;
 `
 
 const TableContainerStyled = styled.div`
 display: flex;
-height: 70%;
+height: ${props => (props.song ? '70%' : '85%')};
 width: 100%;
 background-color: rgba(0, 0, 0, .3);
 padding: 10px 20px 20px 20px;
