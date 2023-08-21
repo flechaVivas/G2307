@@ -17,6 +17,13 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { useParams } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
+import {
+    Overlay,
+    AlertContainer,
+    AlertTitle,
+    AlertText,
+    ButtonContainer as AlertButtonContainer,
+  } from '../../styled-components/Body/styles';
 
 
 
@@ -38,6 +45,8 @@ export default function Song({client}) {
     const [album, setAlbum] = React.useState(null);
 
     const [goToHome, setGoToHome] = React.useState(false);
+
+    const [showSuccessAlert, setShowSuccessAlert] = React.useState(false);
 
     
 
@@ -104,6 +113,7 @@ export default function Song({client}) {
         client.put(`/nospeak-app/api/canciones/${songId}/`, updatedSong)
             .then(response => {
                 console.log('Canción actualizada:', response.data);
+                setShowSuccessAlert(true);
             })
             .catch(error => {
                 console.error('Error al actualizar la canción:', error);
@@ -117,6 +127,21 @@ export default function Song({client}) {
     }
     
     const handleCancel = () => {
+        setGoToHome(true);
+    };
+    
+
+    const handleArtistaChange = (value) => {
+        console.log('Valor combo:', value);
+        setArtista(value);
+    };
+    
+    const handleAlbumChange = (value) => {
+        console.log('Valor combo:', value);
+        setAlbum(value);
+    };
+
+    const handleAlertAccept = () => {
         setGoToHome(true);
     };
     
@@ -161,16 +186,18 @@ export default function Song({client}) {
                                         <Input type="text" value={spotify_id} onChange={(e) => setSpotifyId(e.target.value)}/>
                                         
                                         <Label>Artista</Label>
-                                        <ComboBox onChange={(e) => setArtista(e.target.value)}>
+                                        <ComboBox value={artista} onChange={(e) => handleArtistaChange(e.target.value)}>
+                                            <option value="">Seleccionar artista...</option>
                                             {artists.map(artist => (
-                                                <option key={artist.id} value={artist.id} >
+                                                <option key={artist.id} value={artist.id}>
                                                     {artist.nombre}
                                                 </option>
                                             ))}
                                         </ComboBox>
                                         
                                         <Label>Álbum</Label>
-                                        <ComboBox onChange={(e) => setAlbum(e.target.value)}>
+                                        <ComboBox value={album} onChange={(e) => handleAlbumChange(e.target.value)}>
+                                            <option value="">Seleccionar álbum...</option>
                                             {albums.map(album => (
                                                 <option key={album.id} value={album.id}>
                                                     {album.titulo}
@@ -189,5 +216,18 @@ export default function Song({client}) {
                 </BodyContainer>
             </SpotifyBody>
             {/* <Footer/> */}
+            {showSuccessAlert && (
+                <Overlay>
+                    <AlertContainer>
+                    <AlertTitle>Actualizar canción</AlertTitle>
+                    <AlertText>
+                        La canción {song.titulo} se ha actualizado correctamente.
+                    </AlertText>
+                    <ButtonContainer>
+                        <StyledButton css={`width: 50%`} onClick={handleAlertAccept}>Aceptar</StyledButton>
+                    </ButtonContainer>
+                    </AlertContainer>
+                </Overlay>
+            )}
         </>  )
 }

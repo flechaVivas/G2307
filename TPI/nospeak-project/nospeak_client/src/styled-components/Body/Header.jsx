@@ -8,6 +8,11 @@ const Header = ({ songs, setFilteredSongs }) => {
     const [goToAccount, setGoToAccount] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
 
+    React.useEffect(() => {
+        // Actualizar las canciones filtradas al cargar las canciones
+        setFilteredSongs(songs);
+    }, [songs]);
+
     if (goToAccount) {
         return <Navigate to="/account" />;
     }
@@ -16,9 +21,10 @@ const Header = ({ songs, setFilteredSongs }) => {
         const searchText = e.target.value;
         setSearchTerm(searchText);
 
-        // Filtrar las canciones según el término de búsqueda
         const filteredSongs = songs.filter((song) =>
-            song.titulo.toLowerCase().includes(searchText.toLowerCase())
+            song.titulo.toLowerCase().includes(searchText.toLowerCase()) ||
+            song.artista.nombre.toLowerCase().includes(searchText.toLowerCase()) ||
+            song.album.titulo.toLowerCase().includes(searchText.toLowerCase())
         );
 
         setFilteredSongs(filteredSongs);
@@ -30,7 +36,7 @@ const Header = ({ songs, setFilteredSongs }) => {
                 <SearchIcon style={{ color: 'white' }} />
                 <SearchInput
                     type="text"
-                    placeholder="Search for artists, songs, or other"
+                    placeholder="Search for artist, song, or album"
                     value={searchTerm}
                     onChange={handleSearch}
                 />

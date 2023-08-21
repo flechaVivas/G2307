@@ -122,4 +122,41 @@ const Input = styled.input`
   width: 100%;
 `;
 
-export {ButtonContainer, StyledButton, Input, Label, StyledButtonSecondary}
+const SuccessAlert = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: black;
+  color: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  p {
+    margin-bottom: 10px;
+  }
+
+  button {
+    margin-top: 10px;
+  }
+`;
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export {ButtonContainer, StyledButton, Input, Label, StyledButtonSecondary, SuccessAlert, Overlay}
