@@ -18,6 +18,11 @@ const Library = () => {
 
     const [goToPlaylist, setGoToPlaylist] = React.useState(false);
     const [activeCategory, setActiveCategory] = useState(categories[0]); // Initialize with the first category
+    const [goToArtist, setGoToArtist] = React.useState(false);
+
+    if (goToArtist && location.pathname !== "/artist") {
+        return <Navigate to="/artist" />;
+    }
 
     if (goToPlaylist && location.pathname !== "/playlist") {
         return <Navigate to="/playlist" />;
@@ -118,7 +123,7 @@ const Library = () => {
                         {activeCategory === 'Artists' && (
                             artists.map((artist, index) => (
                                 <ArtistBox key={index}>
-                                    <ArtistImage src={artist.image} alt={artist.name} onClick={() => {setGoToPlaylist(true);}} />
+                                    <ArtistImage src={artist.image} alt={artist.name} onClick={() => {setGoToArtist(true);}} />
                                     <ArtistName>{artist.name}</ArtistName>
                                 </ArtistBox>
                             ))

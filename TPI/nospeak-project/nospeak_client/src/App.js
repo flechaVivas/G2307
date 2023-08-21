@@ -12,9 +12,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Library from './pages/MyLibrary/Library';
+import Artist from './pages/Artist/Artist';
 import { useSelector } from 'react-redux';
-
-
 
 export const theme = createTheme({
   palette: {
@@ -35,8 +34,7 @@ function App() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const isAuthenticated = useSelector(state => state.user.isAuthenticated);
-
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
   return (
     <ThemeProvider theme={theme}>
@@ -44,27 +42,14 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Inicio />} />
-            <Route
-              path="/login"
-              element={
-                <Login
-                  client={client}
-                />
-              }
-            />
-            <Route path="/home" element={<Home client={client}/>} />
-            <Route
-              path="/register"
-              element={
-                <Register
-                  client={client}
-                />
-              }
-            />
-            <Route path="/account" element={<Account client={client}/>} />
+            <Route path="/login" element={<Login client={client} />} />
+            <Route path="/home" element={<Home client={client} />} />
+            <Route path="/register" element={<Register client={client} />} />
+            <Route path="/account" element={<Account client={client} />} />
             <Route path="/playlist" element={<Playlist />} />
             <Route path="/search" element={<Search />} />
             <Route path="/library" element={<Library />} />
+            <Route path="/artist/:id" element={<Artist />} />
           </Routes>
         </Router>
       </div>
