@@ -49,12 +49,12 @@ export default function MediaControlCard({client, songs, setSongs}) {
                 <Card key={index} sx={{ display: 'flex', width: 300, marginBottom: 5, marginLeft:2 }}>
                 <Box sx={{ ...cardStyle, display: 'flex', flexDirection: 'column' }}>
                     <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Typography component="div" variant="h5" color="white">
-                        {song.titulo}
-                    </Typography>
-                    <Typography variant="subtitle1" color="white" component="div">
-                        {song.artista.nombre}
-                    </Typography>
+                        <Typography component="div" variant="h5" color="white">
+                            {song.titulo}
+                        </Typography>
+                        <Typography variant="subtitle1" color="white" component="div">
+                            {song.artista.nombre}
+                        </Typography>
                     </CardContent>
                     <Box sx={{ display: 'flex', alignItems: 'center', pl: 1, pb: 1 }}>
                     <IconButton aria-label="play/pause" onClick={() => handleDelete(song.id, index)}>
