@@ -69,7 +69,7 @@ export const NavItem = styled.div`
     left: 0;
     width: 100%;
     height: 2px;
-    background-color: #1db954; /* Spotify green */
+    background-color: #ffa130;
   }
 `;
 
