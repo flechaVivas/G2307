@@ -3,10 +3,26 @@ import Sidebar from '../../styled-components/Sidebar/Sidebar'
 import { BodyContainer } from '../../styled-components/Body/styles';
 import { SpotifyBody } from '../../pages/Home/styles.js'
 import Footer from '../../styled-components/Footer/Footer'
-import { PlaylistContainer, CardContainer, TableContainerStyled,
-CardLeftContainer, CardRightContainer, ImagePlaylist, StyledH1,
-FormContainer, ColumnForm, ComboBox, ColumnContainer} from './styles';
-import { Label, Input, ButtonContainer, StyledButton, StyledButtonSecondary } from '../../styled-components/styles';
+import { 
+    PlaylistContainer, 
+    CardContainer, 
+    TableContainerStyled,
+    CardLeftContainer,
+    CardRightContainer, 
+    ImagePlaylist, 
+    StyledH1,
+    FormContainer, 
+    ColumnForm, 
+    ComboBox, 
+    ColumnContainer
+} from './styles';
+import { 
+    Label, 
+    Input, 
+    ButtonContainer, 
+    StyledButton, 
+    StyledButtonSecondary 
+} from '../../styled-components/styles';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -23,7 +39,7 @@ import {
     AlertTitle,
     AlertText,
     ButtonContainer as AlertButtonContainer,
-  } from '../../styled-components/Body/styles';
+} from '../../styled-components/Body/styles';
 
 
 
@@ -54,22 +70,24 @@ export default function Song({client}) {
 
 
     React.useEffect(() => {
-        client.get(`/nospeak-app/api/canciones-info/${songId}/`)
-        .then(response => {
-            setSong(response.data);
-
-            setTitulo(response.data.titulo);
-            setAnioLanzamiento(response.data.anio_lanzamiento);
-            setGenero(response.data.genero);
-            setDuracion(response.data.duracion);
-            setAudio(response.data.audio);
-            setSpotifyId(response.data.spotify_id);
-            setArtista(response.data.artista.id);
-            setAlbum(response.data.album.id);
-        })
-        .catch(error => {
-            console.error('Error al obtener la cancion:', error);
-        });
+        if (songId !== '0') {
+            client.get(`/nospeak-app/api/canciones-info/${songId}/`)
+              .then(response => {
+                setSong(response.data);
+      
+                setTitulo(response.data.titulo);
+                setAnioLanzamiento(response.data.anio_lanzamiento);
+                setGenero(response.data.genero);
+                setDuracion(response.data.duracion);
+                setAudio(response.data.audio);
+                setSpotifyId(response.data.spotify_id);
+                setArtista(response.data.artista.id);
+                setAlbum(response.data.album.id);
+              })
+              .catch(error => {
+                console.error('Error al obtener la canción:', error);
+              });
+        }
 
         client.get('/nospeak-app/api/artistas/')
         .then(response => {
@@ -92,35 +110,70 @@ export default function Song({client}) {
     }, [songId]);
     console.log(song)
 
-    if (!song) {
-        return <p>Loading...</p>; // Mostrar un mensaje de carga mientras se obtiene la canción
-    }
+    // if (!song) {
+    //     return <p>Loading...</p>; // Mostrar un mensaje de carga mientras se obtiene la canción
+    // }
 
-    const handleSave = () => {
+    // const handleSave = () => {
 
-        const updatedSong = {
-            ...song,
-            titulo: titulo,
-            anio_lanzamiento: anioLanzamiento,
-            genero: genero,
-            duracion: duracion,
-            audio: audio,
-            spotify_id: spotify_id,
-            artista: artista,
-            album: album,
-        };
+    //     const updatedSong = {
+    //         ...song,
+    //         titulo: titulo,
+    //         anio_lanzamiento: anioLanzamiento,
+    //         genero: genero,
+    //         duracion: duracion,
+    //         audio: audio,
+    //         spotify_id: spotify_id,
+    //         artista: artista,
+    //         album: album,
+    //     };
     
-        client.put(`/nospeak-app/api/canciones/${songId}/`, updatedSong)
-            .then(response => {
-                console.log('Canción actualizada:', response.data);
-                setShowSuccessAlert(true);
-            })
-            .catch(error => {
-                console.error('Error al actualizar la canción:', error);
-            });
+    //     client.put(`/nospeak-app/api/canciones/${songId}/`, updatedSong)
+    //         .then(response => {
+    //             console.log('Canción actualizada:', response.data);
+    //             setShowSuccessAlert(true);
+    //         })
+    //         .catch(error => {
+    //             console.error('Error al actualizar la canción:', error);
+    //         });
 
         
-    };
+    // };
+
+    const handleSave = () => {
+        const newSong = {
+          titulo,
+          anio_lanzamiento: anioLanzamiento,
+          genero,
+          duracion,
+          audio,
+          spotify_id,
+          artista,
+          album,
+        };
+    
+        if (songId === '0') {
+          // Realiza la llamada POST a la API para crear una nueva canción
+          client.post('/nospeak-app/api/canciones/', newSong)
+            .then(response => {
+              console.log('Nueva canción creada:', response.data);
+              setShowSuccessAlert(true);
+            })
+            .catch(error => {
+              console.error('Error al crear la nueva canción:', error);
+            });
+        } else {
+          // Realiza la llamada PUT a la API para actualizar la canción existente
+          client.put(`/nospeak-app/api/canciones/${songId}/`, newSong)
+            .then(response => {
+              console.log('Canción actualizada:', response.data);
+              setShowSuccessAlert(true);
+            })
+            .catch(error => {
+              console.error('Error al actualizar la canción:', error);
+            });
+        }
+      };
 
     if (goToHome) {
         return <Navigate to="/home" />;
@@ -153,13 +206,23 @@ export default function Song({client}) {
                 <BodyContainer css={`align-items: center;`}>
                     <PlaylistContainer>
                         <CardContainer>
-                            <CardLeftContainer>
-                                <ImagePlaylist src={song.album.portada}></ImagePlaylist>
-                            </CardLeftContainer>
-                            <CardRightContainer>
-                                <StyledH1>{song.titulo}</StyledH1>
-                                <p>{song.artista.nombre}</p>
-                            </CardRightContainer>
+                            {song && (
+                                <>
+                                    <CardLeftContainer>
+                                        <ImagePlaylist src={song.album.portada}></ImagePlaylist>
+                                    </CardLeftContainer>
+                                    <CardRightContainer>
+                                        <StyledH1>{song.titulo}</StyledH1>
+                                        <p>{song.artista.nombre}</p>
+                                    </CardRightContainer>
+                                </>
+                            )}
+                            {!song && (
+                                <>
+                                    <StyledH1 style={{color: 'white', marginLeft: '30px'}}>Crear canción</StyledH1>
+                                    
+                                </>
+                            )}
                         </CardContainer>
                         <TableContainerStyled>
                             <FormContainer>
@@ -219,13 +282,22 @@ export default function Song({client}) {
             {showSuccessAlert && (
                 <Overlay>
                     <AlertContainer>
-                    <AlertTitle>Actualizar canción</AlertTitle>
-                    <AlertText>
-                        La canción {song.titulo} se ha actualizado correctamente.
-                    </AlertText>
-                    <ButtonContainer>
-                        <StyledButton css={`width: 50%`} onClick={handleAlertAccept}>Aceptar</StyledButton>
-                    </ButtonContainer>
+                        <AlertTitle>
+                        {songId === '0' ? 'Nueva canción creada' : 'Actualizar canción'}
+                        </AlertTitle>
+                        <AlertText>
+                        {songId === '0'
+                            ? `La canción ${titulo} se ha creado correctamente.`
+                            : `La canción ${titulo} se ha actualizado correctamente.`}
+                        </AlertText>
+                        <AlertButtonContainer>
+                        <StyledButton
+                            css={`width: 50%`}
+                            onClick={handleAlertAccept}
+                        >
+                            Aceptar
+                        </StyledButton>
+                        </AlertButtonContainer>
                     </AlertContainer>
                 </Overlay>
             )}

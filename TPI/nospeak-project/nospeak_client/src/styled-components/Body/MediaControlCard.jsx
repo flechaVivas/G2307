@@ -50,7 +50,9 @@ export default function MediaControlCard({client, songs, setSongs, setDeleteAler
             <TitleContainer>
                 <h1 style={{color: 'white'}}>Songs</h1>
                 <IconContainer>
-                    <AddCircle sx={{ color: '#FFA130'}} />
+                    <Link to={{ pathname: `/song/${0}` }}>
+                        <AddCircle sx={{ color: '#FFA130'}} />
+                    </Link>
                 </IconContainer>
             </TitleContainer>
             <React.Fragment>
