@@ -11,7 +11,7 @@ const Header = ({ songs, setFilteredSongs }) => {
 
     React.useEffect(() => {
         // Actualizar las canciones filtradas al cargar las canciones
-        if (location.pathname !== "/library") {
+        if (location.pathname !== "/library" && location.pathname !== "/search") {
             setFilteredSongs(songs);
         }
     }, [songs]);
