@@ -11,6 +11,7 @@ import {
     ButtonContainer,
   } from './styles';
 import { StyledButton, StyledButtonSecondary } from '../styles.js';
+import { useSelector } from 'react-redux';
 
 export default function Body({ client }) {
     const [filteredSongs, setFilteredSongs] = useState([]);
@@ -18,6 +19,9 @@ export default function Body({ client }) {
     const [songs, setSongs] = React.useState([]);
 
     const [deleteAlertData, setDeleteAlertData] = React.useState(null);
+
+    const user = useSelector(state => state.user.user);
+    const [userPlaylists, setUserPlaylists] = useState([]);
 
     const handleDeleteConfirm = async (alertData) => {
         try {
@@ -50,7 +54,13 @@ export default function Body({ client }) {
         .catch(error => {
             console.error('Error al obtener las canciones:', error);
         });
-    }, []);
+
+        if (user) {
+            client.get(`/nospeak-app/api/playlists-usuario-info/${user.id}`)
+                .then(response => setUserPlaylists(response.data))
+                .catch(error => console.error('Error fetching user playlists:', error));
+        }
+    }, [user]);
 
     return (
         <>
@@ -62,6 +72,7 @@ export default function Body({ client }) {
                     setSongs={setSongs}
                     style={{ marginBottom: -150 }}
                     setDeleteAlertData={setDeleteAlertData}
+                    userPlaylists={userPlaylists}
                 />
             </BodyContainer>
             {deleteAlertData && (

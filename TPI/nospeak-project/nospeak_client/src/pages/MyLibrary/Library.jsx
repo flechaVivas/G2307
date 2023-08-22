@@ -9,11 +9,13 @@ import { ArtistBox, ArtistImage, ArtistName, ArtistGrid } from './styles';
 import { Navigate, useLocation } from 'react-router-dom';
 import { StyledAddCircle, IconContainer } from '../../styled-components/Body/styles';
 import { Link } from 'react-router-dom';
+import {useSelector} from 'react-redux';
+
 
 
 const Library = ({client}) => {
 
-    const categories = ['Playlists', 'Artists', 'Made for You'];
+    const categories = ['Playlists', 'Artists', 'Albums', 'Made for You'];
 
     const location = useLocation();
 
@@ -24,27 +26,40 @@ const Library = ({client}) => {
     const [playlistData, setPlaylistData] = useState([]);
     const [artists, setArtists] = useState([]);
 
+    const [albumData, setAlbumData] = useState([]);
+
+
+    const user = useSelector(state => state.user.user);
+
     useEffect(() => {
-        // Fetch playlists
-        client
-          .get('/nospeak-app/api/playlists-info/')
-          .then((response) => {
-            setPlaylistData(response.data);
-          })
-          .catch((error) => {
-            console.error('Error fetching playlists:', error);
-          });
+        // Llamada a la API para obtener las playlists del usuario
+        client.get(`/nospeak-app/api/playlists-usuario-info/${user.id}`)
+            .then(response => {
+                setPlaylistData(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching playlists:', error);
+            });
+    
+        // Llamada a la API para obtener los albums
+        client.get('/nospeak-app/api/albums/')
+            .then(response => {
+                setAlbumData(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching albums:', error);
+            });
     
         // Fetch artists
-        client
-          .get('/nospeak-app/api/artistas/')
-          .then((response) => {
-            setArtists(response.data);
-          })
-          .catch((error) => {
-            console.error('Error fetching artists:', error);
-          });
-      }, []);
+        client.get('/nospeak-app/api/artistas/')
+            .then(response => {
+                setArtists(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching artists:', error);
+            });
+    }, []);
+    
 
       if (goToArtist && location.pathname !== "/artist") {
         return <Navigate to="/artist" />;
@@ -57,56 +72,6 @@ const Library = ({client}) => {
     const handleCategoryChange = (category) => {
         setActiveCategory(category);
     };
-
-    // const playlistData = [
-    //     {
-    //         title: 'Previa',
-    //         author: 'PolaDJ',
-    //         image: 'https://i.scdn.co/image/ab67706c0000da84e4c3b621c226f0a097097aeb',
-    //     }, 
-    //     {
-    //         title: 'HipHop',
-    //         author: 'Flecha Vivas',
-    //         image: 'https://i.scdn.co/image/ab67706c0000d72c8b058b2ebbed37e23ca56fd3',
-    //     },
-    //     {
-    //         title: 'To the lobby blowjob',
-    //         author: 'Luquitas Mancini',
-    //         image: 'https://i.scdn.co/image/ab67616d00001e029ba87744ebd8eba525286e97',
-    //     },
-    // ];
-
-    // const madeForYou = [
-    //     {
-    //         title: 'Previa',
-    //         author: 'PolaDJ',
-    //         image: 'https://i.scdn.co/image/ab67706c0000da84e4c3b621c226f0a097097aeb',
-    //     }
-    // ]
-
-    // const artists = [
-    //     {
-    //         name: 'Coldplay',
-    //         image: 'https://i.scdn.co/image/ab6761610000101f989ed05e1f0570cc4726c2d3'
-    //     },
-    //     {
-    //         name: 'Red Hot Chili Peppers',
-    //         image: 'https://i.scdn.co/image/ab6761610000101fc33cc15260b767ddec982ce8'
-    //     },
-    //     {
-    //         name: 'Biggie Smalls',
-    //         image: 'https://i.scdn.co/image/ab67616d00001e02373970875cab6dc30b36f10c'
-    //     },
-    //     {
-    //         name: 'Eminem',
-    //         image: 'https://i.scdn.co/image/ab67706c0000da8454b133282efaec2a07cc05fc'
-    //     },
-    //     {
-    //         name: 'Canserbero',
-    //         image: 'https://i.scdn.co/image/ab6761610000101fa91405d63c939682e4efdcbc'
-    //     },
-        
-    // ]
 
     return (
         <>
@@ -165,6 +130,17 @@ const Library = ({client}) => {
                         )}
                         {activeCategory === 'Podcasts' && (
                             <h1> Podcasts </h1>
+                        )}
+                        {activeCategory === 'Albums' && (
+                            albumData.map((album, index) => (
+                                <Link key={index} to={`/album/${album.id}`}>
+                                    <PlaylistBox key={index}>
+                                        <PlaylistImage src={album.portada}></PlaylistImage>
+                                        <PlaylistName>{album.titulo}</PlaylistName>
+                                        {/* Puedes agregar más detalles aquí si lo deseas */}
+                                    </PlaylistBox>
+                                </Link>
+                            ))
                         )}
                         
                     </PlaylistGrid>

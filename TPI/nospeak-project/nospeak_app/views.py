@@ -167,8 +167,11 @@ class PlaylistDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PlaylistSerializer
 
 class PlaylistList(generics.ListCreateAPIView):
-    queryset = Playlist.objects.all()
     serializer_class = PlaylistWithUsuarioSerializer
+
+    def get_queryset(self):
+        usuario_id = self.kwargs['usuario_id']
+        return Playlist.objects.filter(usuario=usuario_id)
 
 class PlaylistInfo(generics.RetrieveUpdateDestroyAPIView):
     queryset = Playlist.objects.all()

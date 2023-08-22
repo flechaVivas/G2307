@@ -4,7 +4,8 @@ import AddCircle from '@mui/icons-material/AddCircle';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Card from '@mui/material/Card';
-
+import React, { useState } from 'react';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 
 
@@ -213,6 +214,51 @@ cursor: pointer;
     }
 `;
 
+export const ComboBoxContainer = styled.div`
+    position: relative;
+    display: inline-block;
+`;
+
+export const ComboBoxButton = styled.button`
+    background-color: transparent;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+`;
+
+export const ArrowIcon = styled(ArrowDropDownIcon)`
+    margin-left: 8px;
+`;
+
+export const ComboBoxList = styled.ul`
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #282828;
+    border-radius: 4px;
+    border: 1px solid #333333;
+    padding: 8px;
+    list-style: none;
+    max-height: 200px;
+    overflow-y: auto;
+`;
+
+export const ComboBoxItem = styled.li`
+    padding: 8px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #333333;
+    }
+`;
 
 
 export { cardStyle,gradientStyle, BodyContainer, HeaderContainer, HeaderLeft, HeaderRight, SearchInput, TitleContainer,

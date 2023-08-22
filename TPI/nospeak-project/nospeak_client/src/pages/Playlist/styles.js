@@ -21,6 +21,8 @@ background-color: transparent;
 
 const TableContainerStyled = styled.div`
 display: flex;
+flex-direction: column;
+gap: 50px;
 height: 70%;
 width: 100%;
 background-color: rgba(0, 0, 0, .3);

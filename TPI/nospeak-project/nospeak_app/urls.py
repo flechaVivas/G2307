@@ -57,7 +57,7 @@ urlpatterns = [
     path('usuarios/', UsuarioList.as_view(), name='usuario-list'),
     path('usuarios/<int:pk>/', UsuarioDetail.as_view(), name='usuario-detail'),
 
-    path('playlists-info/', PlaylistList.as_view(), name='playlist-list'),
+    path('playlists-usuario-info/<int:usuario_id>/', PlaylistList.as_view(), name='playlist-list'),
     path('playlists-info/<int:pk>/', PlaylistInfo.as_view(), name='playlist-list'),
     path('playlists/', PlaylistCreate.as_view(), name='playlist-create'),
     path('playlists/<int:pk>/', PlaylistDetail.as_view(), name='playlist-detail'),
