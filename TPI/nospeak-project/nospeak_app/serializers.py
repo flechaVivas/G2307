@@ -298,7 +298,12 @@ class PlaylistWithUsuarioSerializer(serializers.ModelSerializer):
         return representation
 
 
-    
+class CancionesPorArtistaSerializer(serializers.ModelSerializer):
+    album = AlbumSerializer()
+
+    class Meta:
+        model = Cancion
+        fields = '__all__'
 
 
 class RecomendacionSerializer(serializers.ModelSerializer):

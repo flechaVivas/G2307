@@ -155,10 +155,12 @@ const Library = ({client}) => {
                         ))} */}
                         {activeCategory === 'Artists' && (
                             artists.map((artist, index) => (
-                                <ArtistBox key={index}>
-                                    <ArtistImage src={artist.portada} alt={artist.nombre} onClick={() => {setGoToArtist(true);}} />
-                                    <ArtistName>{artist.nombre}</ArtistName>
-                                </ArtistBox>
+                                <Link key={index} to={`/artist/${artist.id}`}>
+                                    <ArtistBox key={index}>
+                                        <ArtistImage src={artist.portada} alt={artist.nombre} onClick={() => {setGoToArtist(true);}} />
+                                        <ArtistName>{artist.nombre}</ArtistName>
+                                    </ArtistBox>
+                                </Link>
                             ))
                         )}
                         {activeCategory === 'Podcasts' && (

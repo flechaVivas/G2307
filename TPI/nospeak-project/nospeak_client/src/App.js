@@ -50,7 +50,7 @@ function App() {
             <Route path="/playlist/:playlistId" element={<Playlist client={client}/>} />
             <Route path="/search" element={<Search />} />
             <Route path="/library" element={<Library client={client} />} />
-            <Route path="/artist" element={<Artist />} />
+            <Route path="/artist/:artistId" element={<Artist  client={client} />} />
             <Route path="/song/:songId" element={<Song client={client}/>} />
           </Routes>
         </Router>

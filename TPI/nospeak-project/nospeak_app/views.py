@@ -99,7 +99,7 @@
 
 from rest_framework import generics
 from .models import Artista, Album, Cancion, Playlist, Recomendacion, Historial
-from .serializers import ArtistaSerializer, AlbumSerializer, CancionSerializer, UsuarioSerializer, PlaylistSerializer, RecomendacionSerializer, HistorialSerializer, CancionWithArtistaAlbumSerializer, PlaylistWithUsuarioSerializer
+from .serializers import ArtistaSerializer, AlbumSerializer, CancionSerializer, UsuarioSerializer, PlaylistSerializer, RecomendacionSerializer, HistorialSerializer, CancionWithArtistaAlbumSerializer, PlaylistWithUsuarioSerializer, CancionesPorArtistaSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -142,6 +142,13 @@ class CancionInfo(generics.RetrieveUpdateDestroyAPIView):
 class CancionList(generics.ListCreateAPIView):
     queryset = Cancion.objects.all()
     serializer_class = CancionWithArtistaAlbumSerializer
+
+class CancionesPorArtistaView(generics.ListAPIView):
+    serializer_class = CancionesPorArtistaSerializer
+
+    def get_queryset(self):
+        artista_id = self.kwargs['artista_id']
+        return Cancion.objects.filter(artista=artista_id)
 
 class UsuarioList(generics.ListCreateAPIView):
     queryset = User.objects.all()
