@@ -7,7 +7,6 @@ import {
     PlaylistContainer,
     CardContainer,
     TableContainerStyled,
-    CardLeftContainer,
     StyledH1
 } from '../Song/styles';
 import { useEffect, useState } from 'react';
@@ -20,7 +19,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
-import { StyledDeleteIcon } from '../../styled-components/Body/styles';
+import { StyledDeleteIcon, StyledEditIcon } from '../../styled-components/Body/styles';
 import {
     Overlay,
     AlertContainer,
@@ -29,7 +28,7 @@ import {
     ButtonContainer,
   } from '../../styled-components/Body/styles';
 import { StyledButton, StyledButtonSecondary } from '../../styled-components/styles';
-import { CardRightContainer, ImagePlaylist } from './styles';
+import { CardRightContainer, ImagePlaylist, CardLeftContainer } from './styles';
 
 const columns = [
     { id: 'option', label: '', minWidth: 10 },
@@ -86,6 +85,16 @@ const ArtistPage = ({client}) => {
         // Cierra la alerta
         setDeleteAlertData(null);
       };
+    
+      const formatFollowers = (followers) => {
+        return followers.toLocaleString();
+    };
+
+    const formatDuration = (durationInSeconds) => {
+        const minutes = Math.floor(durationInSeconds / 60);
+        const seconds = durationInSeconds % 60;
+        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    };
 
     return (
         <>
@@ -97,13 +106,17 @@ const ArtistPage = ({client}) => {
                         <CardContainer>
                             <CardLeftContainer>
                                 <ImagePlaylist src={artista.portada}></ImagePlaylist>
+                                <ButtonContainer>
+                                    <StyledDeleteIcon style={{color: 'white', margin: '5px', marginRight: '10px'}}></StyledDeleteIcon>
+                                    <StyledEditIcon style={{color: 'white', margin: '5px', marginLeft: '10px'}}></StyledEditIcon>
+                                </ButtonContainer>
                             </CardLeftContainer>
 
                             <CardRightContainer style={{paddingBottom: '30px'}}>
                                 <p style={{marginBottom: '0', marginTop: '20px'}}>Artista</p>
                                 <StyledH1 style={{ marginTop: '0px', marginBottom: '0px', fontSize: '3em'}}>{artista.nombre}</StyledH1>
                                 <p style={{margin: '0'}}>{artista.nacionalidad}</p>
-                                <p style={{margin: '0'}}>{artista.nro_seguidores} oyentes.</p>                                
+                                <p style={{margin: '0'}}>{formatFollowers(artista.nro_seguidores)} oyentes.</p>                                
                             </CardRightContainer>
                         </CardContainer>
 
@@ -142,7 +155,7 @@ const ArtistPage = ({client}) => {
                                                             <span>{song.titulo}</span>
                                                         ) : null}
                                                         {column.id === 'duracion' && columnIndex === 2 ? (
-                                                            <span>{song.duracion}</span>
+                                                            <span>{formatDuration(song.duracion)}</span>
                                                         ) : null}
                                                         {column.id === 'album' && columnIndex === 3 ? (
                                                             <span>{song.album.titulo}</span>

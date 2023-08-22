@@ -12,6 +12,16 @@ padding-bottom: 15px;
 gap: 10px;
 `
 
+export const CardLeftContainer = styled.div`
+display: flex;
+flex-direction: column;
+background-color: transparent;
+width: 20%;
+align-items: center;
+justify-content: center;
+padding: 15px 15px 15px 15px;
+`
+
 export const ImagePlaylist = styled.img`
   width: 150px; /* Ajusta el tamaño según sea necesario */
   height: 150px;
