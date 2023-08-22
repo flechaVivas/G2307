@@ -34,7 +34,7 @@
 # # ]
 
 from django.urls import path, include
-from .views import ArtistaList, ArtistaDetail, AlbumList, AlbumDetail, CancionInfo, CancionList, CancionDetail, UsuarioList, UsuarioDetail, PlaylistList, PlaylistDetail, RecomendacionList, RecomendacionDetail, HistorialList, HistorialDetail, CancionCreate
+from .views import ArtistaList, ArtistaDetail, AlbumList, AlbumDetail, CancionInfo, CancionList, CancionDetail, PlaylistCreate, PlaylistInfo, UsuarioList, UsuarioDetail, PlaylistList, PlaylistDetail, RecomendacionList, RecomendacionDetail, HistorialList, HistorialDetail, CancionCreate
 from .views import LogoutView, RegistroUsuario, CustomAuthToken
 
 urlpatterns = [
@@ -56,7 +56,9 @@ urlpatterns = [
     path('usuarios/', UsuarioList.as_view(), name='usuario-list'),
     path('usuarios/<int:pk>/', UsuarioDetail.as_view(), name='usuario-detail'),
 
-    path('playlists/', PlaylistList.as_view(), name='playlist-list'),
+    path('playlists-info/', PlaylistList.as_view(), name='playlist-list'),
+    path('playlists-info/<int:pk>/', PlaylistInfo.as_view(), name='playlist-list'),
+    path('playlists/', PlaylistCreate.as_view(), name='playlist-create'),
     path('playlists/<int:pk>/', PlaylistDetail.as_view(), name='playlist-detail'),
 
     path('recomendaciones/', RecomendacionList.as_view(), name='recomendacion-list'),

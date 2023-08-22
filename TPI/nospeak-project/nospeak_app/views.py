@@ -99,7 +99,7 @@
 
 from rest_framework import generics
 from .models import Artista, Album, Cancion, Playlist, Recomendacion, Historial
-from .serializers import ArtistaSerializer, AlbumSerializer, CancionSerializer, UsuarioSerializer, PlaylistSerializer, RecomendacionSerializer, HistorialSerializer, CancionWithArtistaAlbumSerializer
+from .serializers import ArtistaSerializer, AlbumSerializer, CancionSerializer, UsuarioSerializer, PlaylistSerializer, RecomendacionSerializer, HistorialSerializer, CancionWithArtistaAlbumSerializer, PlaylistWithUsuarioSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -151,13 +151,22 @@ class UsuarioDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UsuarioSerializer
 
-class PlaylistList(generics.ListCreateAPIView):
+class PlaylistCreate(generics.ListCreateAPIView):
     queryset = Playlist.objects.all()
     serializer_class = PlaylistSerializer
 
 class PlaylistDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Playlist.objects.all()
     serializer_class = PlaylistSerializer
+
+class PlaylistList(generics.ListCreateAPIView):
+    queryset = Playlist.objects.all()
+    serializer_class = PlaylistWithUsuarioSerializer
+
+class PlaylistInfo(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Playlist.objects.all()
+    serializer_class = PlaylistWithUsuarioSerializer
+
 
 class RecomendacionList(generics.ListCreateAPIView):
     queryset = Recomendacion.objects.all()

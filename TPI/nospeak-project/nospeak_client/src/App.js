@@ -49,7 +49,7 @@ function App() {
             <Route path="/account" element={<Account client={client} />} />
             <Route path="/playlist" element={<Playlist />} />
             <Route path="/search" element={<Search />} />
-            <Route path="/library" element={<Library />} />
+            <Route path="/library" element={<Library client={client} />} />
             <Route path="/artist" element={<Artist />} />
             <Route path="/song/:songId" element={<Song client={client}/>} />
           </Routes>

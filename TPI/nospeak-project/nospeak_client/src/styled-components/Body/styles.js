@@ -1,5 +1,9 @@
 import styled from "styled-components";
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
+import AddCircle from '@mui/icons-material/AddCircle';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 const BodyContainer = styled.div`
     display: flex;
@@ -175,7 +179,28 @@ export const StyledButtonAlert = styled.button`
   }
 `;
 
+const StyledAddCircle = styled(AddCircle)`
+  &:hover {
+      transform: scale(1.1);
+      color: #FFD560; /* Cambia el color de fondo en el hover */
+    }
+`;
+
+const StyledDeleteIcon = styled(DeleteIcon)`
+  &:hover {
+      transform: scale(1.1);
+      color: #FFD560; /* Cambia el color de fondo en el hover */
+    }
+`;
+
+const StyledEditIcon = styled(EditIcon)`
+  &:hover {
+      transform: scale(1.1);
+      color: #FFD560; /* Cambia el color de fondo en el hover */
+    }
+`;
+
 
 
 export { cardStyle,gradientStyle, BodyContainer, HeaderContainer, HeaderLeft, HeaderRight, SearchInput, TitleContainer,
-IconContainer };
+IconContainer, StyledAddCircle, StyledDeleteIcon, StyledEditIcon };

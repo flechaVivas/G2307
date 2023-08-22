@@ -191,6 +191,8 @@ class Playlist(models.Model):
     fecha_creacion = models.DateField(null=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     canciones = models.ManyToManyField(Cancion)
+    portada = models.URLField(null=True)
+
 
     def __str__(self):
         return self.titulo

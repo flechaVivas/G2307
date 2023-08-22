@@ -221,6 +221,32 @@ class PlaylistSerializer(serializers.ModelSerializer):
         model = Playlist
         fields = '__all__'
 
+    def create(self, validated_data):
+        canciones_data = validated_data.pop('canciones')
+        playlist = Playlist.objects.create(**validated_data)
+
+        for cancion_data in canciones_data:
+            artista_data = cancion_data.pop('artista')
+            album_data = cancion_data.pop('album')
+
+            # Buscar una Cancion existente en la base de datos
+            cancion, created = Cancion.objects.get_or_create(
+                artista=artista_data,
+                album=album_data,
+                **cancion_data
+            )
+
+            playlist.canciones.add(cancion)
+
+        return playlist
+
+class PlaylistWithUsuarioSerializer(serializers.ModelSerializer):
+    usuario = UsuarioSerializer()
+    class Meta:
+        model = Playlist
+        fields = '__all__'
+
+
 class RecomendacionSerializer(serializers.ModelSerializer):
     canciones = CancionSerializer(many=True)
 

@@ -110,35 +110,6 @@ export default function Song({client}) {
     }, [songId]);
     console.log(song)
 
-    // if (!song) {
-    //     return <p>Loading...</p>; // Mostrar un mensaje de carga mientras se obtiene la canción
-    // }
-
-    // const handleSave = () => {
-
-    //     const updatedSong = {
-    //         ...song,
-    //         titulo: titulo,
-    //         anio_lanzamiento: anioLanzamiento,
-    //         genero: genero,
-    //         duracion: duracion,
-    //         audio: audio,
-    //         spotify_id: spotify_id,
-    //         artista: artista,
-    //         album: album,
-    //     };
-    
-    //     client.put(`/nospeak-app/api/canciones/${songId}/`, updatedSong)
-    //         .then(response => {
-    //             console.log('Canción actualizada:', response.data);
-    //             setShowSuccessAlert(true);
-    //         })
-    //         .catch(error => {
-    //             console.error('Error al actualizar la canción:', error);
-    //         });
-
-        
-    // };
 
     const handleSave = () => {
         const newSong = {
