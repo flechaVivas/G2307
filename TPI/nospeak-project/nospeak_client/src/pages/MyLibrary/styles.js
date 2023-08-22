@@ -14,6 +14,7 @@ export const PlaylistBox = styled.div`
     &:hover {
         transform: translateY(-5px); 
         box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    }
 `;
 
 export const PlaylistName = styled.h3`

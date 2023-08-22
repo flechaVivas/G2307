@@ -50,8 +50,8 @@ inline-size: 80%;
 margin: auto;
 width: fit-content;
 box-shadow: 0px 0px 10px 1px;
-width: 100%; /* Asegura que la imagen ocupe todo el ancho del contenedor */
-height: 100%; /* Asegura que la imagen ocupe todo el alto del contenedor */
+width: 90%; /* Asegura que la imagen ocupe todo el ancho del contenedor */
+height: 90%; /* Asegura que la imagen ocupe todo el alto del contenedor */
 object-fit: cover;
 `
 

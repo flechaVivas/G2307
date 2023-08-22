@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
@@ -16,7 +15,8 @@ import {
     IconContainer,
     StyledAddCircle, 
     StyledEditIcon, 
-    StyledDeleteIcon
+    StyledDeleteIcon,
+    StyledCard
 } from './styles';
 import {Navigate} from "react-router-dom";
 import { Link } from 'react-router-dom';
@@ -49,7 +49,7 @@ export default function MediaControlCard({client, songs, setSongs, setDeleteAler
             <React.Fragment>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap:5 }}>
                     {songs.map((song, index) => (
-                        <Card key={index} sx={{ display: 'flex', width: 300, marginBottom: 5, marginLeft:2 }}>
+                        <StyledCard key={index} sx={{ display: 'flex', width: 300, marginBottom: 5, marginLeft:2 }}>
                         <Box sx={{ ...cardStyle, display: 'flex', flexDirection: 'column' }}>
                             <CardContent sx={{ flex: '1 0 auto' }}>
                                 <Typography component="div" variant="h5" color="white">
@@ -79,7 +79,7 @@ export default function MediaControlCard({client, songs, setSongs, setDeleteAler
                             image={song.album.portada}
                             alt={`${song.titulo} album cover`}
                         />
-                        </Card>
+                        </StyledCard>
                     ))}
                 </Box>
             </React.Fragment>

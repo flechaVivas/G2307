@@ -239,12 +239,66 @@ class PlaylistSerializer(serializers.ModelSerializer):
             playlist.canciones.add(cancion)
 
         return playlist
+    
+    def update(self, instance, validated_data):
+        canciones_data = validated_data.pop('canciones', [])  # Get canciones_data or empty list
+
+        instance.titulo = validated_data.get('titulo', instance.titulo)
+        instance.descripcion = validated_data.get('descripcion', instance.descripcion)
+        instance.fecha_creacion = validated_data.get('fecha_creacion', instance.fecha_creacion)
+        instance.usuario = validated_data.get('usuario', instance.usuario)
+        instance.portada = validated_data.get('portada', instance.portada)
+
+        instance.canciones.clear()  # Clear existing songs from the playlist
+
+        for cancion_data in canciones_data:
+            artista_data = cancion_data.pop('artista')
+            album_data = cancion_data.pop('album')
+
+            cancion, created = Cancion.objects.get_or_create(
+                artista=artista_data,
+                album=album_data,
+                **cancion_data
+            )
+
+            instance.canciones.add(cancion)
+
+        instance.save()
+        return instance
 
 class PlaylistWithUsuarioSerializer(serializers.ModelSerializer):
     usuario = UsuarioSerializer()
+    canciones = CancionSerializer(many=True)
+
     class Meta:
         model = Playlist
         fields = '__all__'
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        # Update the representation of each song to include artist and album details
+        songs_representation = []
+        for song_data in representation['canciones']:
+            artist_id = song_data['artista']
+            album_id = song_data['album']
+
+            # Get artist and album instances
+            artist_instance = Artista.objects.get(pk=artist_id)
+            album_instance = Album.objects.get(pk=album_id)
+
+            # Include artist and album details in the song representation
+            song_representation = song_data.copy()
+            song_representation['artista'] = ArtistaSerializer(artist_instance).data
+            song_representation['album'] = AlbumSerializer(album_instance).data
+
+            songs_representation.append(song_representation)
+
+        representation['canciones'] = songs_representation
+        return representation
+
+
+    
 
 
 class RecomendacionSerializer(serializers.ModelSerializer):

@@ -3,6 +3,9 @@ import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, B
 import AddCircle from '@mui/icons-material/AddCircle';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Card from '@mui/material/Card';
+
+
 
 
 const BodyContainer = styled.div`
@@ -200,7 +203,17 @@ const StyledEditIcon = styled(EditIcon)`
     }
 `;
 
+const StyledCard = styled(Card)`
+cursor: pointer;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    
+    &:hover {
+        transform: translateY(-5px); 
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+    }
+`;
+
 
 
 export { cardStyle,gradientStyle, BodyContainer, HeaderContainer, HeaderLeft, HeaderRight, SearchInput, TitleContainer,
-IconContainer, StyledAddCircle, StyledDeleteIcon, StyledEditIcon };
+IconContainer, StyledAddCircle, StyledDeleteIcon, StyledEditIcon, StyledCard };

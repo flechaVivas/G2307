@@ -135,11 +135,13 @@ const Library = ({client}) => {
                     <PlaylistGrid>
                         {activeCategory === 'Playlists' && (
                             playlistData.map((playlist, index) => (
-                            <PlaylistBox key={index} onClick={() => {setGoToPlaylist(true);}}>
-                                <PlaylistImage src="https://i.scdn.co/image/ab67706c0000da84e4c3b621c226f0a097097aeb"></PlaylistImage>
-                                <PlaylistName>{playlist.titulo}</PlaylistName>
-                                <PlaylistDescription>{playlist.usuario.username}</PlaylistDescription>
-                            </PlaylistBox>
+                            <Link key={index} to={`/playlist/${playlist.id}`}>
+                                <PlaylistBox key={index}>
+                                    <PlaylistImage src={playlist.portada}></PlaylistImage>
+                                    <PlaylistName>{playlist.titulo}</PlaylistName>
+                                    <PlaylistDescription>{playlist.usuario.username}</PlaylistDescription>
+                                </PlaylistBox>
+                            </Link>
                         ))
                         )}
                         {/* {activeCategory === 'Made for You' && (

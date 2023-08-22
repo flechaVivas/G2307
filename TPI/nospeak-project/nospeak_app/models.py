@@ -188,7 +188,7 @@ class Cancion(models.Model):
 class Playlist(models.Model):
     titulo = models.CharField(max_length=100)
     descripcion = models.TextField()
-    fecha_creacion = models.DateField(null=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True, null=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     canciones = models.ManyToManyField(Cancion)
     portada = models.URLField(null=True)
@@ -203,7 +203,7 @@ class Recomendacion(models.Model):
     canciones = models.ManyToManyField(Cancion)
 
 class Historial(models.Model):
-    fecha_reproduccion = models.DateField()
+    fecha_reproduccion = models.DateTimeField(auto_now_add=True, null=True)
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     canciones = models.ManyToManyField(Cancion)
 

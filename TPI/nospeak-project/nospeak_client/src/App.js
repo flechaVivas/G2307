@@ -47,7 +47,7 @@ function App() {
             <Route path="/home" element={<Home client={client} />} />
             <Route path="/register" element={<Register client={client} />} />
             <Route path="/account" element={<Account client={client} />} />
-            <Route path="/playlist" element={<Playlist />} />
+            <Route path="/playlist/:playlistId" element={<Playlist client={client}/>} />
             <Route path="/search" element={<Search />} />
             <Route path="/library" element={<Library client={client} />} />
             <Route path="/artist" element={<Artist />} />
