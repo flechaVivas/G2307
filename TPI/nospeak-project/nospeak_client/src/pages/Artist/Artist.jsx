@@ -27,8 +27,22 @@ import {
     AlertText,
     ButtonContainer,
   } from '../../styled-components/Body/styles';
-import { StyledButton, StyledButtonSecondary } from '../../styled-components/styles';
-import { CardRightContainer, ImagePlaylist, CardLeftContainer } from './styles';
+import { 
+    StyledButton, 
+    StyledButtonSecondary,
+    Input,
+    Label
+} from '../../styled-components/styles';
+import { 
+    CardRightContainer, 
+    ImagePlaylist, 
+    CardLeftContainer, 
+    EditAlertTitle,
+    CustomEditAlert,
+    EditAlertButtonContainer,
+    EditAlertContent,
+    EditAlertText, 
+} from './styles';
 
 const columns = [
     { id: 'option', label: '', minWidth: 10 },
@@ -48,6 +62,8 @@ const ArtistPage = ({client}) => {
     const { artistId } = useParams();
 
     const [deleteAlertData, setDeleteAlertData] = React.useState(null);
+
+    const [isEditAlertOpen, setIsEditAlertOpen] = useState(false);
 
     useEffect(() => {
         // Llamada a la API para obtener el artista
@@ -96,6 +112,19 @@ const ArtistPage = ({client}) => {
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
 
+    const handleEditButtonClick = () => {
+        setIsEditAlertOpen(true);
+      };
+
+      const handleCloseAlert = () => {
+        setIsEditAlertOpen(false);
+      };
+
+      const handleSaveButtonClick = () => {
+        // Realizar la lógica de PATCH a la API aquí
+        setIsEditAlertOpen(false);
+      };
+
     return (
         <>
             <SpotifyBody>
@@ -117,7 +146,7 @@ const ArtistPage = ({client}) => {
 
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginRight:'20px' }}>
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <StyledEditIcon style={{ color: 'white', margin: '5px', fontSize: '36px' }} />
+                                    <StyledEditIcon style={{ color: 'white', margin: '5px', fontSize: '36px' }} onClick={handleEditButtonClick} />
                                     <StyledDeleteIcon style={{ color: 'white', margin: '5px', fontSize: '36px' }} />
                                 </div>
                             </div>
@@ -191,8 +220,34 @@ const ArtistPage = ({client}) => {
                     </AlertContainer>
                 </Overlay>
             )}
+            {isEditAlertOpen && (
+                // <Overlay>
+                    <CustomEditAlert>
+                        <EditAlertContent>
+                            <EditAlertTitle>Editar artista</EditAlertTitle>
+                            <EditAlertText>
+                                <Label>Nombre</Label>
+                                <Input type="text" value={artista.nombre}/>
+
+                                <Label>Nacionalidad</Label>
+                                <Input type="text" value={artista.nacionalidad} />
+
+                                <Label>Número de seguidores</Label>
+                                <Input type="text" value={artista.nro_seguidores} />
+                                
+                            </EditAlertText>
+                            <EditAlertButtonContainer>
+                                <StyledButtonSecondary onClick={handleCloseAlert}>Cancel</StyledButtonSecondary>
+                                <StyledButton onClick={handleSaveButtonClick}>Save</StyledButton>
+                            </EditAlertButtonContainer>
+                        </EditAlertContent>
+                    </CustomEditAlert>
+                // </Overlay>
+                
+            )}
         </>
     )
 }
 
 export default ArtistPage;
+
