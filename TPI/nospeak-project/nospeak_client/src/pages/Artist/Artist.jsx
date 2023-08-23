@@ -106,22 +106,25 @@ const ArtistPage = ({client}) => {
                         <CardContainer>
                             <CardLeftContainer>
                                 <ImagePlaylist src={artista.portada}></ImagePlaylist>
-                                <ButtonContainer>
-                                    <StyledDeleteIcon style={{color: 'white', margin: '5px', marginRight: '10px'}}></StyledDeleteIcon>
-                                    <StyledEditIcon style={{color: 'white', margin: '5px', marginLeft: '10px'}}></StyledEditIcon>
-                                </ButtonContainer>
                             </CardLeftContainer>
 
-                            <CardRightContainer style={{paddingBottom: '30px'}}>
-                                <p style={{marginBottom: '0', marginTop: '20px'}}>Artista</p>
-                                <StyledH1 style={{ marginTop: '0px', marginBottom: '0px', fontSize: '3em'}}>{artista.nombre}</StyledH1>
-                                <p style={{margin: '0'}}>{artista.nacionalidad}</p>
-                                <p style={{margin: '0'}}>{formatFollowers(artista.nro_seguidores)} oyentes.</p>                                
+                            <CardRightContainer style={{ paddingBottom: '30px' }}>
+                                <p style={{ marginBottom: '0', marginTop: '20px' }}>Artista</p>
+                                <StyledH1 style={{ marginTop: '0px', marginBottom: '0px', fontSize: '3em' }}>{artista.nombre}</StyledH1>
+                                <p style={{ margin: '0' }}>{artista.nacionalidad}</p>
+                                <p style={{ margin: '0' }}>{formatFollowers(artista.nro_seguidores)} oyentes.</p>
                             </CardRightContainer>
+
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginRight:'20px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <StyledEditIcon style={{ color: 'white', margin: '5px', fontSize: '36px' }} />
+                                    <StyledDeleteIcon style={{ color: 'white', margin: '5px', fontSize: '36px' }} />
+                                </div>
+                            </div>
                         </CardContainer>
 
                         ) : (
-                                    <p>Loading user information...</p>
+                            <p>Loading user information...</p>
                         )}
                         <TableContainerStyled>
                             <TableContainer sx={{ maxHeight: 440 }}>
