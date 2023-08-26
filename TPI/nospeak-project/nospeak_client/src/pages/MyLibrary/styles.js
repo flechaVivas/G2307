@@ -104,3 +104,40 @@ export const ArtistName = styled.p`
   color: #fff;
   margin-top: 5px;
 `;
+
+export const ComboBoxContainer = styled.div`
+  position: relative;
+  display: inline-block;
+  color: #000;
+  width: 125px;
+`;
+
+export const ComboBoxOptions = styled.div`
+  position: absolute;
+  top: calc(-105px);
+  left: 0;
+  width: 100%; /* Asegura que el ancho sea igual al del ComboBoxContainer */
+  background-color: rgba(0, 0, 0, 0.3);
+  /* border: 1px solid #ddd; */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+`;
+
+export const ComboBoxOption = styled.div`
+  padding: 10px 20px 10px 10px; /* Agrega padding izquierdo */
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+  width: calc(100%); /* Ajusta el ancho restando el padding */
+  transition: background-color 0.2s, color 0.2s;
+  box-sizing: border-box; /* Evita que el padding afecte el ancho total */
+
+  &:hover {
+    background-color: #f5f5f5;
+    color: #222;
+  }
+`;
+
+
+
+

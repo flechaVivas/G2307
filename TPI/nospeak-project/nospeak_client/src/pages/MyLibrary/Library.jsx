@@ -5,13 +5,25 @@ import { SpotifyBody } from '../Home/styles';
 import Footer from '../../styled-components/Footer/Footer';
 import Header from '../../styled-components/Body/Header';
 import { NavContainer, NavItem, PlaylistBox, PlaylistDescription, PlaylistGrid, PlaylistImage, PlaylistName } from './styles';
-import { ArtistBox, ArtistImage, ArtistName, ArtistGrid } from './styles';
+import { ArtistBox, ArtistImage, ArtistName, ArtistGrid,
+ComboBoxContainer, ComboBoxOption, ComboBoxOptions } from './styles';
 import { Navigate, useLocation } from 'react-router-dom';
 import { StyledAddCircle, IconContainer } from '../../styled-components/Body/styles';
 import { Link } from 'react-router-dom';
 import {useSelector} from 'react-redux';
-
-
+import { 
+    EditAlertTitle,
+    CustomEditAlert,
+    EditAlertButtonContainer,
+    EditAlertContent,
+    EditAlertText, 
+} from '../Artist/styles';
+import { 
+    StyledButton, 
+    StyledButtonSecondary,
+    Input,
+    Label
+} from '../../styled-components/styles';
 
 const Library = ({client}) => {
 
@@ -28,8 +40,26 @@ const Library = ({client}) => {
 
     const [albumData, setAlbumData] = useState([]);
 
+    const [isComboBoxOpen, setIsComboBoxOpen] = useState(false);
+
+    const [isCreateArtistAlertOpen, setIsCreateArtistAlertOpen] = useState(false);
+
+    const [isCreateAlbumAlertOpen, setIsCreateAlbumAlertOpen] = useState(false);
+
+
+    const [newArtista, setNewArtista] = useState({
+        nombre: '',
+        nacionalidad: '',
+        nro_seguidores: '',
+    });
+
+    const [newAlbum, setNewAlbum] = useState({
+        titulo: '',
+        portada: '',
+    });
 
     const user = useSelector(state => state.user.user);
+
 
     useEffect(() => {
         // Llamada a la API para obtener las playlists del usuario
@@ -73,6 +103,59 @@ const Library = ({client}) => {
         setActiveCategory(category);
     };
 
+
+
+    const handleComboBoxButtonClick = () => {
+        setIsComboBoxOpen(!isComboBoxOpen);
+    };
+
+    const handleOptionClick = (option) => {
+        if(option === 'playlist'){
+
+        }
+        if(option === 'artista'){
+            setIsCreateArtistAlertOpen(true)
+        }
+        if(option === 'album'){
+            setIsCreateAlbumAlertOpen(true)
+
+        }
+        console.log('Selected option:', option);
+        setIsComboBoxOpen(false); // Cerrar el ComboBox después de seleccionar una opción
+    };
+
+    const handleCloseAlert = () => {
+        setIsCreateArtistAlertOpen(false);
+        setIsCreateAlbumAlertOpen(false);
+      };
+
+      const handleSaveArtistaButtonClick = async () => {
+        try {
+            await client.post(`/nospeak-app/api/artistas/`, newArtista);
+            setNewArtista({
+                nombre: '',
+                nacionalidad: '',
+                nro_seguidores: '',
+            });
+            setIsCreateArtistAlertOpen(false);
+        } catch (error) {
+            console.error('Error creating artist:', error);
+        }
+    };
+
+    const handleSaveAlbumButtonClick = async () => {
+        try {
+            await client.post(`/nospeak-app/api/albums/`, newAlbum);
+            setNewAlbum({
+                titulo: '',
+                portada: ''
+            });
+            setIsCreateAlbumAlertOpen(false);
+        } catch (error) {
+            console.error('Error creating album:', error);
+        }
+    };
+
     return (
         <>
             <SpotifyBody>
@@ -92,9 +175,22 @@ const Library = ({client}) => {
                             </NavItem>
                         ))}
                         <IconContainer>
-                            <Link to={{ pathname: `/song/${0}` }}>
-                                <StyledAddCircle sx={{ color: '#FFA130'}} />
-                            </Link>
+                            <StyledAddCircle sx={{ color: '#FFA130'}} onClick={handleComboBoxButtonClick}/>
+                            {isComboBoxOpen && (
+                                <ComboBoxContainer>
+                                    <ComboBoxOptions>
+                                    <ComboBoxOption onClick={() => handleOptionClick('playlist')}>
+                                    Crear playlist
+                                    </ComboBoxOption>
+                                    <ComboBoxOption onClick={() => handleOptionClick('artista')}>
+                                    Crear artista
+                                    </ComboBoxOption>
+                                    <ComboBoxOption onClick={() => handleOptionClick('album')}>
+                                    Crear album
+                                    </ComboBoxOption>
+                                </ComboBoxOptions>
+                                </ComboBoxContainer>
+                                )}
                         </IconContainer>
                     </NavContainer>
                     <PlaylistGrid>
@@ -148,6 +244,75 @@ const Library = ({client}) => {
                 </BodyContainer>
             </SpotifyBody>
             <Footer/>
+            {isCreateArtistAlertOpen && (
+                // <Overlay>
+                    <CustomEditAlert>
+                        <EditAlertContent>
+                            <EditAlertTitle>Crear artista</EditAlertTitle>
+                            <EditAlertText>
+                                <Label style={{marginBottom: '0px', marginTop: '10px'}}>Nombre</Label>
+                                <Input
+                                    type="text"
+                                    value={newArtista.nombre}
+                                    onChange={event => setNewArtista({ ...newArtista, nombre: event.target.value })}
+                                />
+
+                                <Label style={{marginBottom: '0px', marginTop: '10px'}}>Nacionalidad</Label>
+                                <Input
+                                    type="text"
+                                    value={newArtista.nacionalidad}
+                                    onChange={event => setNewArtista({ ...newArtista, nacionalidad: event.target.value })}
+                                />
+
+                                <Label style={{marginBottom: '0px', marginTop: '10px'}}>Número de seguidores</Label>
+                                <Input
+                                    type="text"
+                                    value={newArtista.nro_seguidores}
+                                    onChange={event => setNewArtista({ ...newArtista, nro_seguidores: event.target.value })}
+                                />
+
+                                <Label style={{marginBottom: '0px', marginTop: '10px'}}>Portada</Label>
+                                <Input
+                                    type="text"
+                                    value={newArtista.portada}
+                                    onChange={event => setNewArtista({ ...newArtista, portada: event.target.value })}
+                                />
+                            </EditAlertText>
+                            <EditAlertButtonContainer>
+                                <StyledButtonSecondary onClick={handleCloseAlert}>Cancel</StyledButtonSecondary>
+                                <StyledButton onClick={handleSaveArtistaButtonClick}>Save</StyledButton>
+                            </EditAlertButtonContainer>
+                        </EditAlertContent>
+                    </CustomEditAlert>
+
+            )}
+            {isCreateAlbumAlertOpen && (
+                // <Overlay>
+                    <CustomEditAlert>
+                        <EditAlertContent>
+                            <EditAlertTitle>Crear album</EditAlertTitle>
+                            <EditAlertText>
+                                <Label style={{marginBottom: '0px', marginTop: '10px'}}>Título</Label>
+                                <Input
+                                    type="text"
+                                    value={newAlbum.titulo}
+                                    onChange={event => setNewAlbum({ ...newAlbum, titulo: event.target.value })}
+                                />
+
+                                <Label style={{marginBottom: '0px', marginTop: '10px'}}>Portada</Label>
+                                <Input
+                                    type="text"
+                                    value={newAlbum.portada}
+                                    onChange={event => setNewAlbum({ ...newAlbum, portada: event.target.value })}
+                                />
+                            </EditAlertText>
+                            <EditAlertButtonContainer>
+                                <StyledButtonSecondary onClick={handleCloseAlert}>Cancel</StyledButtonSecondary>
+                                <StyledButton onClick={handleSaveAlbumButtonClick}>Save</StyledButton>
+                            </EditAlertButtonContainer>
+                        </EditAlertContent>
+                    </CustomEditAlert>
+            )}
         </>
     )
 }

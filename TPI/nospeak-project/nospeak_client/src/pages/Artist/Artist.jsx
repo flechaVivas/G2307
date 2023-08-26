@@ -43,6 +43,8 @@ import {
     EditAlertContent,
     EditAlertText, 
 } from './styles';
+import { Navigate } from 'react-router-dom';
+
 
 const columns = [
     { id: 'option', label: '', minWidth: 10 },
@@ -51,9 +53,6 @@ const columns = [
     { id: 'album', label: 'Album', minWidth: 170 }
   ];
 
-function createData(title, listeners, duration) {
-    return { title, listeners, duration };
-}
 
 const ArtistPage = ({client}) => {
 
@@ -63,14 +62,28 @@ const ArtistPage = ({client}) => {
 
     const [deleteAlertData, setDeleteAlertData] = React.useState(null);
 
+    const [deleteArtistAlertData, setDeleteArtistAlertData] = React.useState(null);
+
     const [isEditAlertOpen, setIsEditAlertOpen] = useState(false);
+
+    const [editedArtista, setEditedArtista] = useState({
+        nombre: '',
+        nacionalidad: '',
+        nro_seguidores: '',
+    });
+
+    const [goToLibrary, setGoToLibrary] = React.useState(false);
+
 
     useEffect(() => {
         // Llamada a la API para obtener el artista
         client.get(`/nospeak-app/api/artistas/${artistId}/`)
-          .then(response => setArtista(response.data))
+          .then(response => {
+            setArtista(response.data)
+            setEditedArtista(response.data)
+          })
           .catch(error => console.error('Error fetching artist:', error));
-    
+        
         // Llamada a la API para obtener las canciones del artista
         client.get(`/nospeak-app/api/canciones-artista/${artistId}/`)
           .then(response => setSongs(response.data))
@@ -100,11 +113,32 @@ const ArtistPage = ({client}) => {
     const handleDeleteCancel = () => {
         // Cierra la alerta
         setDeleteAlertData(null);
+        setDeleteArtistAlertData(null);
       };
+
+    const handleDeleteArtist = () => {
+        setDeleteArtistAlertData(true);
+    }
+
+    const handleDeleteArtistConfirm = async () => {
+        try {
+            await client.delete(`/nospeak-app/api/artistas/${artistId}/`);
+            setDeleteAlertData(null);
+            setGoToLibrary(true);
+
+        } catch (error) {
+            console.error('Error deleting artist:', error);
+        }
+    };
+
+    if (goToLibrary) {
+        return <Navigate to="/library" />;
+    }
     
-      const formatFollowers = (followers) => {
+    const formatFollowers = (followers) => {
         return followers.toLocaleString();
     };
+
 
     const formatDuration = (durationInSeconds) => {
         const minutes = Math.floor(durationInSeconds / 60);
@@ -120,10 +154,15 @@ const ArtistPage = ({client}) => {
         setIsEditAlertOpen(false);
       };
 
-      const handleSaveButtonClick = () => {
-        // Realizar la lógica de PATCH a la API aquí
-        setIsEditAlertOpen(false);
-      };
+      const handleSaveButtonClick = async () => {
+        try {
+            await client.patch(`/nospeak-app/api/artistas/${artistId}/`, editedArtista);
+            setArtista(editedArtista);
+            setIsEditAlertOpen(false);
+        } catch (error) {
+            console.error('Error updating artist:', error);
+        }
+    };
 
     return (
         <>
@@ -147,7 +186,7 @@ const ArtistPage = ({client}) => {
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginRight:'20px' }}>
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
                                     <StyledEditIcon style={{ color: 'white', margin: '5px', fontSize: '36px' }} onClick={handleEditButtonClick} />
-                                    <StyledDeleteIcon style={{ color: 'white', margin: '5px', fontSize: '36px' }} />
+                                    <StyledDeleteIcon style={{ color: 'white', margin: '5px', fontSize: '36px' }} onClick={() => handleDeleteArtist()}/>
                                 </div>
                             </div>
                         </CardContainer>
@@ -157,7 +196,7 @@ const ArtistPage = ({client}) => {
                         )}
                         <TableContainerStyled>
                             <TableContainer sx={{ maxHeight: 440 }}>
-                                <Table stickyHeader aria-label="sticky table" sx={{ margin: 0 }}>
+                                <Table  sx={{ margin: 0 }}>
                                     <TableHead>
                                         <TableRow>
                                             {columns.map((column) => (
@@ -226,15 +265,33 @@ const ArtistPage = ({client}) => {
                         <EditAlertContent>
                             <EditAlertTitle>Editar artista</EditAlertTitle>
                             <EditAlertText>
-                                <Label>Nombre</Label>
-                                <Input type="text" value={artista.nombre}/>
+                                <Label style={{marginBottom: '0px', marginTop: '10px'}}>Nombre</Label>
+                                <Input
+                                    type="text"
+                                    value={editedArtista.nombre}
+                                    onChange={event => setEditedArtista({ ...editedArtista, nombre: event.target.value })}
+                                />
 
-                                <Label>Nacionalidad</Label>
-                                <Input type="text" value={artista.nacionalidad} />
+                                <Label style={{marginBottom: '0px', marginTop: '10px'}}>Nacionalidad</Label>
+                                <Input
+                                    type="text"
+                                    value={editedArtista.nacionalidad}
+                                    onChange={event => setEditedArtista({ ...editedArtista, nacionalidad: event.target.value })}
+                                />
 
-                                <Label>Número de seguidores</Label>
-                                <Input type="text" value={artista.nro_seguidores} />
-                                
+                                <Label style={{marginBottom: '0px', marginTop: '10px'}}>Número de seguidores</Label>
+                                <Input
+                                    type="text"
+                                    value={editedArtista.nro_seguidores}
+                                    onChange={event => setEditedArtista({ ...editedArtista, nro_seguidores: event.target.value })}
+                                />
+
+                                <Label style={{marginBottom: '0px', marginTop: '10px'}}>Portada</Label>
+                                <Input
+                                    type="text"
+                                    value={editedArtista.portada}
+                                    onChange={event => setEditedArtista({ ...editedArtista, portada: event.target.value })}
+                                />
                             </EditAlertText>
                             <EditAlertButtonContainer>
                                 <StyledButtonSecondary onClick={handleCloseAlert}>Cancel</StyledButtonSecondary>
@@ -244,6 +301,22 @@ const ArtistPage = ({client}) => {
                     </CustomEditAlert>
                 // </Overlay>
                 
+            )}
+            {deleteArtistAlertData && (
+                <Overlay>
+                    <AlertContainer>
+                    <AlertTitle>Eliminar artista</AlertTitle>
+                    <AlertText>
+                        ¿Estás seguro de que deseas eliminar el artista "{artista?.nombre}"?
+                    </AlertText>
+                    <ButtonContainer>
+                        <StyledButtonSecondary style={{width: '50%', marginRight: '5px'}} onClick={handleDeleteCancel}>Cancelar</StyledButtonSecondary>
+                        <StyledButton style={{backgroundColor: '#FF5630', width: '50%', marginLeft: '5px'}} onClick={() => handleDeleteArtistConfirm()}>
+                        Eliminar
+                        </StyledButton>
+                    </ButtonContainer>
+                    </AlertContainer>
+                </Overlay>
             )}
         </>
     )

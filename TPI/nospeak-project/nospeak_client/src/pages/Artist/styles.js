@@ -67,6 +67,7 @@ export const EditAlertButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
+  gap: 10px
 `;
 
 
