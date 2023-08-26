@@ -18,6 +18,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { StyledDeleteIcon } from '../../styled-components/Body/styles';
 import PlaylistAdd from '@mui/icons-material/PlaylistAdd';
+import { StyledEditIcon } from '../../styled-components/Body/styles';
 import { format } from 'date-fns';
 import {
     Overlay,
@@ -155,6 +156,13 @@ const Playlist = ({client}) => {
                                     <p>Loading user information...</p>
                                 )}
                             </CardRightContainer>
+
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginRight:'20px' }}>
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <StyledEditIcon style={{ color: 'white', margin: '5px', fontSize: '36px' }} />
+                                    <StyledDeleteIcon style={{ color: 'white', margin: '5px', fontSize: '36px' }} />
+                                </div>
+                            </div>
                         </CardContainer>
                         <TableContainerStyled>
                             <TableContainer sx={{ maxHeight: 440}}>
@@ -272,6 +280,7 @@ const Playlist = ({client}) => {
                     </AlertContainer>
                 </Overlay>
             )}
+            
         </>  
         );
 }

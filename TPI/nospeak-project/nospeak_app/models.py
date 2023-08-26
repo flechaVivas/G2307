@@ -1,4 +1,5 @@
 
+from ast import Tuple
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
@@ -190,7 +191,7 @@ class Playlist(models.Model):
     descripcion = models.TextField()
     fecha_creacion = models.DateTimeField(auto_now_add=True, null=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    canciones = models.ManyToManyField(Cancion)
+    canciones = models.ManyToManyField(Cancion, null=True)
     portada = models.URLField(null=True)
 
 

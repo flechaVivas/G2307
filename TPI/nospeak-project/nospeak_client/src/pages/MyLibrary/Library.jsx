@@ -46,6 +46,7 @@ const Library = ({client}) => {
 
     const [isCreateAlbumAlertOpen, setIsCreateAlbumAlertOpen] = useState(false);
 
+    const [isCreatePlaylistAlertOpen, setIsCreatePlaylistAlertOpen] = useState(false);
 
     const [newArtista, setNewArtista] = useState({
         nombre: '',
@@ -60,6 +61,13 @@ const Library = ({client}) => {
 
     const user = useSelector(state => state.user.user);
 
+    const [newPlaylist, setNewPlaylist] = useState({
+        canciones: [],
+        titulo: '',
+        descripcion: '',
+        portada: '',
+        usuario: user.id
+    });
 
     useEffect(() => {
         // Llamada a la API para obtener las playlists del usuario
@@ -111,6 +119,7 @@ const Library = ({client}) => {
 
     const handleOptionClick = (option) => {
         if(option === 'playlist'){
+            setIsCreatePlaylistAlertOpen(true)
 
         }
         if(option === 'artista'){
@@ -121,12 +130,13 @@ const Library = ({client}) => {
 
         }
         console.log('Selected option:', option);
-        setIsComboBoxOpen(false); // Cerrar el ComboBox después de seleccionar una opción
+        setIsComboBoxOpen(false);
     };
 
     const handleCloseAlert = () => {
         setIsCreateArtistAlertOpen(false);
         setIsCreateAlbumAlertOpen(false);
+        setIsCreatePlaylistAlertOpen(false)
       };
 
       const handleSaveArtistaButtonClick = async () => {
@@ -153,6 +163,22 @@ const Library = ({client}) => {
             setIsCreateAlbumAlertOpen(false);
         } catch (error) {
             console.error('Error creating album:', error);
+        }
+    };
+
+    const handleSavePlaylistButtonClick = async () => {
+        try {
+            await client.post(`/nospeak-app/api/playlists/`, newPlaylist);
+            setNewPlaylist({
+                canciones: [],
+                titulo: '',
+                descripcion: '',
+                portada: '',
+                usuario: user.id
+            });
+            setIsCreatePlaylistAlertOpen(false);
+        } catch (error) {
+            console.error('Error creating playlist:', error);
         }
     };
 
@@ -309,6 +335,40 @@ const Library = ({client}) => {
                             <EditAlertButtonContainer>
                                 <StyledButtonSecondary onClick={handleCloseAlert}>Cancel</StyledButtonSecondary>
                                 <StyledButton onClick={handleSaveAlbumButtonClick}>Save</StyledButton>
+                            </EditAlertButtonContainer>
+                        </EditAlertContent>
+                    </CustomEditAlert>
+            )}
+            {isCreatePlaylistAlertOpen && (
+                // <Overlay>
+                    <CustomEditAlert>
+                        <EditAlertContent>
+                            <EditAlertTitle>Crear Playlist</EditAlertTitle>
+                            <EditAlertText>
+                                <Label style={{marginBottom: '0px', marginTop: '10px'}}>Título</Label>
+                                <Input
+                                    type="text"
+                                    value={newPlaylist.titulo}
+                                    onChange={event => setNewPlaylist({ ...newPlaylist, titulo: event.target.value })}
+                                />
+
+                                <Label style={{marginBottom: '0px', marginTop: '10px'}}>Descripción</Label>
+                                <Input
+                                    type="text"
+                                    value={newPlaylist.descripcion}
+                                    onChange={event => setNewPlaylist({ ...newPlaylist, descripcion: event.target.value })}
+                                />
+
+                                <Label style={{marginBottom: '0px', marginTop: '10px'}}>Portada</Label>
+                                <Input
+                                    type="text"
+                                    value={newPlaylist.portada}
+                                    onChange={event => setNewPlaylist({ ...newPlaylist, portada: event.target.value })}
+                                />
+                            </EditAlertText>
+                            <EditAlertButtonContainer>
+                                <StyledButtonSecondary onClick={handleCloseAlert}>Cancel</StyledButtonSecondary>
+                                <StyledButton onClick={handleSavePlaylistButtonClick}>Save</StyledButton>
                             </EditAlertButtonContainer>
                         </EditAlertContent>
                     </CustomEditAlert>
