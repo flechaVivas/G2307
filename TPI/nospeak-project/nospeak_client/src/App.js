@@ -14,6 +14,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Library from './pages/MyLibrary/Library';
 import Artist from './pages/Artist/Artist';
+import Album from './pages/Album/Album';
 import { useSelector } from 'react-redux';
 
 export const theme = createTheme({
@@ -52,6 +53,8 @@ function App() {
             <Route path="/library" element={<Library client={client} />} />
             <Route path="/artist/:artistId" element={<Artist  client={client} />} />
             <Route path="/song/:songId" element={<Song client={client}/>} />
+            <Route path="/album/:albumId" element={<Album  client={client} />} />
+
           </Routes>
         </Router>
       </div>

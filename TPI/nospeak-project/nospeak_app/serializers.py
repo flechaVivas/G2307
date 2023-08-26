@@ -305,6 +305,13 @@ class CancionesPorArtistaSerializer(serializers.ModelSerializer):
         model = Cancion
         fields = '__all__'
 
+class CancionesPorAlbumSerializer(serializers.ModelSerializer):
+    artista = ArtistaSerializer()
+
+    class Meta:
+        model = Cancion
+        fields = '__all__'
+
 
 class RecomendacionSerializer(serializers.ModelSerializer):
     canciones = CancionSerializer(many=True)
