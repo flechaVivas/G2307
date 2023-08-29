@@ -27,7 +27,14 @@ import {
     AlertText,
     ButtonContainer,
   } from '../../styled-components/Body/styles';
-import { StyledButton, StyledButtonSecondary } from '../../styled-components/styles';
+import { StyledButton, StyledButtonSecondary, Input, Label } from '../../styled-components/styles';
+import{
+    EditAlertTitle,
+    CustomEditAlert,
+    EditAlertButtonContainer,
+    EditAlertContent,
+    EditAlertText, 
+} from '../Artist/styles';
 
 
 const columns = [
@@ -57,7 +64,14 @@ const Playlist = ({client}) => {
 
     const [selectedSongs, setSelectedSongs] = useState([]);
 
+    const [isEditAlertOpen, setIsEditAlertOpen] = useState(false);
 
+    const [editedPlaylist, setEditedPlaylist] = useState({
+        titulo: '',
+        descripcion: '',
+        portada: '',
+        usuario: '',
+    });
     
 
     const handleAddSongsClick = () => {
@@ -81,6 +95,15 @@ const Playlist = ({client}) => {
           const response = await client.get(`/nospeak-app/api/playlists-info/${playlistId}/`);
           setPlaylist(response.data);    
           setPlaylistSongs(response.data.canciones);
+          response.data.usuario = response.data.usuario.id
+
+          response.data.canciones = response.data.canciones.map(song => ({
+            ...song,
+            artista: song.artista.id,
+            album: song.album.id,
+        }));
+
+          setEditedPlaylist(response.data)
         } catch (error) {
           console.error('Error fetching playlist info:', error);
         }
@@ -145,6 +168,24 @@ const Playlist = ({client}) => {
           console.error('Error updating playlist:', error);
         }
       };
+
+      const handleEditButtonClick = () => {
+        setIsEditAlertOpen(true);
+      };
+
+      const handleCloseAlert = () => {
+        setIsEditAlertOpen(false);
+      };
+
+      const handleSaveButtonClick = async () => {
+        try {
+            await client.patch(`/nospeak-app/api/playlists/${playlistId}/`, editedPlaylist);
+            setPlaylist(editedPlaylist);
+            setIsEditAlertOpen(false);
+        } catch (error) {
+            console.error('Error updating playlist:', error);
+        }
+    };
       
     
     return (
@@ -174,7 +215,7 @@ const Playlist = ({client}) => {
 
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginRight:'20px' }}>
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                                    <StyledEditIcon style={{ color: 'white', margin: '5px', fontSize: '36px' }} />
+                                    <StyledEditIcon style={{ color: 'white', margin: '5px', fontSize: '36px' }} onClick={handleEditButtonClick}/>
                                     <StyledDeleteIcon style={{ color: 'white', margin: '5px', fontSize: '36px' }} />
                                 </div>
                             </div>
@@ -308,6 +349,42 @@ const Playlist = ({client}) => {
                     </AlertContainer>
                 </Overlay>
                 )}
+                {isEditAlertOpen && (
+                // <Overlay>
+                    <CustomEditAlert>
+                        <EditAlertContent>
+                            <EditAlertTitle>Editar playlist</EditAlertTitle>
+                            <EditAlertText>
+                                <Label style={{marginBottom: '0px', marginTop: '10px'}}>Titulo</Label>
+                                <Input
+                                    type="text"
+                                    value={editedPlaylist.titulo}
+                                    onChange={event => setEditedPlaylist({ ...editedPlaylist, titulo: event.target.value })}
+                                />
+
+                                <Label style={{marginBottom: '0px', marginTop: '10px'}}>Descripcion</Label>
+                                <Input
+                                    type="text"
+                                    value={editedPlaylist.descripcion}
+                                    onChange={event => setEditedPlaylist({ ...editedPlaylist, descripcion: event.target.value })}
+                                />
+
+                                <Label style={{marginBottom: '0px', marginTop: '10px'}}>Portada</Label>
+                                <Input
+                                    type="text"
+                                    value={editedPlaylist.portada}
+                                    onChange={event => setEditedPlaylist({ ...editedPlaylist, portada: event.target.value })}
+                                />
+                            </EditAlertText>
+                            <EditAlertButtonContainer>
+                                <StyledButtonSecondary onClick={handleCloseAlert}>Cancel</StyledButtonSecondary>
+                                <StyledButton onClick={handleSaveButtonClick}>Save</StyledButton>
+                            </EditAlertButtonContainer>
+                        </EditAlertContent>
+                    </CustomEditAlert>
+                // </Overlay>
+                
+            )}
             
         </>  
         );
