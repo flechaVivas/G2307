@@ -185,7 +185,7 @@ const Library = ({client}) => {
     return (
         <>
             <SpotifyBody>
-                <Sidebar/>
+                <Sidebar client={client}/>
                 <BodyContainer css={`align-items: center;`}>
                     <Header/>
                     <h1 style={{color: '#fff', marginLeft: '10px'}}>Library</h1>

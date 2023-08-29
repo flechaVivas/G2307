@@ -13,7 +13,7 @@ export default function Home({client}) {
     return (
         <HomeContainer>
             <SpotifyBody>
-                <Sidebar/>
+                <Sidebar client={client}/>
                 <Body client={client}/>
             </SpotifyBody>
             {/* <Footer/> */}

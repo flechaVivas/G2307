@@ -37,17 +37,12 @@ const columns = [
     { id: 'duracion', label: 'Duracion', minWidth: 100}
   ];
 
-
-  
-  function createData(title, artist, duration) {
-    return { title, artist, duration};
-  }
-  
-  const rows = [
-    createData('Hablando a tu corazón', 'Charly García', '4:15'),
-    createData('Demoliendo Hoteles', 'Charly García', '2:16'),
-    createData('Nos siguen pegando abajo', 'Charly García', '3:27'),
+const columnsAlert = [
+    { id: 'option', label: '', minWidth: 10 },
+    { id: 'titulo', label: 'Titulo', minWidth: 170 },
+    { id: 'artista', label: 'Artista', minWidth: 170 }
   ];
+
 
 const Playlist = ({client}) => {
     const { playlistId } = useParams();
@@ -55,14 +50,37 @@ const Playlist = ({client}) => {
     const [deleteAlertData, setDeleteAlertData] = React.useState(null);
 
     const [playlist, setPlaylist] = useState([]);
+    const [playlistSongs, setPlaylistSongs] = useState([]);
     const [allSongs, setAllSongs] = useState([]);
+
+    const [showAddSongsAlert, setShowAddSongsAlert] = useState(false);
+
+    const [selectedSongs, setSelectedSongs] = useState([]);
+
+
+    
+
+    const handleAddSongsClick = () => {
+        try{
+            client.get('/nospeak-app/api/canciones-info/')
+            .then(response => {
+                const songsNotInPlaylist = response.data.filter(song => !playlistSongs.some(playlistSong => playlistSong.id === song.id));
+                setAllSongs(songsNotInPlaylist);
+                setShowAddSongsAlert(true);
+            })
+        } catch (error){
+            console.error('Error al obtener las canciones:', error);
+        }
+        
+    };
+
 
 
     const fetchPlaylistAndSongs = async (playlistId) => {
         try {
           const response = await client.get(`/nospeak-app/api/playlists-info/${playlistId}/`);
-          setPlaylist(response.data);
-          setAllSongs(response.data.canciones.map(song => ({ ...song, isInPlaylist: true })));
+          setPlaylist(response.data);    
+          setPlaylistSongs(response.data.canciones);
         } catch (error) {
           console.error('Error fetching playlist info:', error);
         }
@@ -76,7 +94,7 @@ const Playlist = ({client}) => {
     
 
     const handleDeleteSong = (songId, index) => {
-        const songToDelete = allSongs[index];
+        const songToDelete = playlistSongs[index];
         setDeleteAlertData({
           songId: songToDelete.id,
           songTitle: songToDelete.titulo,
@@ -85,8 +103,8 @@ const Playlist = ({client}) => {
         }
 
         const handleDeleteConfirm = async () => {
-            const updatedSongs = allSongs.filter(song => song.id !== deleteAlertData.songId);
-            setAllSongs(updatedSongs);
+            const updatedSongs = playlistSongs.filter(song => song.id !== deleteAlertData.songId);
+            setPlaylistSongs(updatedSongs);
         
             const songsToUpdate = updatedSongs.map(song => ({
                 ...song,
@@ -105,32 +123,29 @@ const Playlist = ({client}) => {
         setDeleteAlertData(null);
       };
 
-      const handleAddSongToPlaylist = async (songId) => {
-        const updatedAllSongs = allSongs.map(song => {
-          if (song.id === songId) {
-            return { ...song, isInPlaylist: true };
-          }
-          return song;
-        });
+    const handleAddSongToPlaylist = async (songId) => {
+        const updatedSongs = [...playlistSongs, allSongs.find(song => song.id === songId)];
         
-        // Update state with the new song status
-        setAllSongs(updatedAllSongs);
-        
-        // Prepare updated songs for API
-        const updatedSongs = updatedAllSongs
-          .filter(song => song.isInPlaylist)
-          .map(song => ({
-            ...song,
-            artista: song.artista.id,
-            album: song.album.id,
-          }));
-    
+        setPlaylistSongs(updatedSongs);
+        setAllSongs(allSongs.filter(song => song.id !== songId))
+      
+        const songsToUpdate = updatedSongs.map(song => ({
+          ...song,
+          artista: song.artista.id,
+          album: song.album.id,
+        }));
+      
         try {
-          await client.patch(`/nospeak-app/api/playlists/${playlistId}/`, { canciones: updatedSongs });
+          await client.patch(`/nospeak-app/api/playlists/${playlistId}/`, { canciones: songsToUpdate });
+          setSelectedSongs([]);
+        //   if(!allSongs) {
+        //     setShowAddSongsAlert(false);
+        //   }
         } catch (error) {
-          console.error('Error updating playlist with added song:', error);
+          console.error('Error updating playlist:', error);
         }
       };
+      
     
     return (
         <>
@@ -166,7 +181,7 @@ const Playlist = ({client}) => {
                         </CardContainer>
                         <TableContainerStyled>
                             <TableContainer sx={{ maxHeight: 440}}>
-                                <Table stickyHeader aria-label="sticky table" sx={{margin: 0}}>
+                                <Table  sx={{margin: 0}}>
                                     <TableHead >
                                         <TableRow >
                                             {columns.map((column) => (
@@ -182,8 +197,7 @@ const Playlist = ({client}) => {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                    {allSongs
-                                        .filter(song => song.isInPlaylist)
+                                    {playlistSongs
                                         .map((song, rowIndex) => (
                                             <TableRow hover role="checkbox" tabIndex={-1} key={song.id}>
                                             {columns.map((column, columnIndex) => (
@@ -211,54 +225,9 @@ const Playlist = ({client}) => {
                                     </TableBody>
                                 </Table>
                             </TableContainer>
-                            <TableContainer sx={{ maxHeight: 440 }}>
-                                <StyledH1 style={{color: 'white', fontSize: '1.5em'}}>Canciones para añadir</StyledH1>
-                                <Table stickyHeader aria-label="sticky table" sx={{ margin: 0 }}>
-                                    <TableHead >
-                                            <TableRow >
-                                                {columns.map((column) => (
-                                                    <TableCell
-                                                    key={column.id}
-                                                    align={column.align}
-                                                    style={{ minWidth: column.minWidth, backgroundColor: 'transparent', color: '#fff', fontWeight: 'bold' }}
-                                                    
-                                                    >
-                                                    {column.label}
-                                                    </TableCell>
-                                                ))}
-                                            </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {allSongs
-                                            .filter(song => !song.isInPlaylist)
-                                            .map((song, rowIndex) => (
-                                            <TableRow hover role="checkbox" tabIndex={-1} key={song.id}>
-                                            {columns.map((column, columnIndex) => (
-                                                <TableCell
-                                                key={column.id}
-                                                align={column.align}
-                                                sx={{ backgroundColor: 'transparent', color: '#fff' }}
-                                                >
-                                                {column.id === 'option' && columnIndex === 0 ? (
-                                                    <PlaylistAdd fontSize="small" cursor="pointer" onClick={() => handleAddSongToPlaylist(song.id)} />
-                                                ) : null}
-
-                                                {column.id === 'titulo' && columnIndex === 1 ? (
-                                                    <span>{song.titulo}</span>
-                                                ) : null}
-                                                {column.id === 'artista' && columnIndex === 2 ? (
-                                                    <span>{song.artista.nombre}</span>
-                                                ) : null}
-                                                {column.id === 'duracion' && columnIndex === 3 ? (
-                                                    <span>{song.duracion}</span>
-                                                ) : null}
-                                                </TableCell>
-                                            ))}
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
+                            <ButtonContainer style={{justifyContent: 'end', paddingRight: '40px'}}>
+                                <StyledButton style={{width: '20%'}} onClick={handleAddSongsClick}>Añadir canciones</StyledButton>
+                            </ButtonContainer>
                         </TableContainerStyled>
                     </PlaylistContainer>
                 </BodyContainer>
@@ -280,6 +249,65 @@ const Playlist = ({client}) => {
                     </AlertContainer>
                 </Overlay>
             )}
+            {showAddSongsAlert && (
+                <Overlay>
+                    <AlertContainer style={{backgroundColor: '#242424', width: '30%'}}>
+                    <AlertTitle style={{marginBottom: '20px'}}>Añadir canciones</AlertTitle>
+                    <TableContainer sx={{ maxHeight: 440, marginBottom: '20px'}}>
+                                <Table  sx={{margin: 0}}>
+                                    <TableHead >
+                                        <TableRow >
+                                            {columnsAlert.map((column) => (
+                                                <TableCell
+                                                key={columnsAlert.id}
+                                                align={columnsAlert.align}
+                                                style={{ minWidth: columnsAlert.minWidth, backgroundColor: 'transparent', color: '#fff', fontWeight: 'bold' }}
+                                                
+                                                >
+                                                {column.label}
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                    {allSongs
+                                        .map((song, rowIndex) => (
+                                            <TableRow hover role="checkbox" tabIndex={-1} key={song.id}>
+                                            {columnsAlert.map((column, columnIndex) => (
+                                                <TableCell
+                                                key={column.id}
+                                                align={column.align}
+                                                sx={{ backgroundColor: 'transparent', color: '#fff' }}
+                                                >
+                                                {column.id === 'option' && columnIndex === 0 ? (
+                                                    <PlaylistAdd
+                                                    onClick={() => handleAddSongToPlaylist(song.id)}
+                                                    style={{
+                                                      cursor: 'pointer',
+                                                      color: selectedSongs.includes(song.id) ? 'green' : 'inherit',
+                                                    }}
+                                                  />
+                                                ) : null}
+                                                {column.id === 'titulo' && columnIndex === 1 ? (
+                                                    <span>{song.titulo}</span>
+                                                ) : null}
+                                                {column.id === 'artista' && columnIndex === 2 ? (
+                                                    <span>{song.artista.nombre}</span>
+                                                ) : null}
+                                                </TableCell>
+                                            ))}
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                    </TableContainer>
+                    <ButtonContainer style={{marginTop: '20px'}}>
+                        <StyledButtonSecondary style={{marginRight: '5px'}} onClick={() => setShowAddSongsAlert(false)}>Cancelar</StyledButtonSecondary>
+                        <StyledButton style={{marginLeft: '5px'}} onClick={() => setShowAddSongsAlert(false)}>Guardar</StyledButton>
+                    </ButtonContainer>
+                    </AlertContainer>
+                </Overlay>
+                )}
             
         </>  
         );
