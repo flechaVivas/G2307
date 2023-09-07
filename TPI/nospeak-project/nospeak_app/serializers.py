@@ -326,3 +326,44 @@ class HistorialSerializer(serializers.ModelSerializer):
     class Meta:
         model = Historial
         fields = '__all__'
+
+    def create(self, validated_data):
+        canciones_data = validated_data.pop('canciones')
+        historial = Historial.objects.create(**validated_data)
+
+        for cancion_data in canciones_data:
+            artista_data = cancion_data.pop('artista')
+            album_data = cancion_data.pop('album')
+
+            cancion, created = Cancion.objects.get_or_create(
+                artista=artista_data,
+                album=album_data,
+                **cancion_data
+            )
+
+            historial.canciones.add(cancion)
+
+        return historial
+    
+    def update(self, instance, validated_data):
+        canciones_data = validated_data.pop('canciones', []) 
+        instance.usuario = validated_data.get('usuario', instance.usuario)
+
+        instance.canciones.clear()
+
+        for cancion_data in canciones_data:
+            artista_data = cancion_data.pop('artista')
+            album_data = cancion_data.pop('album')
+
+            cancion, created = Cancion.objects.get_or_create(
+                artista=artista_data,
+                album=album_data,
+                **cancion_data
+            )
+
+            instance.canciones.add(cancion)
+
+        instance.save()
+        return instance
+
+

@@ -206,6 +206,16 @@ class HistorialDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Historial.objects.all()
     serializer_class = HistorialSerializer
 
+class HistorialPorUsuarioView(generics.RetrieveAPIView):
+    serializer_class = HistorialSerializer
+
+    def get_object(self):
+        usuario_id = self.kwargs['usuario_id']
+        try:
+            return Historial.objects.filter(usuario=usuario_id).first()
+        except Historial.DoesNotExist:
+            return None
+
 
 class RegistroUsuario(generics.CreateAPIView):
     queryset = User.objects.all()
