@@ -332,12 +332,8 @@ class HistorialSerializer(serializers.ModelSerializer):
         historial = Historial.objects.create(**validated_data)
 
         for cancion_data in canciones_data:
-            artista_data = cancion_data.pop('artista')
-            album_data = cancion_data.pop('album')
 
             cancion, created = Cancion.objects.get_or_create(
-                artista=artista_data,
-                album=album_data,
                 **cancion_data
             )
 
@@ -346,18 +342,13 @@ class HistorialSerializer(serializers.ModelSerializer):
         return historial
     
     def update(self, instance, validated_data):
-        canciones_data = validated_data.pop('canciones', []) 
+        canciones_data = validated_data.pop('canciones', [])
         instance.usuario = validated_data.get('usuario', instance.usuario)
 
         instance.canciones.clear()
 
         for cancion_data in canciones_data:
-            artista_data = cancion_data.pop('artista')
-            album_data = cancion_data.pop('album')
-
             cancion, created = Cancion.objects.get_or_create(
-                artista=artista_data,
-                album=album_data,
                 **cancion_data
             )
 
@@ -365,5 +356,8 @@ class HistorialSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+
+
 
 
