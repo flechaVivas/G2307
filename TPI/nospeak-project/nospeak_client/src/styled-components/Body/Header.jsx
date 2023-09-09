@@ -3,11 +3,15 @@ import { HeaderContainer, HeaderLeft, HeaderRight, SearchInput } from './styles.
 import SearchIcon from '@mui/icons-material/Search';
 import { Avatar } from '@mui/material';
 import { Navigate, useLocation } from 'react-router-dom';
+import {useSelector} from 'react-redux';
+
 
 const Header = ({ songs, setFilteredSongs }) => {
     const [goToAccount, setGoToAccount] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const location = useLocation();
+    const user = useSelector(state => state.user.user);
+
 
     React.useEffect(() => {
         // Actualizar las canciones filtradas al cargar las canciones
@@ -49,7 +53,7 @@ const Header = ({ songs, setFilteredSongs }) => {
             <HeaderRight>
                 <Avatar />
                 <h4 style={{ color: 'white' }} onClick={() => setGoToAccount(true)}>
-                    Username
+                    {user.username}
                 </h4>
             </HeaderRight>
         </HeaderContainer>
