@@ -5,7 +5,7 @@ import { SpotifyBody } from '../Home/styles';
 import Footer from '../../styled-components/Footer/Footer';
 import Header from '../../styled-components/Body/Header';
 import { NavContainer, NavItem, PlaylistBox, PlaylistDescription, PlaylistGrid, PlaylistImage, PlaylistName } from './styles';
-import { ArtistBox, ArtistImage, ArtistName, ArtistGrid,
+import { ArtistBox, ArtistImage, ArtistName, ArtistGrid, TableContainerStyled,
 ComboBoxContainer, ComboBoxOption, ComboBoxOptions } from './styles';
 import { Navigate, useLocation } from 'react-router-dom';
 import { StyledAddCircle, IconContainer } from '../../styled-components/Body/styles';
@@ -24,6 +24,18 @@ import {
     Input,
     Label
 } from '../../styled-components/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import { StyledH1 } from '../Playlist/styles';
+
+const columns = [
+    { id: 'titulo', label: 'Titulo', minWidth: 170 },
+    { id: 'artista', label: 'Artista', minWidth: 170 }
+  ];
 
 const Library = ({client}) => {
 
@@ -69,8 +81,12 @@ const Library = ({client}) => {
         usuario: user.id
     });
 
+    const [userHistorial, setUserHistorial] = useState(null);
+
+    const [recommendedSongs, setRecommendedSongs] = useState([]);
+
     useEffect(() => {
-        // Llamada a la API para obtener las playlists del usuario
+
         client.get(`/nospeak-app/api/playlists-usuario-info/${user.id}`)
             .then(response => {
                 setPlaylistData(response.data);
@@ -79,7 +95,7 @@ const Library = ({client}) => {
                 console.error('Error fetching playlists:', error);
             });
     
-        // Llamada a la API para obtener los albums
+
         client.get('/nospeak-app/api/albums/')
             .then(response => {
                 setAlbumData(response.data);
@@ -88,7 +104,7 @@ const Library = ({client}) => {
                 console.error('Error fetching albums:', error);
             });
     
-        // Fetch artists
+
         client.get('/nospeak-app/api/artistas/')
             .then(response => {
                 setArtists(response.data);
@@ -97,6 +113,42 @@ const Library = ({client}) => {
                 console.error('Error fetching artists:', error);
             });
     }, []);
+
+    const fetchUserHistorial = () => {
+        if (user && user.id) {
+          client
+            .get(`/nospeak-app/api/historiales-usuario/${user.id}`)
+            .then((response) => {
+              setUserHistorial(response.data);
+  
+              const lastFiveSongs = response.data.canciones
+                .slice(-5)
+                .map((cancion) => cancion.titulo);
+  
+              client
+                .post('/nospeak-app/api/recomendaciones/', {
+                  song_names: lastFiveSongs,
+                })
+                .then((response) => {
+                    console.log(response.data.recommended_songs)
+                  setRecommendedSongs(response.data.recommended_songs);
+                })
+                .catch((error) => {
+                  console.error('Error fetching recommendations:', error);
+                });
+            })
+            .catch((error) => {
+              console.error('Error fetching user historial:', error);
+            });
+        }
+      };
+      
+
+  
+    useEffect(() => {
+
+        fetchUserHistorial();
+    }, [user]);
     
 
       if (goToArtist && location.pathname !== "/artist") {
@@ -231,15 +283,7 @@ const Library = ({client}) => {
                             </Link>
                         ))
                         )}
-                        {/* {activeCategory === 'Made for You' && (
-                            madeForYou.map((playlist, index) => (
-                                <PlaylistBox key={index}>
-                                    <PlaylistImage src={playlist.image}></PlaylistImage>
-                                    <PlaylistName>{playlist.title}</PlaylistName>
-                                    <PlaylistDescription>{playlist.author}</PlaylistDescription>
-                                </PlaylistBox>
-                            )
-                        ))} */}
+                        
                         {activeCategory === 'Artists' && (
                             artists.map((artist, index) => (
                                 <Link key={index} to={`/artist/${artist.id}`}>
@@ -266,7 +310,54 @@ const Library = ({client}) => {
                         )}
                         
                     </PlaylistGrid>
-
+                    {activeCategory === 'Made for You' && (
+                            <TableContainerStyled>
+                                <StyledH1 style={{color: 'white', fontSize: '2em', marginLeft: '10px', marginBottom: '5px'}}>Canciones recomendadas para añadir basadas en tus favoritos</StyledH1>
+                            <TableContainer sx={{ maxHeight: 440 }}>
+                              <Table sx={{ margin: 0 }}>
+                                <TableHead>
+                                  <TableRow>
+                                    {columns.map((column) => (
+                                      <TableCell
+                                        key={column.id}
+                                        align={column.align}
+                                        style={{
+                                          minWidth: column.minWidth,
+                                          backgroundColor: 'transparent',
+                                          color: '#fff',
+                                          fontWeight: 'bold',
+                                        }}
+                                      >
+                                        {column.label}
+                                      </TableCell>
+                                    ))}
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  {recommendedSongs.map((song, rowIndex) => (
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={rowIndex}>
+                                      {columns.map((column, columnIndex) => (
+                                        <TableCell
+                                          align={column.align}
+                                          sx={{ backgroundColor: 'transparent', color: '#fff' }}
+                                          key={column.id}
+                                        >
+                                          {column.id === 'titulo' && columnIndex === 0 ? (
+                                            <span style={{ color: 'white' }}>{song.titulo}</span>
+                                          ) : null}
+                                          {column.id === 'artista' && columnIndex === 1 ? (
+                                            <span>{song.artista}</span>
+                                          ) : null}
+                                        </TableCell>
+                                      ))}
+                                    </TableRow>
+                                  ))}
+                                </TableBody>
+                              </Table>
+                            </TableContainer>
+                          </TableContainerStyled>
+                          
+                        )}
                 </BodyContainer>
             </SpotifyBody>
             <Footer/>
