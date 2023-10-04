@@ -20,7 +20,6 @@ Playlist *-- Cancion
 Cancion "0..*" -- "1..*" Artista
 Artista "1" --  "0..*" Album
 Album *-- Cancion 
-Usuario "1" -- "0..*" Suscripcion
 Usuario "1" -- "0..*" Recomendacion
 Recomendacion "0..*" -- "1..*" Cancion 
 Recomendacion "0..*" -- "1" Playlist 
@@ -43,11 +42,8 @@ Artista: str nacionalidad
 Artista: int nro_seguidores
 Album: str titulo
 Album: link portada
-Suscripcion: str tipo
-Suscripcion: float precio
-Suscripcion: date fecha_expiracion
 Recomendacion: date fecha_recomendacion
-Historial: date fecha_reproduccion
+Favoritos: date fecha_favorito
 ```  
 
 ## Bosquejo de Arquitectura
