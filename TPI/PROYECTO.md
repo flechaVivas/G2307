@@ -32,6 +32,7 @@ Usuario : str telefono
 Playlist: str titulo
 Playlist: str descripcion
 Playlist: date fecha_creacion
+Playlist: link portada
 Cancion: str titulo
 Cancion: int anio_lanzamiento
 Cancion: str genero
@@ -40,6 +41,7 @@ Cancion: link audio
 Artista: str nombre
 Artista: str nacionalidad
 Artista: int nro_seguidores
+Artista: link portada
 Album: str titulo
 Album: link portada
 Recomendacion: date fecha_recomendacion
