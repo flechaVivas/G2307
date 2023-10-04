@@ -23,7 +23,7 @@ Album *-- Cancion
 Usuario "1" -- "0..*" Recomendacion
 Recomendacion "0..*" -- "1..*" Cancion 
 Recomendacion "0..*" -- "1" Playlist 
-Usuario "1" -- "0..*" Favoritos
+Usuario "1" -- "1" Favoritos
 Favoritos "0..*" -- "1" Cancion
 Usuario : str nombre
 Usuario : str email
