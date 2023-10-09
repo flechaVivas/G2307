@@ -83,7 +83,7 @@ export default function Login({client}) {
       )}
       <FormLoginContainer>
         <NavLogin>
-          <img src="https://1000logos.net/wp-content/uploads/2017/08/Spotify-symbol.jpg" alt="Logo de spotify" />
+        <img src={process.env.PUBLIC_URL + '/logo_nospeak.png'} alt="logo" style={{ width: '130px', height: '60%' }}/>
         </NavLogin>
         <FormLogin>
           <StyledH1>Log in to NoSpeak</StyledH1>

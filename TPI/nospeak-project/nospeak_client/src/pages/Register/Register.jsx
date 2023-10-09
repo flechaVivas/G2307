@@ -76,9 +76,8 @@ export default function Register({client}) {
     }
 
     try {
-      const response_register = await client.post('/api/usuarios/', {
-        nombre: name,
-        email: email,
+      const response_register = await client.post('/nospeak-app/api/register/', {
+        username: name,
         password,
       });
 
@@ -93,12 +92,12 @@ export default function Register({client}) {
           setRegistrationSuccess(true);
                       
           // Inicia sesión con el nuevo usuario
-          const response_login = await client.post('/api/usuarios-login/', {
-            nombre: name,
+          const response_login = await client.post('/nospeak-app/api/login/', {
+            username: name,
             password,
           });
 
-          const { token, userId, nombre } = response_login.data;
+          const { token, userId, username } = response_login.data;
           localStorage.setItem('token', token);
 
           const response_createHistorial = await client.post('/api/historiales/', {
@@ -108,7 +107,7 @@ export default function Register({client}) {
 
           dispatch(loginSuccess({
             isAuthenticated: true,
-            user: { id: userId, nombre },
+            user: { id: userId, username },
           }));
 
           setTimeout(() => {
@@ -147,7 +146,7 @@ export default function Register({client}) {
   return (
     <FormLoginContainer>
       <NavLogin>
-        <img src="https://1000logos.net/wp-content/uploads/2017/08/Spotify-symbol.jpg" alt="Logo de spotify" />
+      <img src={process.env.PUBLIC_URL + '/logo_nospeak.png'} alt="logo" style={{ width: '130px', height: '60%' }}/>
       </NavLogin>
       <FormLogin>
         <StyledH1>Sign up for NoSpeak</StyledH1>
