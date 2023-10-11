@@ -20,12 +20,11 @@ Playlist *-- Cancion
 Cancion "0..*" -- "1..*" Artista
 Artista "1" --  "0..*" Album
 Album *-- Cancion 
-Usuario "1" -- "0..*" Suscripcion
 Usuario "1" -- "0..*" Recomendacion
 Recomendacion "0..*" -- "1..*" Cancion 
 Recomendacion "0..*" -- "1" Playlist 
-Usuario "1" -- "0..*" Historial
-Historial "0..*" -- "1" Cancion
+Usuario "1" -- "1" Favoritos
+Favoritos "0..*" -- "1" Cancion
 Usuario : str nombre
 Usuario : str email
 Usuario : str password
@@ -33,6 +32,7 @@ Usuario : str telefono
 Playlist: str titulo
 Playlist: str descripcion
 Playlist: date fecha_creacion
+Playlist: link portada
 Cancion: str titulo
 Cancion: int anio_lanzamiento
 Cancion: str genero
@@ -41,13 +41,11 @@ Cancion: link audio
 Artista: str nombre
 Artista: str nacionalidad
 Artista: int nro_seguidores
+Artista: link portada
 Album: str titulo
 Album: link portada
-Suscripcion: str tipo
-Suscripcion: float precio
-Suscripcion: date fecha_expiracion
 Recomendacion: date fecha_recomendacion
-Historial: date fecha_reproduccion
+Favoritos: date fecha_favorito
 ```  
 
 ## Bosquejo de Arquitectura
